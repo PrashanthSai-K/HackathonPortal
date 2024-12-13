@@ -1,14 +1,30 @@
 
-import React from 'react'; 
+import React, { lazy } from 'react';
 import { Menubar } from 'primereact/menubar';
+import Logo from "../../assets/logo.png"
+
 
 export default function Navbar() {
 
     const itemtemplate = (item) => (
-        <a className='flex gap-2 items-center px-3 py-1'>
+        <a className='flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer'>
             <span>{item.label}</span>
-            <span className={item.icon}></span>
         </a>
+    )
+
+    const dropDownItemTemplate = (item) => (
+        <a className='flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer '>
+            <span>{item.label}</span>
+            <span className='pi pi-angle-down transition-transform' onClick={(e)=>{ 
+                e.target.classList.toggle("rotate-180")
+            }}> </span>
+        </a>
+    )
+
+    const buttonTemplate = (item) => (
+        <button className='py-1 px-2 bg-violet-950 text-white rounded-lg'>
+            {item.label}
+        </button>
     )
 
     const items = [
@@ -18,55 +34,49 @@ export default function Navbar() {
             template: itemtemplate
         },
         {
-            label: 'About',
-            icon: 'pi pi-star',
+            label: 'Problem Statement',
+            icon: 'pi pi-database',
             template: itemtemplate
+        },
+        {
+            label: 'Info',
+            icon: 'pi pi-info-circle',
+            items: [
+                {
+                    label: 'About',
+                    icon: 'pi pi-info-circle',
+                    template: itemtemplate
+
+                },
+                {
+                    label: 'Guidelines',
+                    icon: 'pi pi-list-check',
+                    template: itemtemplate
+                },
+                {
+                    label: 'Contacu Us',
+                    icon: 'pi pi-address-book',
+                    template: itemtemplate
+                },
+            ],
+            template: dropDownItemTemplate
 
         },
-        // {
-        //     label: 'Projects',
-        //     icon: 'pi pi-search',
-        //     items: [
-        //         {
-        //             label: 'Components',
-        //             icon: 'pi pi-bolt'
-        //         },
-        //         {
-        //             label: 'Blocks',
-        //             icon: 'pi pi-server'
-        //         },
-        //         {
-        //             label: 'UI Kit',
-        //             icon: 'pi pi-pencil'
-        //         },
-        //         {
-        //             label: 'Templates',
-        //             icon: 'pi pi-palette',
-        //             items: [
-        //                 {
-        //                     label: 'Apollo',
-        //                     icon: 'pi pi-palette'
-        //                 },
-        //                 {
-        //                     label: 'Ultima',
-        //                     icon: 'pi pi-palette'
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // },
         {
-            label: 'Guidelines',
-            icon: 'pi pi-envelope',
-            template: itemtemplate
+            label: 'Login / Register',
+            icon: 'pi pi-button',
+            template: buttonTemplate
         }
     ];
 
     return (
-        <nav className="flex w-full h-20 fixed z-10 bg-white">
-            <div className='w-1/3'></div>
-            <Menubar className='flex bg-white w-2/3 gap-5 justify-end cursor-pointer' model={items}  />
+        <nav className="flex w-full items-center h-20 fixed z-10 ">
+            <div className='w-2/3 md:w-1/3 flex items-center gap-2'>
+                    <img className='w-15 h-14' src={Logo} alt="Logo Image" />
+                    <h3>TANSCHE</h3>
+                    <h4></h4>
+            </div>
+            <Menubar className='flex bg-white h-full w-1/3 md:w-2/3 gap-5 justify-end' model={items} />
         </nav>
     )
 }
-        
