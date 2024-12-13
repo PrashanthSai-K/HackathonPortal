@@ -14,27 +14,6 @@ function LangingPage() {
         <>
             <div class="node" id="node"></div>
             <div class="cursor" id="cursor"></div>
-            {/* <nav>
-                <div class="logo">
-                    <img src={Logo} alt="Logo Image" />
-                    <h3>TANSCHE</h3>
-                    <h4></h4>
-                </div>
-                <div class="hamburger">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
-                </div>
-                <ul class="nav-links">
-                    <li><a class="active nodeHover" href="#home">Home</a></li>
-                    <li><a class="nodeHover" href="#about">About</a></li>
-                    <li><a>Implementation Team</a></li>
-                    <li><a class="nodeHover" href="#guidelines">Guidelines</a></li>
-                    <li><a class="nodeHover" href="login.php">Problem Statement</a></li>
-                    <li><a class="nodeHover" href="#footer">Contact Us</a></li>
-                    <li><a class="login-button nodeHover" href="login.php">Login / Register</a></li>
-                </ul>
-            </nav> */}
             <Navbar />
             <section class="home" id="home">
 
