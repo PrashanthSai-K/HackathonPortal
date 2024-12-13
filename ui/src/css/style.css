@@ -475,7 +475,7 @@ nav {
     }
     .key-points {
         flex-direction: column;
-        text-align: center;
+        /* text-align: center; */
         flex-wrap: wrap;
         min-height: 160vh;
     }
@@ -561,7 +561,7 @@ nav {
         min-width: 95%;
         text-align: left;
     }
-    .numbering {
+    /* .numbering {
         font-family: 'Comfortaa', cursive;
         font-size: 3rem;
         width: 50px;
@@ -571,7 +571,7 @@ nav {
         color: #fff;
         align-items: center;
         margin-left: 20px;
-    }
+    } */
     .footer-bottom p,
     .footer-bottom a {
         color: #ffffff;
@@ -678,7 +678,7 @@ nav {
     }
     .numbering {
         font-family: 'Comfortaa', cursive;
-        font-size: 3rem;
+        font-size: 2.5rem;
         width: 50px;
         height: 50px;
         border-radius: 30px;
@@ -1277,7 +1277,7 @@ nav {
     font-size: 30px;
 }
 
-.numbering {
+/* .numbering {
     font-family: 'Comfortaa', cursive;
     font-size: 3rem;
     width: 50px;
@@ -1286,7 +1286,7 @@ nav {
     background-color: #2d1574;
     color: #fff;
     margin-right: 20px;
-}
+} */
 
 .event h2 {
     font-size: 30px;
