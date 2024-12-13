@@ -43,8 +43,8 @@ nav {
 }
 
 .logo img {
-    height: 5rem;
-    width: 5rem;
+    height: 4.5rem;
+    width: 4.5rem;
 }
 
 .logo h3 {
@@ -592,9 +592,9 @@ nav {
         min-height: 230px;
     }
     .logo img {
-        height: 3rem;
-        width: 3rem;
-        margin-top: .5vh;
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-top: .1vh;
         margin-left: 1vw;
     }
     .logo h3 {
