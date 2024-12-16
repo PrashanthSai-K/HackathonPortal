@@ -69,10 +69,9 @@ export default function Initiatives() {
             alt="Empowering Vector"
             style={{ width: "100px", height: "100px" }}
           />
-          <h1>Smart India Hackathon</h1>
+          <h1>Real World Problems</h1>
           <p>
-            Problem statements will be shared from Smart India Hackathon 2022
-            Portal.
+            Problem statements will be shared from variuos departments of TN.
           </p>
         </div>
       </div>

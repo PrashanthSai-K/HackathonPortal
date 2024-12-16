@@ -70,7 +70,7 @@ export default function Navbar() {
     ];
 
     return (
-        <nav className="flex w-full items-center h-20 fixed z-10 ">
+        <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">
             <div className='w-2/3 md:w-1/3 flex items-center gap-2'>
                     <img className='w-15 h-14' src={Logo} alt="Logo Image" />
                     <h3>TANSCHE</h3>

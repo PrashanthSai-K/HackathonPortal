@@ -45,13 +45,13 @@ export default function Home() {
         </h4>
 
         <h2 style={{ marginTop: "30vh" }}>
-          BIT'
+          TAN'
           <span
             style={{ color: "#7f58f3", fontSize: "30px", paddingBottom: "0%" }}
           >
             S
           </span>{" "}
-          HACK'22
+          HACK'24
         </h2>
         <br />
         <h2

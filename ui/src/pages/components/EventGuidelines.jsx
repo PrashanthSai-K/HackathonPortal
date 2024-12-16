@@ -47,7 +47,7 @@ export default function EventGuidelines() {
                                     className="fa fa-dot-circle-o"
                                     style={{ fontSize: "15px" }}
                                 ></i>{" "}
-                                Venue: Main Auditorium
+                                Venue: Banquet Hall
                             </p>
                             <p>
                                 <i

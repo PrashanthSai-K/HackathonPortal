@@ -5,21 +5,21 @@ export default function Footer() {
     <>
       <footer>
         <div id="footer" className="footer-content">
-          <h3>BIT'S HACK'22</h3>
+          <h3>TAN<span className="text-[#7f58f3]">S</span>HACK'22</h3>
           <p style={{ width: "50vw" }}>
             <b style={{ fontWeight: 600 }}>
               Hackathon Coordinators:
               <br />
             </b>{" "}
-            Dr.E.L.Pradeesh/Dr.P.Purusothaman
+            Dr. Person X /Dr.Person Y
             <br />
             <b style={{ fontWeight: 600 }}>Email: </b>
-            pradeeshel@bitsathy.ac.in/purusothaman@bitsathy.ac.in
+            paerson1@gamil.com/person2@gmail.com
             <br />
             <b style={{ fontWeight: 600 }}>
               Phone: <br />
             </b>{" "}
-            +91 9944820144 / +91 9952013214
+            +91 1234567890 / +91 1234567890
           </p>
           <ul className="socials">
             <li></li>

@@ -15,11 +15,11 @@ export default function EventDetails() {
           </npa>
         </h3>
         <div className="about-container">
-          <h2 style={{ color: "#4523ac" }}>BIT'S HACK'22</h2>
+          <h2 style={{ color: "#4523ac" }}>TAN<span className="text-[#7f58f3]">S</span>HACK'22</h2>
           <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It is a pioneer program for BIT
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It is a pioneer program for TN
             students to explore the depth of recent technologies and its usage
-            over the problems that they are going to handle. BIT'S HACK'22
+            over the problems that they are going to handle. TANSHACK'22
             assist students to:
           </p>
           <br />
