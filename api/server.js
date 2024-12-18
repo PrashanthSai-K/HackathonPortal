@@ -13,6 +13,10 @@ sequelize.sync({force : false}).then(()=>{
     console.log("connected to db successfully---------->>>");
 })
 
+
+require("./routes/registration.routes.js")(app)
+
+
 app.listen(4500, ()=>{
-    console.log("listening on 3500");
+    console.log("listening on 4500");
 })
