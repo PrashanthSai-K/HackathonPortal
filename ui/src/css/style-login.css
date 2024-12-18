@@ -15,7 +15,6 @@
         padding: 3vw;
         color: #465f82;
         background-color: #fdfcfd;
-        margin-top: 20vh;
     }
     .wrapper_login h3 {
         margin-bottom: 10%;
@@ -30,7 +29,8 @@
         width: 55vw;
         height: fit-content;
         border-radius: 8px;
-        padding: 2vw;
+        /* padding: 2vw; */
+        padding: 2vw 4vw 2vw 4vw;
         color: #465f82;
         background-color: #fdfcfd;
     }
@@ -66,20 +66,7 @@
         cursor: pointer;
         background-color: #1777ff;
     }
-    /* input {
-        width: 100%;
-        height: 10%;
-        margin-bottom: 20px;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 7px;
-    } */
-    .login_forms {
-        margin-top: 2vh;
-    }
-    .signup_forms {
-        /* margin-top: 10vh; */
-    }
+
     .form-group input {
         height: 6vh;
     }
@@ -104,11 +91,10 @@
         width: 90vw;
         height: fit-content;
         border-radius: 8px;
-        padding: 3vw;
+        /* padding: 3vw; */
         color: #465f82;
         background-color: #fdfcfd;
-        margin-top: 20vh;
-        padding-top: 12%;
+
     }
     .wrapper_login h3 {
         margin-bottom: 10%;
@@ -169,12 +155,7 @@
         border: 1px solid #ccc;
         border-radius: 7px;
     }
-    .login_forms {
-        margin-top: 2vh;
-    }
-    .signup_forms {
-        /* margin-top: 10vh; */
-    }
+
     .form-group input {
         height: 6vh;
     }

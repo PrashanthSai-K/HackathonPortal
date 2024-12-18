@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import './App.css'
-import LangingPage from './pages/user/LandingPage.jsx'
+import './App.css';
 import { Route, Routes } from 'react-router'
-import Registration from './pages/user/Registration.jsx'
+import LangingPage from './pages/user/LandingPage';
+import Registration from './pages/user/Registration';
+import LoginPage from './pages/user/LoginPage.jsx';
+
 
 function App() {
 
@@ -11,7 +13,7 @@ function App() {
     <Routes>
       <Route path='/' element={<LangingPage />} />
       <Route path='/register' element={<Registration />} />
-
+      <Route path='/Login' element={<LoginPage />} />
     </Routes>
       {/* <LangingPage /> */}
     </>

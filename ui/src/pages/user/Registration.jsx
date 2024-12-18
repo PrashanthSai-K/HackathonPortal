@@ -2,8 +2,8 @@ import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { MultiSelect } from 'primereact/multiselect';
 import React, { useRef, useState } from 'react'
-import Navbar from '../components/Navbar';
 import "../../css/style-login.css";
+
 
 export default function Registration() {
 
@@ -91,6 +91,16 @@ export default function Registration() {
                                     <div className="form-group_signup">
                                         <input
                                             type="text"
+                                            name="instituteCode"
+                                            placeholder="Institute Code"
+                                            value={formData.instituteName}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group_signup">
+                                        <input
+                                            type="text"
                                             name="instituteName"
                                             placeholder="Institute Name"
                                             value={formData.instituteName}
@@ -107,6 +117,38 @@ export default function Registration() {
                                             onChange={handleChange}
                                             required
                                         />
+                                    </div>
+                                    <div className="form-group_signup">
+                                        <input
+                                            type="text"
+                                            name="instituteAddress"
+                                            placeholder="Institute City"
+                                            value={formData.instituteAddress}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className='flex flex-wrap md:flex-nowrap md:w-7/10 justify-center' >
+                                    <div className="form-group_signup" >
+                                        <input
+                                            type="text"
+                                            name="instituteAddress"
+                                            placeholder="Institute State"
+                                            value={formData.instituteAddress}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group_signup md:pl-3">
+                                        <input
+                                            type="text"
+                                            name="instituteAddress"
+                                            placeholder="Pincode"
+                                            value={formData.instituteAddress}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                    </div>
                                     </div>
                                     <div className="form-group_signup">
                                         <select
