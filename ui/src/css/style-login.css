@@ -1,198 +1,202 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-    max-width: 100%;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  max-width: 100%;
 }
 
 @media screen and (min-width: 640px) {
-    .wrapper_login {
-        width: 30vw;
-        height: fit-content;
-        border-radius: 8px;
-        padding: 3vw;
-        color: #465f82;
-        background-color: #fdfcfd;
-    }
-    .wrapper_login h3 {
-        margin-bottom: 10%;
-    }
-    .wrapper_login p {
-        margin-bottom: 7%;
-        font-size: small;
-        margin-left: 10%;
-        margin-right: 10%;
-    }
-    .wrapper_signup {
-        width: 55vw;
-        height: fit-content;
-        border-radius: 8px;
-        /* padding: 2vw; */
-        padding: 2vw 4vw 2vw 4vw;
-        color: #465f82;
-        background-color: #fdfcfd;
-    }
-    .wrapper_signup h3 {
-        margin-bottom: 2vh;
-    }
-    .wrapper_signup p {
-        margin-bottom: 4vh;
-        font-size: 14px;
-    }
-    .link a {
-        text-decoration: none;
-        color: #267fff;
-    }
-    .link {
-        text-decoration: none;
-        margin-top: 3vh;
-        font-size: smaller;
-    }
-    .login_btn {
-        width: 40%;
-        height: 48px;
-        background-color: #267fff;
-        font-size: 20px;
-        color: #fff;
-        letter-spacing: 1px;
-        font-weight: 600;
-        padding: 2%;
-        font-weight: 200;
-        font-size: medium;
-    }
-    .login_btn:hover {
-        cursor: pointer;
-        background-color: #1777ff;
-    }
+  .wrapper_login {
+    width: 30vw;
+    height: fit-content;
+    border-radius: 8px;
+    padding: 3vw;
+    color: #465f82;
+    background-color: #fdfcfd;
+  }
+  .wrapper_login h3 {
+    margin-bottom: 10%;
+  }
+  .wrapper_login p {
+    margin-bottom: 7%;
+    font-size: small;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .wrapper_signup {
+    width: 55vw;
+    height: fit-content;
+    border-radius: 8px;
+    /* padding: 2vw; */
+    padding: 2vw 4vw 2vw 4vw;
+    color: #465f82;
+    background-color: #fdfcfd;
+  }
+  .wrapper_signup h3 {
+    margin-bottom: 2vh;
+  }
+  .wrapper_signup p {
+    margin-bottom: 4vh;
+    font-size: 14px;
+  }
+  .link a {
+    text-decoration: none;
+    color: #267fff;
+  }
+  .link {
+    text-decoration: none;
+    margin-top: 3vh;
+    font-size: smaller;
+  }
+  .login_btn {
+    width: 40%;
+    height: 48px;
+    background-color: #267fff;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 2%;
+    font-weight: 200;
+    font-size: medium;
+  }
+  .login_btn:hover {
+    cursor: pointer;
+    background-color: #1777ff;
+  }
 
-    .form-group input {
-        height: 6vh;
-    }
-    .form-group_signup input {
-        height: 5.7vh;
-    }
-    .form-group {
-        width: 65%;
-        padding-bottom: 2vh;
-    }
-    .form-group_signup {
-        width: 70%;
-        padding-bottom: 2vh;
-    }
-    .form-group_signup option {
-        color: gray;
-    }
+  .form-group input {
+    height: 6vh;
+    border: 2px solid rgba(129, 144, 184, 0.2);
+    border-radius: 4px;
+    font-size: 0.8em;
+    padding: 10px;
+
+  }
+  .form-group_signup input {
+    height: 5.7vh;
+  }
+  .form-group {
+    width: 65%;
+    padding-bottom: 2vh;
+  }
+  .form-group_signup {
+    width: 70%;
+    padding-bottom: 2vh;
+  }
+  .form-group_signup option {
+    color: gray;
+  }
 }
 
 @media screen and (max-width: 640px) {
-    .wrapper_login {
-        width: 90vw;
-        height: fit-content;
-        border-radius: 8px;
-        /* padding: 3vw; */
-        color: #465f82;
-        background-color: #fdfcfd;
+  .wrapper_login {
+    width: 90vw;
+    height: fit-content;
+    border-radius: 8px;
+    /* padding: 3vw; */
+    color: #465f82;
+    background-color: #fdfcfd;
+  }
+  .wrapper_login h3 {
+    margin-bottom: 10%;
+  }
+  .wrapper_login p {
+    margin-bottom: 7%;
+    font-size: small;
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+  .wrapper_signup {
+    width: 90vw;
+    height: fit-content;
+    border-radius: 8px;
+    padding: 3vw;
+    color: #465f82;
+    background-color: #fdfcfd;
+    margin-top: 20vh;
+    padding-top: 10%;
+  }
+  .wrapper_signup h3 {
+    margin-bottom: 2vh;
+  }
+  .wrapper_signup p {
+    margin-bottom: 5vh;
+    font-size: 14px;
+  }
+  .link a {
+    text-decoration: none;
+    color: #267fff;
+  }
+  .link {
+    text-decoration: none;
+    margin-top: 3vh;
+    font-size: smaller;
+  }
+  .login_btn {
+    width: 40%;
+    height: 48px;
+    background-color: #267fff;
+    font-size: 20px;
+    color: #fff;
+    letter-spacing: 1px;
+    font-weight: 600;
+    padding: 2%;
+    font-weight: 200;
+    font-size: medium;
+  }
+  .login_btn:hover {
+    cursor: pointer;
+    background-color: #1777ff;
+  }
+  input {
+    width: 100%;
+    height: 10%;
+    margin-bottom: 20px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+  }
 
-    }
-    .wrapper_login h3 {
-        margin-bottom: 10%;
-    }
-    .wrapper_login p {
-        margin-bottom: 7%;
-        font-size: small;
-        margin-left: 10%;
-        margin-right: 10%;
-    }
-    .wrapper_signup {
-        width: 90vw;
-        height: fit-content;
-        border-radius: 8px;
-        padding: 3vw;
-        color: #465f82;
-        background-color: #fdfcfd;
-        margin-top: 20vh;
-        padding-top: 10%;
-    }
-    .wrapper_signup h3 {
-        margin-bottom: 2vh;
-    }
-    .wrapper_signup p {
-        margin-bottom: 5vh;
-        font-size: 14px;
-    }
-    .link a {
-        text-decoration: none;
-        color: #267fff;
-    }
-    .link {
-        text-decoration: none;
-        margin-top: 3vh;
-        font-size: smaller;
-    }
-    .login_btn {
-        width: 40%;
-        height: 48px;
-        background-color: #267fff;
-        font-size: 20px;
-        color: #fff;
-        letter-spacing: 1px;
-        font-weight: 600;
-        padding: 2%;
-        font-weight: 200;
-        font-size: medium;
-    }
-    .login_btn:hover {
-        cursor: pointer;
-        background-color: #1777ff;
-    }
-    input {
-        width: 100%;
-        height: 10%;
-        margin-bottom: 20px;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 7px;
-    }
-
-    .form-group input {
-        height: 6vh;
-    }
-    .form-group_signup input {
-        height: 5.7vh;
-    }
-    .form-group {
-        width: 65%;
-        padding-bottom: 2vh;
-    }
-    .form-group_signup {
-        width: 70%;
-        padding-bottom: 2vh;
-    }
-    .form-group_signup option {
-        color: gray;
-    }
+  .form-group input {
+    height: 6vh;
+  }
+  .form-group_signup input {
+    height: 5.7vh;
+  }
+  .form-group {
+    width: 65%;
+    padding-bottom: 2vh;
+  }
+  .form-group_signup {
+    width: 70%;
+    padding-bottom: 2vh;
+  }
+  .form-group_signup option {
+    color: gray;
+  }
 }
 
-  .form-group_signup input,
-  .form-group_signup select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid rgba(156, 182, 255, 0.2);
-    border-radius: 4px;
-    font-size: 0.8em;
-  }
+.form-group_signup input,
+.form-group_signup select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid rgba(129, 144, 184, 0.2);
+  border-radius: 4px;
+  font-size: 0.8em;
+}
 
-  fieldset {
-    border: 1px solid rgba(223, 144, 255, 0.2);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-  
-  legend {
-    font-size: 0.9em;
-    font-weight: bold;
-    color: #333;
-  }
+fieldset {
+  border: 2px solid rgba(223, 144, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+legend {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #333;
+}

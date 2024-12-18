@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import axios from 'axios';
 export default function Login() {
 
     const [username, setUsername] = useState("");
@@ -8,9 +8,20 @@ export default function Login() {
     const [passwordError, setPasswordError] = useState("");
     const [loginError, setLoginError] = useState("");
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      // Add validation and login logic here
+      try{
+        const response = await axios.post("http://localhost:4000/api/login", { username, password });
+        if (response.data.success) {
+          localStorage.setItem("token", response.data.token);
+        //   window.location.href = "/dashboard";
+        } else {
+          setLoginError(response.data.message);
+        }
+      }catch (error) { 
+        setLoginError("Failed to login. Please try again.");
+        console.log(error);
+      }
     };
   return (
     <>
@@ -30,7 +41,7 @@ export default function Login() {
                 autoComplete="off"
                 name="username"
                 placeholder="Enter your Mail ID"
-                className={` font-normal text-sm form-control ${usernameError ? "is-invalid" : ""}`}
+                className={` font-normal border border-[] text-sm form-control ${usernameError ? "is-invalid" : ""}`}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -59,7 +70,7 @@ export default function Login() {
         </div>
       </section>
       <p className="link font-medium">
-        Don't have an account? <a href="register.php" className='font-medium'>Sign up now</a>
+        Don't have an account? <a href="/register" className='font-medium'>Sign up now</a>
       </p>
     </center>
     </div>
