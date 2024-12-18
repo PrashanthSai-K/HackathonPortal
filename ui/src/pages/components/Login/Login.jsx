@@ -14,22 +14,23 @@ export default function Login() {
     };
   return (
     <>
-     <center>
+    <div className='bg-[#f2f4fe] h-screen flex justify-center'>
+     <center className='flex flex-col items-center justify-center'>
       <section className="login_forms">
         <div className="wrapper_login">
           <h3>
-            <b>Welcome Back</b>
+            <b className='text-[#465f82] font-bold'>Welcome Back</b>
           </h3>
-          <p>Please enter your credentials to access your account.</p>
+          <p className='text-[#465f82] font-medium'>Please enter your credentials to access your account.</p>
           {loginError && <div className="alert alert-danger">{loginError}</div>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
+          <form  onSubmit={handleSubmit}>
+            <div className="form-group" >
               <input
                 type="text"
                 autoComplete="off"
                 name="username"
                 placeholder="Enter your Mail ID"
-                className={`form-control ${usernameError ? "is-invalid" : ""}`}
+                className={` font-normal text-sm form-control ${usernameError ? "is-invalid" : ""}`}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -43,7 +44,7 @@ export default function Login() {
                 autoComplete="off"
                 name="password"
                 placeholder="Enter your Password"
-                className={`form-control ${passwordError ? "is-invalid" : ""}`}
+                className={`font-normal text-sm  form-control ${passwordError ? "is-invalid" : ""}`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -52,15 +53,16 @@ export default function Login() {
               )}
             </div>
             <div className="form-group">
-              <input type="submit" className="login_btn" value="Login" />
+              <input type="submit" className="login_btn font-bold" value="Login" />
             </div>
           </form>
         </div>
       </section>
-      <p className="link">
-        Don't have an account? <a href="register.php">Sign up now</a>
+      <p className="link font-medium">
+        Don't have an account? <a href="register.php" className='font-medium'>Sign up now</a>
       </p>
     </center>
+    </div>
     </>
   )
 }

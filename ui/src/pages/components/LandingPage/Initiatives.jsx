@@ -1,6 +1,6 @@
-import Layer2 from "../../assets/layer 2.png";
-import Layer0 from "../../assets/layer 0.png";
-import Layer3 from "../../assets/layer 3.png";
+import Layer2 from "../../../assets/layer 2.png";
+import Layer0 from "../../../assets/layer 0.png";
+import Layer3 from "../../../assets/layer 3.png";
 
 export default function Initiatives() {
   return (

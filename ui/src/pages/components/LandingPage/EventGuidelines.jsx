@@ -1,7 +1,7 @@
 import React from 'react'
-import Events from "../../assets/event.png";
-import Registration from "../../assets/registration.png";
-import Benefits from "../../assets/benefits.png";
+import Events from "../../../assets/event.png";
+import Registration from "../../../assets/registration.png";
+import Benefits from "../../../assets/benefits.png";
 
 export default function EventGuidelines() {
   return (

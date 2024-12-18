@@ -1,8 +1,9 @@
 
 import React, { lazy } from 'react';
 import { Menubar } from 'primereact/menubar';
-import Logo from "../../assets/logo.png"
-
+import Logo from "../../../assets/logo.png"
+import { Link } from 'react-router';
+import "../../../css/style-login.css";
 
 export default function Navbar() {
 
@@ -22,10 +23,12 @@ export default function Navbar() {
     )
 
     const buttonTemplate = (item) => (
-        <button className='py-1 px-2 bg-violet-950 text-white rounded-lg'>
+        <Link to={"/Login"} className='py-1 px-2 bg-violet-950 text-white rounded-lg'>
             {item.label}
-        </button>
+        </Link>
     )
+
+
 
     const items = [
         {
@@ -66,6 +69,7 @@ export default function Navbar() {
             label: 'Login / Register',
             icon: 'pi pi-button',
             template: buttonTemplate
+
         }
     ];
 

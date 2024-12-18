@@ -1,12 +1,12 @@
 import "../../css/style.css";
-import Navbar from "../components/Navbar";
-import Initiatives from "../components/Initiatives";
-import Timer from "../components/Timer";
-import EventDetails from "../components/EventDetails";
-import Roadmap from "../components/Roadmap";
-import EventGuidelines from "../components/EventGuidelines";
-import Footer from "../components/Footer";
-import Home from "../components/Home";
+import Navbar from "../components/LandingPage/Navbar";
+import Initiatives from "../components/LandingPage/Initiatives";
+import Timer from "../components/LandingPage/Timer";
+import EventDetails from "../components/LandingPage/EventDetails";
+import Roadmap from "../components/LandingPage/Roadmap";
+import EventGuidelines from "../components/LandingPage/EventGuidelines";
+import Footer from "../components/LandingPage/Footer";
+import Home from "../components/LandingPage/Home";
 
 function LangingPage() {
   return (
@@ -16,7 +16,6 @@ function LangingPage() {
       <Navbar />
       <Home />
       <EventDetails />
-
       <Initiatives />
       <Timer />
       <Roadmap />
