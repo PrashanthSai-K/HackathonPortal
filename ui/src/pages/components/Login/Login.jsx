@@ -59,7 +59,7 @@ export default function Login() {
         </div>
       </section>
       <p className="link font-medium">
-        Don't have an account? <a href="register.php" className='font-medium'>Sign up now</a>
+        Don't have an account? <a href="/register" className='font-medium'>Sign up now</a>
       </p>
     </center>
     </div>
