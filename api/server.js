@@ -7,12 +7,15 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-sequelize.sync({force : false}).then(()=>{
-    console.log("connected to db successfully---------->>>");
-})
+sequelize.sync({ force: false }).then(() => {
+  console.log("connected to db successfully---------->>>");
+});
 
-app.listen(4500, ()=>{
-    console.log("listening on 3500");
-})
+require("./routes/auth.routes.js")(app);
+
+
+app.listen(4500, () => {
+  console.log("listening on 4500");
+});

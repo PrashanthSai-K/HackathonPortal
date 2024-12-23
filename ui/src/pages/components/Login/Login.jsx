@@ -1,28 +1,36 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+
 export default function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [usernameError, setUsernameError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-    const [loginError, setLoginError] = useState("");
-  
+
     const handleSubmit = async (e) => {
-      e.preventDefault();
+      e.preventDefault();   
       try{
-        const response = await axios.post("http://localhost:4000/api/login", { username, password });
-        if (response.data.success) {
+        const response = await axios.post("http://localhost:4500/api/login", { username, password });
+        
+        if (response.data.token !== undefined) {
           localStorage.setItem("token", response.data.token);
-        //   window.location.href = "/dashboard";
+
+          toast.success("Successfully logged in")
+          setTimeout(()=>{
+            window.location.href = "/dashboard";
+          },2000)
+// ;          console.log(response.data.token);
         } else {
-          setLoginError(response.data.message);
+          // setLoginError(response.data.message);
+          toast.error(response.data.message);
         }
       }catch (error) { 
-        setLoginError("Failed to login. Please try again.");
+        // setLoginError("Failed to login. Please try again.");
+        toast.error("Failed to login. Please try again.");
         console.log(error);
       }
     };
+
   return (
     <>
     <div className='bg-[#f2f4fe] h-screen flex justify-center'>
@@ -33,7 +41,6 @@ export default function Login() {
             <b className='text-[#465f82] font-bold'>Welcome Back</b>
           </h3>
           <p className='text-[#465f82] font-medium'>Please enter your credentials to access your account.</p>
-          {loginError && <div className="alert alert-danger">{loginError}</div>}
           <form  onSubmit={handleSubmit}>
             <div className="form-group" >
               <input
@@ -41,13 +48,10 @@ export default function Login() {
                 autoComplete="off"
                 name="username"
                 placeholder="Enter your Mail ID"
-                className={` font-normal border border-[] text-sm form-control ${usernameError ? "is-invalid" : ""}`}
+                className={` font-normal border border-[] text-sm form-control`}
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              {usernameError && (
-                <span className="invalid-feedback">{usernameError}</span>
-              )}
             </div>
             <div className="form-group">
               <input
@@ -55,13 +59,10 @@ export default function Login() {
                 autoComplete="off"
                 name="password"
                 placeholder="Enter your Password"
-                className={`font-normal text-sm  form-control ${passwordError ? "is-invalid" : ""}`}
+                className={`font-normal text-sm  form-control`}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {passwordError && (
-                <span className="invalid-feedback">{passwordError}</span>
-              )}
             </div>
             <div className="form-group">
               <input type="submit" className="login_btn font-bold" value="Login" />
@@ -73,6 +74,7 @@ export default function Login() {
         Don't have an account? <a href="/register" className='font-medium'>Sign up now</a>
       </p>
     </center>
+    <ToastContainer />
     </div>
     </>
   )
