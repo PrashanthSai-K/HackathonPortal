@@ -11,8 +11,7 @@ import Home from "../components/LandingPage/Home";
 function LangingPage() {
   return (
     <>
-      {/* <div className="node" id="node"></div>
-      <div className="cursor" id="cursor"></div> */}
+
       <Navbar />
       <Home />
       <EventDetails />
