@@ -40,7 +40,7 @@ export default function Login() {
           <h3>
             <b className='text-[#465f82] font-bold'>Welcome Back</b>
           </h3>
-          <p className='text-[#465f82] font-medium'>Please enter your credentials to access your account.</p>
+          <p classNam e='text-[#465f82] font-medium'>Please enter your credentials to access your account</p>
           <form  onSubmit={handleSubmit}>
             <div className="form-group" >
               <input

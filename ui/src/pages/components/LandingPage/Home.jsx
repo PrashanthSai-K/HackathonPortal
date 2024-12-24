@@ -11,7 +11,7 @@ export default function Home() {
         <div className="circle"></div>
 
         <h4 className="main_title" style={{ marginTop: "22vh" }}>
-          TAN<span style={{ fontSize: "60px" }}>S</span> HACK'24
+          TAN<span style={{ fontSize: "60px", color:"#7f58f3", fontWeight:"bold" }}>S</span> HACK'24
         </h4>
         <center>
           <h5
@@ -38,6 +38,7 @@ export default function Home() {
               letterSpacing: "5px",
               fontSize: "50px",
               paddingTop: "10px",
+              color: "#7f58f3"
             }}
           >
             3 LAKHS

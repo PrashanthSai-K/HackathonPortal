@@ -5,7 +5,7 @@ const backendUrl = "http://localhost:4500/api"
 
 export const userGetRequest = async(url ) => {
     try{
-        const response = await axios.get(`${backendUrl} + ${url}`);
+        const response = await axios.get(`${backendUrl}${url}`);
         return response
     }catch(error){
         throw error
@@ -14,7 +14,7 @@ export const userGetRequest = async(url ) => {
 
 export const adminGetRequest = async(url) => {
     try{
-        const response = await axios.get(`${backendUrl} + ${url}`);
+        const response = await axios.get(`${backendUrl}${url}`);
         return response
     }catch(error){
         throw error
@@ -23,7 +23,7 @@ export const adminGetRequest = async(url) => {
 
 export const adminPostRequest = async(url, data) => {
     try{
-        const response = await axios.get(`${backendUrl} + ${url}`, data);
+        const response = await axios.get(`${backendUrl}${url}`, data);
         return response
     }catch(error){
         throw error
