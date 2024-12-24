@@ -26,6 +26,7 @@ function App() {
         <Route path='/' element={<LangingPage />} />
         <Route path='/register' element={<Registration />} />
         <Route path='/Login' element={<LoginPage />} />
+        {/* <Route path='/Login' element={<LoginPage />} /> */}
       </Routes>
       {/* <LangingPage /> */}
     </>

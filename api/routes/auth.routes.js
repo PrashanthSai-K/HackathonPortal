@@ -8,5 +8,7 @@ module.exports = app => {
 
     router.post("/login", authController.loginUser , authMiddelware.createToken);
 
+    router.post("/getUser", authController.getUser);
+
     app.use("/api", router);
 }

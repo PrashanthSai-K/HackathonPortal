@@ -13,8 +13,8 @@ exports.createToken = (req,res) => {
       key
     );
     console.log(token);
-    res.send({token: token});
+    return res.status(201).send({token: token});
   } catch (error) {
-    console.log(error);
+    console.log({"Error Creating Token":error});
   }
 };
