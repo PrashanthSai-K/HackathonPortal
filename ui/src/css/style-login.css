@@ -116,7 +116,7 @@
     padding: 3vw;
     color: #465f82;
     background-color: #fdfcfd;
-    margin-top: 20vh;
+    /* margin-top: 20vh; */
     padding-top: 10%;
   }
   .wrapper_signup h3 {
@@ -171,7 +171,7 @@
     padding-bottom: 2vh;
   }
   .form-group_signup {
-    width: 70%;
+    width: 90%;
     padding-bottom: 2vh;
   }
   .form-group_signup option {

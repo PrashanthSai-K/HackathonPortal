@@ -52,9 +52,9 @@ export default function Registration() {
         <>
 
 
-            <body className=''>
+            {/* <body className=''> */}
                 <center className='bg-[#f2f4fe]'>
-                    <section className="signup_forms bg-[#f2f4fe] p-10">
+                    <section className="signup_forms bg-[#f2f4fe] p-5">
                         <div className="wrapper_signup">
                             <legend className='text-[#465f82] text-xl'>Institute Registration</legend>
                             <p>Fill out the details below to register your institute</p>
@@ -192,14 +192,14 @@ export default function Registration() {
 
                                 {/* Submit Button */}
                                 <div className="form-group_signup">
-                                    <input type="submit" className="login_btn" value="Submit" />
+                                    <input type="submit" className="login_btn font-semibold" value="Submit" />
                                 </div>
                             </form>
                         </div>
                         <p class="link">Already have an account? <a href="/login">Login here</a></p>
                     </section>
                 </center>
-            </body >
+            {/* </body > */}
         </>
     )
 }

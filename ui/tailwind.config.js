@@ -9,6 +9,7 @@ export default {
 
       width : {
         "7/10":"70%",
+        500:"90rem",
       }
 
     },

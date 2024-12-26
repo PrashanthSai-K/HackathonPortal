@@ -6,5 +6,7 @@ module.exports = app => {
 
     router.get("/", problem_statements.getStatements);
 
+    router.get("/registration", problem_statements.getRegistration);
+
     app.use("/api/ps", router);
 }

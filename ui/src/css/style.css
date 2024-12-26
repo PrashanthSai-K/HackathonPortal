@@ -1977,3 +1977,12 @@ input[type=number] {
     font-family: "Saira", sans-serif;
     color: #194aa6
 }
+
+
+
+.p-sortable-column-icon {
+    color: white !important; /* Make the sort icon white */
+    margin-left: auto;       /* Align it to the end */
+    display: flex;           /* Ensure proper alignment */
+    justify-content: end;    
+}
