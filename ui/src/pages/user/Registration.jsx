@@ -196,7 +196,7 @@ export default function Registration() {
                                 </div>
                             </form>
                         </div>
-                        <p class="link">Already have an account? <a href="/login">Login here</a></p>
+                        <p className="link">Already have an account? <a href="/login">Login here</a></p>
                     </section>
                 </center>
             {/* </body > */}

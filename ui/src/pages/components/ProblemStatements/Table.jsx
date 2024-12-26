@@ -19,7 +19,7 @@ export default function Table({ data }) {
     const appendSlug = (data) => {
         const result = data.map((d) => {
             // Generate a consistent hash using the problem ID (or any other field you want)
-            const hash = SHA256(d.id.toString());  // Hash the problem ID or any other field
+            const hash = SHA256(d.ps_id.toString());  // Hash the problem ID or any other field
             let slug = Base64.stringify(hash).substring(0, 10);  // Convert to Base64 and take first 10 characters
             
             // Replace URL-unsafe characters with URL-safe alternatives
