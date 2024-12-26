@@ -1,22 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import "../../css/style-login.css";
 import { userPostRequest } from '../components/exports';
-import { Toast } from 'primereact/toast';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 export default function Registration() {
 
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-    // const toast = useRef();
-
-    const [formData, setFormData] = useState({
+    const data = {
         instituteCode: "",
         instituteName: "",
         instituteAddress: "",
@@ -28,7 +18,20 @@ export default function Registration() {
         pocEmail: "",
         pocPhone: "",
         password: "",
-    });
+    }
+
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+    // const toast = useRef();
+
+    const [formData, setFormData] = useState(data);
 
 
     const handleSubmit = async (e) => {
@@ -36,10 +39,12 @@ export default function Registration() {
             e.preventDefault();
             console.log("Form Data Submitted:", formData);
             const response = await userPostRequest("/register", formData);
-            console.log(response);
+            toast.success(response.data.message);
+            setFormData(data);
+            setTimeout(navigate("/login"), 3000);
         } catch (error) {
-            toast.error(error.response.data.errors[0].message)
             console.log(error);
+            toast.error(error.response.data.error || error.response.data.errors[0].message)
         }
     };
 
@@ -52,7 +57,7 @@ export default function Registration() {
                     <section className="signup_forms bg-[#f2f4fe] p-10">
                         <div className="wrapper_signup">
                             <legend className='text-[#465f82] text-xl'>Institute Registration</legend>
-                            <p>Fill out the details below to register your institute.</p>
+                            <p>Fill out the details below to register your institute</p>
                             <form onSubmit={handleSubmit} className="w-full">
                                 {/* Institute Details */}
                                 <fieldset>
@@ -191,7 +196,7 @@ export default function Registration() {
                                 </div>
                             </form>
                         </div>
-                        <p class="link">Already have an account? <a href="/login">Login here</a></p>
+                        <p className="link">Already have an account? <a href="/login">Login here</a></p>
                     </section>
                 </center>
             </body >

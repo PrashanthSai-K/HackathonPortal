@@ -4,6 +4,7 @@ import Logo from "../../../assets/logo.png";
 import { Link } from "react-router";
 import "../../../css/style-login.css";
 import axios from "axios";
+import { userGetRequest } from "../exports";
 
 export default function Navbar() {
   const [user, setUser] = useState();
@@ -12,29 +13,29 @@ export default function Navbar() {
   );
 
   const getUser = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.post("http://localhost:4500/api/getUser", {
-        token: token,
-      });
-      setUser(response.data);
-    } catch (e) {
-      console.log("Failed to get user", e);
-    }
-  };
+      const token = localStorage.getItem("token");
+      try {
+        const response = await userGetRequest("/getUser", token);
+        setUser(response.data);
+        // getUserDetails(response.data);
+      } catch (e) {
+        console.log("Failed to get user", e);
+      }
+    };
 
   useEffect(() => {
     if (checkUserLogin === true) getUser();
   }, []);
 
   const itemtemplate = (item) => (
-    <a
+    <Link
+    to={`${item.link}`}
       className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
         item.isSubmenu ? "min-w-[150px] bg-white" : ""
       }`}
     >
-      <span >{item.label}</span>
-    </a>
+      <span>{item.label}</span>
+    </Link>
   );
 
   const dropDownItemTemplate = (item) => (
@@ -86,7 +87,17 @@ export default function Navbar() {
       link: "/problems",
       template: itemtemplate,
     },
-
+    ...(checkUserLogin
+      ? [
+          {
+            label: "Profile",
+            icon: "pi pi-user",
+            role: "user",
+            link: "/profile",
+            template: itemtemplate,
+          },
+        ]
+      : []),
     {
       label: "Info",
       icon: "pi pi-info-circle",
