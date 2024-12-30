@@ -6,7 +6,7 @@ module.exports = app => {
 
     var router = require('express').Router();
 
-    router.get("/", checkToken, problem_statements.getStatements);
+    router.get("/", problem_statements.getStatements);
 
     router.get("/registration/:id", checkAdmin, problem_statements.getRegistration);
 
