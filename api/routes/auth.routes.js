@@ -15,9 +15,6 @@ module.exports = app => {
     router.get("/getUser", authController.getUser);
 
     router.post("/getInstituteDetails", authController.getInstituteDetails);
-
-
     
-
     app.use("/api", router);
 }
