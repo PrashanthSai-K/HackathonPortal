@@ -100,7 +100,7 @@ export default function Table({ data, user, getUser }) {
                                         View
                                     </button>
                                     {
-                                        user && user.role == "user" &&
+                                        user && user.role == "admin" &&
                                         <button
                                             onClick={() => redirectApprove(rowData)}
                                             className="px-2 py-1 bg-violet-950 text-white rounded"

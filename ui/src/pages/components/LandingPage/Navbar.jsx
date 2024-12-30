@@ -5,74 +5,138 @@ import { Link } from "react-router";
 import "../../../css/style-login.css";
 import axios from "axios";
 import { userGetRequest } from "../exports";
+import { useAuth } from "../../../AuthContext";
 
 export default function Navbar() {
-  const [user, setUser] = useState();
-  const [checkUserLogin, setCheckUserLogin] = useState(
-    localStorage.getItem("token") ? true : false
-  );
 
-  const getUser = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await userGetRequest("/getUser", token);
-        setUser(response.data);
-        // getUserDetails(response.data);
-      } catch (e) {
-        console.log("Failed to get user", e);
-      }
-    };
-
-  useEffect(() => {
-    if (checkUserLogin === true) getUser();
-  }, []);
+  const { user, loggedIn } = useAuth();
 
   const itemtemplate = (item) => (
-    <Link
-    to={`${item.link}`}
-      className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
-        item.isSubmenu ? "min-w-[150px] bg-white" : ""
-      }`}
-    >
-      <span>{item.label}</span>
-    </Link>
+    loggedIn ? (
+      user && user.role == item.role && (
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
+            }`}
+        >
+          <span>{item.label}</span>
+        </Link>
+      )
+    ) : (
+      item.role == 'all' && (
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
+            }`}
+        >
+          <span>{item.label}</span>
+        </Link>
+      )
+    )
   );
 
+
   const dropDownItemTemplate = (item) => (
-    <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
-      <span>{item.label}</span>
-      <span
-        className="pi pi-angle-down transition-transform"
-        onClick={(e) => {
-          e.target.classList.toggle("rotate-180");
-        }}
-      >
-        {" "}
-      </span>
-    </a>
+    loggedIn ?  (
+      user && user.role == item.role && (
+      <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
+        <span>{item.label}</span>
+        <span
+          className="pi pi-angle-down transition-transform"
+          onClick={(e) => {
+            e.target.classList.toggle("rotate-180");
+          }}
+        >
+          {" "}
+        </span>
+      </a>
+      )
+    ) : (
+      item.role == 'all' && (
+        <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
+          >
+            {" "}
+          </span>
+        </a>
+      )
+    )
   );
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       localStorage.removeItem("token");
-      setCheckUserLogin(false);
+      window.location.reload();
     }
   };
 
   const buttonTemplate = () => (
     <Link
-      to={checkUserLogin && checkUserLogin ? "" : "/login"}
+      to={user ? "" : "/login"}
       className="py-1 px-2 bg-violet-950 text-white rounded-lg"
       onClick={() => {
-        checkUserLogin && handleLogout();
+        user && handleLogout();
       }}
     >
-      {checkUserLogin && checkUserLogin ? "Logout" : "Login"}
+      {user ? "Logout" : "Login"}
     </Link>
   );
 
-  const userItems = [
+
+  const navItems = [
+    {
+      label: "Home",
+      icon: "pi pi-home",
+      role: "all",
+      link: "/",
+      template: itemtemplate,
+    },
+    {
+      label: "Problem Statement",
+      icon: "pi pi-database",
+      role: "all",
+      link: "/problems",
+      template: itemtemplate,
+    },
+    {
+      label: "Info",
+      icon: "pi pi-info-circle",
+      role: "all",
+      link: "/info",
+      items: [
+        {
+          label: "About",
+          icon: "pi pi-info-circle",
+          role: "all",
+          link: "/about",
+          template: itemtemplate,
+          isSubmenu: true,
+        },
+        {
+          label: "Guidelines",
+          icon: "pi pi-list-check",
+          role: "all",
+          link: "/guidelines",
+          template: itemtemplate,
+          isSubmenu: true,
+        },
+        {
+          label: "Contact Us",
+          icon: "pi pi-address-book",
+          role: "all",
+          link: "/contact",
+          template: itemtemplate,
+          isSubmenu: true,
+        },
+      ],
+      template: dropDownItemTemplate,
+    },
     {
       label: "Home",
       icon: "pi pi-home",
@@ -87,17 +151,13 @@ export default function Navbar() {
       link: "/problems",
       template: itemtemplate,
     },
-    ...(checkUserLogin
-      ? [
-          {
-            label: "Profile",
-            icon: "pi pi-user",
-            role: "user",
-            link: "/profile",
-            template: itemtemplate,
-          },
-        ]
-      : []),
+    {
+      label: "Profile",
+      icon: "pi pi-user",
+      role: "user",
+      link: "/profile",
+      template: itemtemplate,
+    },
     {
       label: "Info",
       icon: "pi pi-info-circle",
@@ -132,20 +192,10 @@ export default function Navbar() {
       template: dropDownItemTemplate,
     },
     {
-      label: "Login / Register",
-      icon: "pi pi-button",
-      role: "user",
-      link: "/login",
-      template: buttonTemplate,
-    },
-  ];
-
-  const adminItems = [
-    {
       label: "Final Participant",
       icon: "pi pi-database",
       role: "admin",
-      link: "/finalParticipants",
+      link: "/finalists",
       template: itemtemplate,
     },
     {
@@ -163,13 +213,20 @@ export default function Navbar() {
       template: itemtemplate,
     },
     {
-      label: "problem Statements",
+      label: "Problem Statements",
       role: "admin",
       icon: "pi pi-database",
       link: "/problemsManagement",
       template: itemtemplate,
     },
-  ];
+    {
+      label: "Login / Register",
+      icon: "pi pi-button",
+      role: "user",
+      link: "/login",
+      template: buttonTemplate,
+    }
+  ]
 
   return (
     <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">
@@ -181,7 +238,7 @@ export default function Navbar() {
 
       <Menubar
         className="flex bg-white h-full w-1/3 md:w-2/3 justify-end"
-        model={user?.role === "admin" ? adminItems : userItems}
+        model={navItems}
       />
     </nav>
   );

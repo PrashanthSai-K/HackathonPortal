@@ -22,39 +22,40 @@ exports.register_institute = async (req, res) => {
     } = req.body;
 
     const hashedPass = await bcrypt.hash(password, 10);
+    console.log(hashedPass);
+  
+    // const [result, metadata] = await sequelize.query(
+    //   `INSERT INTO institution (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number ) 
+    //        VALUES ( :institution_code, :institution_name, :institution_type, :address, :city, :state, :pincode, :poc_name, :poc_email, :poc_number)`,
+    //   {
+    //     replacements: {
+    //       institution_code: instituteCode,
+    //       institution_name: instituteName,
+    //       institution_type: instituteType,
+    //       address: instituteAddress,
+    //       city: instituteCity,
+    //       state: instituteState,
+    //       pincode: institutePincode,
+    //       poc_name: pocName,
+    //       poc_email: pocEmail,
+    //       poc_number: pocPhone,
+    //     },
+    //     transaction,
+    //   }
+    // );
 
-    const [result, metadata] = await sequelize.query(
-      `INSERT INTO institution (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number ) 
-           VALUES ( :institution_code, :institution_name, :institution_type, :address, :city, :state, :pincode, :poc_name, :poc_email, :poc_number)`,
-      {
-        replacements: {
-          institution_code: instituteCode,
-          institution_name: instituteName,
-          institution_type: instituteType,
-          address: instituteAddress,
-          city: instituteCity,
-          state: instituteState,
-          pincode: institutePincode,
-          poc_name: pocName,
-          poc_email: pocEmail,
-          poc_number: pocPhone,
-        },
-        transaction,
-      }
-    );
+    // const [result1, metadata1] = await sequelize.query(
+    //   `INSERT INTO users (username, password ) VALUES ( :poc_email, :password )`,
+    //   {
+    //     replacements: {
+    //       poc_email: pocEmail,
+    //       password: hashedPass,
+    //     },
+    //     transaction,
+    //   }
+    // );
 
-    const [result1, metadata1] = await sequelize.query(
-      `INSERT INTO users (username, password ) VALUES ( :poc_email, :password )`,
-      {
-        replacements: {
-          poc_email: pocEmail,
-          password: hashedPass,
-        },
-        transaction,
-      }
-    );
-
-    await transaction.commit();
+    // await transaction.commit();
 
     return res.status(201).send({ message: "Registered successfully" });
   } catch (error) {

@@ -9,7 +9,7 @@ export default function ProblemStatements() {
 
     const [ps, setPs] = useState([]);
 
-    const { user, getUser } = useAuth();
+    const { user } = useAuth();
 
 
     const fetchPs = async () => {
@@ -23,7 +23,7 @@ export default function ProblemStatements() {
 
     useEffect(() => {
         fetchPs();
-        getUser();
+        // getUser();
     }, [])
 
     return (
@@ -35,7 +35,7 @@ export default function ProblemStatements() {
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
-                <Table user={user} getUser={getUser} data={ps} />
+                <Table user={user} data={ps} />
             </section>
 
         </>
