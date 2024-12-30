@@ -81,6 +81,14 @@ exports.loginUser = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
+    const [instituteDetails, instituteDetailsMetaData] = await sequelize.query(
+      "SELECT * FROM institution WHERE poc_email = ?",
+      {
+        replacements: [username],
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+
     const [adminData, adminMetadata] = await sequelize.query(
       "SELECT * FROM admin_users WHERE username = ?",
       {
@@ -94,7 +102,8 @@ exports.loginUser = async (req, res, next) => {
       if(result){
         adminData.role = "admin";
         console.log(adminData.role);
-        res.locals.payload = adminData;
+        // var data = {...instituteDetails , adminData};
+        res.locals.payload = {...adminData,...instituteDetails};
         return next();
       }
     }
@@ -113,7 +122,7 @@ exports.loginUser = async (req, res, next) => {
       if(result){
         userData.role = "user";
         console.log(userData);
-        res.locals.payload = userData;
+        res.locals.payload = {...userData,...instituteDetails};
         return next();
       }
     }
@@ -138,23 +147,3 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.getInstituteDetails = async (req, res) => {
-  const username = req.body.username;
-  // console.log(username);
-  try {
-    const [instituteData, instituteMetadata] = await sequelize.query(
-      "SELECT * FROM institution WHERE poc_email = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    if (instituteData !== undefined) {
-      return res.status(201).send(instituteData);
-    }
-    return res.status(401).send({ message: "Invalid username" });
-  } catch (err) {
-    res.status(403).send({ message: "user name is not valid" });
-  }
-};

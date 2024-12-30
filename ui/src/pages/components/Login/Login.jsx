@@ -80,7 +80,7 @@ export default function Login() {
               Sign up now
             </a>
           </p>
-        </center>
+        </center> 
         <ToastContainer />
       </div>
     </>

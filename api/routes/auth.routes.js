@@ -14,7 +14,7 @@ module.exports = app => {
 
     router.get("/getUser", authController.getUser);
 
-    router.post("/getInstituteDetails", authController.getInstituteDetails);
+    // router.post("/getInstituteDetails", authController.getInstituteDetails);
 
 
     

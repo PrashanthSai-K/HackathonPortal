@@ -5,10 +5,20 @@ exports.createToken = (req,res) => {
   try {
     const result = res.locals.payload;
     JSON.parse(JSON.stringify(result));
+    // console.log(result);
+    
     const token = jwt.sign(
       {
-        username: result.username,
+        username: result.username,  
         role: result.role,
+        institutionCode : result.institution_code,
+        institutionType: result.institution_type,
+        address: result.address,
+        city: result.city,
+        state: result.state,
+        pincode: result.pincode,
+        pocName: result.poc_name,
+        pocEmail: result.poc_email,
       },
       key
     );

@@ -40,11 +40,11 @@ export default function ProfileDetails() {
     }
   }, []);
 
-  console.log("instituteDetails", instituteDetails);
+  // console.log("instituteDetails", instituteDetails);
 
   return (
     <>
-      <div className="flex items-center lg:w-7/12 w-10/12 justify-center">
+      <div className="flex items-center lg:w-8/12 w-10/12 justify-center">
         <form className="w-full">
           {/* Institute Details */}
           <fieldset className="p-4 border-2 rounded-lg flex flex-col shadow-lg">
