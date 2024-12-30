@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { userGetRequest, userPostRequest } from "../exports";
+import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export default function ProfileDetails() {
@@ -15,7 +15,6 @@ export default function ProfileDetails() {
     try {
       const response = await userGetRequest("/getUser", token);
       // setUser(response.data);
-      getUserDetails(response.data);
     } catch (e) {
       console.log("Failed to get user", e);
     }
@@ -23,11 +22,9 @@ export default function ProfileDetails() {
 
   // console.log(user.username);
 
-  const getUserDetails = async (user) => {
+  const getInstituteDetails = async () => {
     try {
-      const response = await userPostRequest("/getInstituteDetails", {
-        username: user.username,
-      });
+      const response = await userGetRequest("/getInstituteDetails");
       setInstituteDetails(response.data);
     } catch (e) {
       console.log("Failed to get institute details", e);
@@ -37,10 +34,11 @@ export default function ProfileDetails() {
   useEffect(() => {
     if (checkUserLogin === true) {
       getUser();
+      getInstituteDetails();
     }
   }, []);
 
-  // console.log("instituteDetails", instituteDetails);
+  console.log("instituteDetails", instituteDetails);
 
   return (
     <>

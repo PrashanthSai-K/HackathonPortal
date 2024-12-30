@@ -15,6 +15,8 @@ sequelize.sync({ force: false }).then(() => {
 
 require("./routes/auth.routes.js")(app);
 require("./routes/problemstatements.routes.js")(app);
+require("./routes/profile.routes.js")(app);
+
 
 app.listen(4500, () => {
   console.log("listening on 4500");

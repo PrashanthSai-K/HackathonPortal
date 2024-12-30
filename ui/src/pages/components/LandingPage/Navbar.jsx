@@ -77,7 +77,7 @@ export default function Navbar() {
       label: "Home",
       icon: "pi pi-home",
       role: "user",
-      link: "/home",
+      link: "/",
       template: itemtemplate,
     },
     {

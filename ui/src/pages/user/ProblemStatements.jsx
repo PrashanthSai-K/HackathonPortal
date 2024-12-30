@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Table from '../components/ProblemStatements/Table'
 import Navbar from '../components/LandingPage/Navbar'
 import { userGetRequest } from '../components/exports';
+import { useAuth } from '../../AuthContext';
 
 
 export default function ProblemStatements() {
 
     const [ps, setPs] = useState([]);
+
+    const { user, getUser } = useAuth();
+
 
     const fetchPs = async () => {
         try {
@@ -16,9 +20,10 @@ export default function ProblemStatements() {
             console.log(error);
         }
     }
-    
+
     useEffect(() => {
         fetchPs();
+        getUser();
     }, [])
 
     return (
@@ -30,7 +35,7 @@ export default function ProblemStatements() {
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
-                <Table data={ps} />
+                <Table user={user} getUser={getUser} data={ps} />
             </section>
 
         </>

@@ -8,9 +8,9 @@ import Base64 from 'crypto-js/enc-base64';
 import { useNavigate } from 'react-router';
 // import { ProductService } from './service/ProductService';
 
-export default function Table({ data }) {
+export default function Table({ data, user, getUser }) {
 
-    const [ps, setPs] = useState();
+    const [ps, setPs] = useState([]);
 
     const [globalFilter, setGlobalFilter] = useState("")
 
@@ -21,22 +21,22 @@ export default function Table({ data }) {
             // Generate a consistent hash using the problem ID (or any other field you want)
             const hash = SHA256(d.ps_id.toString());  // Hash the problem ID or any other field
             let slug = Base64.stringify(hash).substring(0, 10);  // Convert to Base64 and take first 10 characters
-            
+
             // Replace URL-unsafe characters with URL-safe alternatives
             slug = slug.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    
+
             return {
                 ...d, route: slug
             };
         });
         setPs(result);
     }
-    
+
 
     useEffect(() => {
         appendSlug(data)
     }, [data]);
-    
+
     const customSortIcon = (options) => {
         const iconStyle = { color: "white" };
         const updownstyle = { color: "white", fontSize: "0.9rem", } // Style for the icons
@@ -62,11 +62,21 @@ export default function Table({ data }) {
         setVisible(true);
     }
 
+    const redirectApprove = (rowData) => {
+        console.log(rowData);
+
+        if (rowData && rowData.count > 0) {
+            navigate(`/problems/${rowData.route}`)
+        } else {
+            window.alert("Opps !! No registrations found.");
+        }
+    }
+
     return (
         <>
             <div className=''>
                 <div className='flex items-center justify-between'>
-                    <h3 className='pb-2 g-black font-semibold text-2xl text-[#7f58f3] text-center'>PROBLEM STATEMENTS</h3>
+                    <h3 className='pb-2 g-black font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
                     <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
                         <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
@@ -74,26 +84,31 @@ export default function Table({ data }) {
                 </div>
 
                 <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
-                    <DataTable sortIcon={customSortIcon} value={ps} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
-                        <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-[#7f58f3] text-sm' className='border-b p-1 text-center text-sm'></Column>
-                        <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-[#7f58f3] text-sm' className='border text-sm text-center '></Column>
-                        <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-[#7f58f3] text-sm' className='border p-1 text-sm '></Column>
-                        <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-[#7f58f3] text-sm' className='border p-1 text-justify text-sm'></Column>
-                        <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-[#7f58f3] text-sm' className='border p-1 text-center text-sm'
+                    <DataTable sortIcon={customSortIcon} value={ps} paginator={ps.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
+                        <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>
+                        <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
+                        <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
+                        <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
+                        <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
+                        <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'
                             body={(rowData) => (
-                                <div className='flex  gap-1'>
+                                <div className='flex items-center justify-center gap-1'>
                                     <button
                                         onClick={() => setModal(rowData)}
-                                        className="px-2 py-1 bg-blue-500 text-white rounded"
+                                        className="px-2 py-1 bg-violet-500 text-white rounded"
                                     >
                                         View
                                     </button>
-                                    <button
-                                        onClick={() => navigate(`/problems/${rowData.route}`)}
-                                        className="px-2 py-1 bg-green-500 text-white rounded"
-                                    >
-                                        Approve
-                                    </button>
+                                    {
+                                        user && user.role == "user" &&
+                                        <button
+                                            onClick={() => redirectApprove(rowData)}
+                                            className="px-2 py-1 bg-violet-950 text-white rounded"
+                                        >
+                                           
+                                            Approve
+                                        </button>
+                                    }
                                 </div>
                             )}
                         ></Column>

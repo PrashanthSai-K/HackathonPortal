@@ -101,7 +101,7 @@ exports.loginUser = async (req, res, next) => {
       const result = await bcrypt.compare( password, adminData.password);
       if(result){
         adminData.role = "admin";
-        console.log(adminData.role);
+        // console.log(adminData.role);
         // var data = {...instituteDetails , adminData};
         res.locals.payload = {...adminData,...instituteDetails};
         return next();
@@ -116,12 +116,12 @@ exports.loginUser = async (req, res, next) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log({ results: userData });
+    // console.log({ results: userData });
     if(userData != undefined){
       const result = await bcrypt.compare( password, userData.password);      
       if(result){
         userData.role = "user";
-        console.log(userData);
+        // console.log(userData);
         res.locals.payload = {...userData,...instituteDetails};
         return next();
       }
@@ -136,9 +136,7 @@ exports.loginUser = async (req, res, next) => {
 };
 
 exports.getUser = async (req, res) => {
-  const token = req.headers.authorization;
-  // console.log(token);
-  
+  const token = req.headers.authorization;  
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);

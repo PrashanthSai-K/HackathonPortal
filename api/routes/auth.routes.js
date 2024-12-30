@@ -13,11 +13,6 @@ module.exports = app => {
     router.post("/login", authController.loginUser , authMiddelware.createToken);
 
     router.get("/getUser", authController.getUser);
-
-    // router.post("/getInstituteDetails", authController.getInstituteDetails);
-
-
     
-
     app.use("/api", router);
 }

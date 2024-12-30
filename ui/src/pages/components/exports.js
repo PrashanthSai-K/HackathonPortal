@@ -18,7 +18,12 @@ export const userGetRequest = async (url) => {
 
 export const adminGetRequest = async (url) => {
   try {
-    const response = await axios.get(`${backendUrl}${url}`);
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${backendUrl}${url}`,{
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
     return response;
   } catch (error) {
     throw error;
@@ -27,7 +32,12 @@ export const adminGetRequest = async (url) => {
 
 export const adminPostRequest = async (url, data) => {
   try {
-    const response = await axios.post(`${backendUrl}${url}`, data);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(`${backendUrl}${url}`, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
     return response;
   } catch (error) {
     throw error;
@@ -36,8 +46,12 @@ export const adminPostRequest = async (url, data) => {
 
 export const userPostRequest = async (url, data) => {
   try {
-    console.log(`${backendUrl}${url}`);
-    const response = await axios.post(`${backendUrl}${url}`, data);
+    const token = localStorage.getItem("token");
+    const response = await axios.post(`${backendUrl}${url}`, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
     return response;
   } catch (error) {
     throw error;

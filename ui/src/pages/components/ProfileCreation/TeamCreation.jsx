@@ -16,7 +16,6 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
   });
 
   const [ps, setPs] = useState([]);
-  // console.log({ps:teamDetails.psId.ps_id});
 
   const getUser = async () => {
     const token = localStorage.getItem("token");
@@ -55,13 +54,14 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
   };
 
   const handleSubmit = async () => {
-    // console.log("Team Details Submitted:", teamDetails);
     const teamMembersString = teamDetails.teamMembers.join(", ");
     try {
       const response = await userPostRequest("/addTeamDetails", {
         ...teamDetails,
         teamMembers: teamMembersString,
-      });
+        psId : teamDetails.psId.ps_id,
+        institutionCode : userData.institutionCode
+      }); 
       if(response.status === 201){
         toast.success("Team Added Successfully");
       }
