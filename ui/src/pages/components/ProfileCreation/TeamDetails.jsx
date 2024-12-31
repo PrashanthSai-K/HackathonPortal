@@ -2,29 +2,24 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-// import PopupModal from './PopupModal';
-import { useNavigate } from "react-router";
 import { userGetRequest } from "../exports";
 import TeamCreation from "./TeamCreation";
+import TeamView from "./TeamView";
 export default function TeamDetails() {
-  const [ps, setPs] = useState();
   const [globalFilter, setGlobalFilter] = useState("");
   const [visibleLeft, setVisibleLeft] = useState(false);
+  const [visibleView, setVisibleView] = useState(false);
   const [teamDetails, setTeamDetails] = useState([]);
-
-  const navigate = useNavigate();
+  const [viewData, setViewData] = useState([]);
 
   const getTeamDetails = async () => {
     try {
       const response = await userGetRequest("/getTeamDetails");
       setTeamDetails(response.data);
-      console.log(response.data);
-      
     } catch (e) {
       console.log("Failed to get team details", e);
     }
   };
-  console.log({ team: teamDetails });
 
   const customSortIcon = (options) => {
     const iconStyle = { color: "white" };
@@ -45,6 +40,9 @@ export default function TeamDetails() {
 
     return icon;
   };
+
+  console.log({"teamDetails" : teamDetails});
+  
 
   useEffect(() => {
     getTeamDetails();
@@ -93,6 +91,7 @@ export default function TeamDetails() {
           <Column
             field="ps_id"
             header="PS Id"
+            sortable
             align={"left"}
             style={{ height: "3rem" }}
             bodyStyle={{ width: "6rem" }}
@@ -111,7 +110,6 @@ export default function TeamDetails() {
           <Column
             field="number_of_participants"
             header="No of Participants"
-            sortable
             align={"left"}
             headerClassName="text-white border-b text-end font-medium bg-violet-950 text-sm"
             className="border p-1 text-sm "
@@ -133,21 +131,13 @@ export default function TeamDetails() {
             className="border p-1 text-justify text-sm"
           ></Column>
           <Column
-            field="team_members"
+            field=" "
             header="Team Members"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
             headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
             className="border p-1 text-justify text-sm"
           ></Column>
-          {/* <Column
-            field="organization"
-            header="Organization"
-            align={"center"}
-            bodyStyle={{ height: "5rem" }}
-            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
-            className="border p-1 text-justify text-sm"
-          ></Column> */}
           <Column
             field=""
             header="Action"
@@ -158,16 +148,13 @@ export default function TeamDetails() {
             body={(rowData) => (
               <div className="flex  gap-1">
                 <button
-                  // onClick={() => setVisibleLeft(true)}
+                  onClick={() => {
+                    setVisibleView(true);
+                    setViewData(rowData);
+                  }}
                   className="px-2 py-1 bg-blue-500 text-white rounded"
                 >
                   View
-                </button>
-                <button
-                  onClick={() => navigate(`/problems/${rowData.route}`)}
-                  className="px-2 py-1 bg-green-500 text-white rounded"
-                >
-                  Approve
                 </button>
               </div>
             )}
@@ -176,7 +163,9 @@ export default function TeamDetails() {
         <TeamCreation
           visibleLeft={visibleLeft}
           setVisibleLeft={setVisibleLeft}
+          getTeamDetails={getTeamDetails}
         />
+        <TeamView viewData={viewData} setVisibleView={setVisibleView} visibleView={visibleView} />
       </div>
     </div>
   );

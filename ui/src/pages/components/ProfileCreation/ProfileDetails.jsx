@@ -2,13 +2,25 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useAuth } from "../../../AuthContext";
+import { useNavigate } from "react-router";
 
 export default function ProfileDetails() {
-  // const [user, setUser] = useState();
-  const [instituteDetails, setInstituteDetails] = useState([]);
-  const [checkUserLogin, setCheckUserLogin] = useState(
-    localStorage.getItem("token") ? true : false
-  );
+  const emptyData = {
+    institution_code : "",
+    institution_name : "",
+    institution_type : "",
+    address : "",
+    city : "",
+    state : "",
+    pincode : "",
+    poc_name : "",
+    poc_email : "",
+    poc_number : ""
+  }
+  const [instituteDetails, setInstituteDetails] = useState(emptyData);
+  const { loggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const getInstituteDetails = async () => {
     try {
@@ -20,12 +32,10 @@ export default function ProfileDetails() {
   };
 
   useEffect(() => {
-    if (checkUserLogin === true) {
-      getInstituteDetails();
-    }
+    if (loggedIn) getInstituteDetails();
+    else navigate("/login");
   }, []);
 
-  console.log("instituteDetails", instituteDetails);
 
   return (
     <>

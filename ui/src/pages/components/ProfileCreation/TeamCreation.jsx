@@ -2,12 +2,16 @@ import { Sidebar } from "primereact/sidebar";
 import React, { useEffect, useState } from "react";
 import { userGetRequest, userPostRequest } from "../exports";
 import { Dropdown } from "primereact/dropdown";
-import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../../../AuthContext";
+import { useActionState } from "../../../CustomHooks";
+import { toast } from "react-toastify";
 
-export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
-  const { user, getUser } = useAuth();
-  const [teamDetails, setTeamDetails] = useState({
+export default function TeamCreation({
+  visibleLeft,
+  setVisibleLeft,
+  getTeamDetails,
+}) {
+  const emptyData = {
     teamName: "",
     participants: "",
     leaderName: "",
@@ -15,8 +19,10 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     psId: "",
     teamMembers: [],
     docLink: "",
-  });
-
+  };
+  
+  const { user, getUser } = useAuth();
+  const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
 
   const getPsDetails = async () => {
@@ -45,8 +51,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const teamMembersString = teamDetails.teamMembers.join(", ");
     try {
       const userData = await getUser();
@@ -67,11 +72,15 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
           teamMembers: [],
           docLink: "",
         });
+        getTeamDetails();
+        setVisibleLeft(false);
       }
     } catch (error) {
-      console.log("Error adding team details");
+      console.log("Error adding team details", error);
     }
   };
+
+  const [formAction, isLoading] = useActionState(handleSubmit);
 
   const selectedCountryTemplate = (option, props) => {
     if (option) {
@@ -81,7 +90,6 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
         </div>
       );
     }
-
     return <span>{props.placeholder}</span>;
   };
 
@@ -95,15 +103,12 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     );
   };
 
-  // console.log(teamDetails);
-
   useEffect(() => {
     getPsDetails();
   }, []);
 
   return (
     <div>
-      <ToastContainer />
       <Sidebar
         visible={visibleLeft}
         position="right"
@@ -112,7 +117,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
       >
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-xl font-semibold text-gray-700">Team Creation</h2>
-          <form onSubmit={handleSubmit} className="w-full px-6">
+          <form onSubmit={formAction} className="w-full px-6">
             {/* Institute Code */}
             <div className="mb-4">
               <label
@@ -150,14 +155,34 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
               />
             </div>
 
+            {/* Leader Name */}
+            <div className="mb-4">
+              <label
+                htmlFor="leaderName"
+                className="block text-sm font-medium text-gray-600"
+              >
+                <i className="fas fa-user-tie text-gray-500 mr-2"></i>Leader
+                Name
+              </label>
+              <input
+                id="leaderName"
+                name="leaderName"
+                type="text"
+                required
+                value={teamDetails.leaderName}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+              />
+            </div>
+
             {/* Number of Participants */}
             <div className="mb-4">
               <label
                 htmlFor="participants"
                 className="block text-sm font-medium text-gray-600"
               >
-                <i className="fas fa-users text-gray-500 mr-2"></i>Number Of
-                Participants
+                <i className="fas fa-users text-gray-500 mr-2"></i> Number Of
+                Participants <span className="text-xs"> (Exclude Leader) </span>
               </label>
               <input
                 id="participants"
@@ -167,7 +192,6 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 value={teamDetails.participants}
                 onChange={(e) => {
                   handleChange(e);
-                  // Adjust the teamMembers array size
                   const participantsCount = parseInt(e.target.value, 10) || 0;
                   setTeamDetails((prevDetails) => ({
                     ...prevDetails,
@@ -198,26 +222,6 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 />
               </div>
             ))}
-
-            {/* Leader Name */}
-            <div className="mb-4">
-              <label
-                htmlFor="leaderName"
-                className="block text-sm font-medium text-gray-600"
-              >
-                <i className="fas fa-user-tie text-gray-500 mr-2"></i>Leader
-                Name
-              </label>
-              <input
-                id="leaderName"
-                name="leaderName"
-                type="text"
-                required
-                value={teamDetails.leaderName}
-                onChange={handleChange}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-              />
-            </div>
 
             {/* Leader Email */}
             <div className="mb-4">
@@ -292,13 +296,13 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
               </div>
             )}
 
-            <div className="mb-4">
+            <div className="mb-1">
               <label
                 htmlFor="docLink"
                 className="block text-sm font-medium text-gray-600"
               >
                 <i className="fas fa-link  text-gray-500 mr-2"></i>Document Link
-                (only Drive link)
+                <span className="text-xs"> (only drive Link) </span>
               </label>
               <input
                 id="docLink"
@@ -310,15 +314,25 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
               />
             </div>
+            <div className="text-xs text-red-500">
+              Note: Team details cannot be edited once submitted.
+            </div>
 
             {/* Submit Button */}
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-4">
               <button
                 type="submit"
-                // onClick={handleSubmit}
                 className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+                disabled={isLoading}
               >
-                Create
+                {!isLoading ? (
+                  "Create Team"
+                ) : (
+                  <i
+                    style={{ color: "white", fontSize: "1rem" }}
+                    className="pi pi-spin pi-spinner"
+                  ></i>
+                )}
               </button>
             </div>
           </form>

@@ -5,14 +5,14 @@ export default function EventDetails() {
     <>
       <section className="about">
         <h3 style={{ textAlign: "center" }}>
-          <ai style={{ fontSize: "30px" }}>“</ai>
+          <span style={{ fontSize: "30px" }}>“</span>
           <span style={{ color: "#4523ac", fontSize: "30px" }}>E</span>
           verybody has a creative potential and from the moment you can express
           this creative potential, you can start changing the world”
           <br />
-          <npa style={{ fontFamily: "'Poppins', sans-serif" }}>
+          <p style={{ fontFamily: "'Poppins', sans-serif" , marginLeft : "70vw"}}>
             - Paul Coelho
-          </npa>
+          </p>
         </h3>
         <div className="about-container">
           <h2 style={{ color: "#4523ac" }}>TAN<span className="text-[#7f58f3]">S</span>HACK'22</h2>

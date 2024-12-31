@@ -608,9 +608,6 @@
         font-family: "Saira", sans-serif;
         padding: 5px;
     }
-    .about npa {
-        margin-left: 50vw;
-    }
     .about {
         min-height: 110vh;
     }
@@ -630,9 +627,9 @@
         font-family: "Saira", sans-serif;
         margin-top: 5vh;
     }
-    .about npa {
+    /* .about npa {
         margin-left: 74vw;
-    }
+    } */
     .home h2 {
         display: none;
     }
