@@ -14,16 +14,20 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
   
     const getUser = async () => {
+        
       const token = localStorage.getItem("token");
       if (!token) {
         setLoggedIn(false);
         setLoading(false);
         return;
       }
+
       try {
         const response = await userGetRequest("/getUser", token);
         setUser(response.data);
         setLoggedIn(true);
+        console.log("called");
+
       } catch (error) {
         setLoggedIn(false);
         console.error("Failed to get user", error);
@@ -41,26 +45,8 @@ export function AuthProvider({ children }) {
         <div className=" h-screen w-full flex items-center justify-center">
             <i className="pi pi-spin pi-spinner text-4xl"></i>
         </div>
-      ) // Optional: Add a loading spinner or placeholder
+      ) 
     }
-
-  // async () => {
-  //     const token = localStorage.getItem("token");
-  //     if(!token){
-  //         setLoggedIn(false);
-  //         return
-  //     }
-  //     try {
-  //         setLoggedIn(true);
-  //         const response = await userGetRequest("/getUser", token);
-  //         setUser(response.data);
-  //         setLoggedIn(true);
-  //         return response.data;
-  //     } catch (e) {
-  //         setLoggedIn(false);
-  //         console.log("Failed to get user", e);
-  //     }
-  // };
 
   const values = {
     user,

@@ -133,7 +133,7 @@ export default function TeamDetails() {
             className="border p-1 text-justify text-sm"
           ></Column>
           <Column
-            field=" "
+            field="team_members"
             header="Team Members"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
