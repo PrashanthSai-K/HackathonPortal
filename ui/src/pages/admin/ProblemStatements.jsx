@@ -4,6 +4,7 @@ import { userGetRequest } from '../components/exports';
 import { useAuth } from '../../AuthContext';
 import Table from '../components/AdminPS/Table';
 import AddPopup from '../components/AdminPS/AddPopup';
+import UploadPopup from '../components/AdminPS/UploadPopup';
 
 
 export default function AdminProblemStatements() {
@@ -28,6 +29,7 @@ export default function AdminProblemStatements() {
     }, [])
 
     const [visible, setVisible] = useState(false);
+    const [uploadVisible, setUploadVisible] = useState(false);
 
     return (
         <>
@@ -38,8 +40,9 @@ export default function AdminProblemStatements() {
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
-                <Table user={user} data={ps} setAddVisible={setVisible} />
+                <Table user={user} data={ps} setAddVisible={setVisible} setUploadVisible={setUploadVisible} />
                 <AddPopup visible={visible} setVisible={setVisible} />
+                <UploadPopup visible={uploadVisible} setVisible={setUploadVisible} />
             </section>
 
         </>

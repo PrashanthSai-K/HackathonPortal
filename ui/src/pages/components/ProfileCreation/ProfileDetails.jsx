@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { userGetRequest, userPostRequest } from "../exports";
+import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 export default function ProfileDetails() {
@@ -10,24 +10,9 @@ export default function ProfileDetails() {
     localStorage.getItem("token") ? true : false
   );
 
-  const getUser = async () => {
-    const token = localStorage.getItem("token");
+  const getInstituteDetails = async () => {
     try {
-      const response = await userGetRequest("/getUser", token);
-      // setUser(response.data);
-      getUserDetails(response.data);
-    } catch (e) {
-      console.log("Failed to get user", e);
-    }
-  };
-
-  // console.log(user.username);
-
-  const getUserDetails = async (user) => {
-    try {
-      const response = await userPostRequest("/getInstituteDetails", {
-        username: user.username,
-      });
+      const response = await userGetRequest("/getInstituteDetails");
       setInstituteDetails(response.data);
     } catch (e) {
       console.log("Failed to get institute details", e);
@@ -36,7 +21,7 @@ export default function ProfileDetails() {
 
   useEffect(() => {
     if (checkUserLogin === true) {
-      getUser();
+      getInstituteDetails();
     }
   }, []);
 
@@ -44,7 +29,7 @@ export default function ProfileDetails() {
 
   return (
     <>
-      <div className="flex items-center lg:w-7/12 w-10/12 justify-center">
+      <div className="flex items-center lg:w-8/12 w-10/12 justify-center">
         <form className="w-full">
           {/* Institute Details */}
           <fieldset className="p-4 border-2 rounded-lg flex flex-col shadow-lg">

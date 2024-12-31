@@ -45,7 +45,7 @@ export default function Login() {
                 <div className="form-group">
                   <input
                     type="text"
-                    autoComplete="off"
+                    // autoComplete="off"
                     name="username"
                     placeholder="Enter your Mail ID"
                     className={` font-normal border border-[] text-sm form-control`}
@@ -80,8 +80,7 @@ export default function Login() {
               Sign up now
             </a>
           </p>
-        </center>
-        {/* <ToastContainer /> */}
+        </center> 
       </div>
     </>
   );

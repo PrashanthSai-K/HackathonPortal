@@ -82,6 +82,14 @@ exports.loginUser = async (req, res, next) => {
   try {
     const { username, password } = req.body;
 
+    const [instituteDetails, instituteDetailsMetaData] = await sequelize.query(
+      "SELECT * FROM institution WHERE poc_email = ?",
+      {
+        replacements: [username],
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+
     const [adminData, adminMetadata] = await sequelize.query(
       "SELECT * FROM admin_users WHERE username = ?",
       {
@@ -94,8 +102,9 @@ exports.loginUser = async (req, res, next) => {
       const result = await bcrypt.compare( password, adminData.password);
       if(result){
         adminData.role = "admin";
-        console.log(adminData.role);
-        res.locals.payload = adminData;
+        // console.log(adminData.role);
+        // var data = {...instituteDetails , adminData};
+        res.locals.payload = {...adminData,...instituteDetails};
         return next();
       }
     }
@@ -108,13 +117,13 @@ exports.loginUser = async (req, res, next) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log({ results: userData });
+    // console.log({ results: userData });
     if(userData != undefined){
       const result = await bcrypt.compare( password, userData.password);      
       if(result){
         userData.role = "user";
-        console.log(userData);
-        res.locals.payload = userData;
+        // console.log(userData);
+        res.locals.payload = {...userData,...instituteDetails};
         return next();
       }
     }
@@ -128,9 +137,7 @@ exports.loginUser = async (req, res, next) => {
 };
 
 exports.getUser = async (req, res) => {
-  const token = req.headers.authorization;
-  // console.log(token);
-  
+  const token = req.headers.authorization;  
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);
@@ -139,23 +146,3 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.getInstituteDetails = async (req, res) => {
-  const username = req.body.username;
-  // console.log(username);
-  try {
-    const [instituteData, instituteMetadata] = await sequelize.query(
-      "SELECT * FROM institution WHERE poc_email = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    if (instituteData !== undefined) {
-      return res.status(201).send(instituteData);
-    }
-    return res.status(401).send({ message: "Invalid username" });
-  } catch (err) {
-    res.status(403).send({ message: "user name is not valid" });
-  }
-};

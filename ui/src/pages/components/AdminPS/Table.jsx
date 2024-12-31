@@ -6,9 +6,10 @@ import PopupModal from './PopupModal';
 import SHA256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 import { useNavigate } from 'react-router';
+import UploadPopup from './UploadPopup';
 // import { ProductService } from './service/ProductService';
 
-export default function Table({ data, user, getUser, setAddVisible }) {
+export default function Table({ data, user, getUser, setAddVisible, setUploadVisible }) {
 
     const [ps, setPs] = useState([]);
 
@@ -55,6 +56,7 @@ export default function Table({ data, user, getUser, setAddVisible }) {
     };
 
     const [visible, setVisible] = useState(false);
+
     const [modalData, setModalData] = useState({});
 
     const formatKey = (key) => {
@@ -63,8 +65,6 @@ export default function Table({ data, user, getUser, setAddVisible }) {
             .replace(/_/g, ' ') // Replace underscores with spaces
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
     };
-
-
 
     const setModal = (rowData) => {
         const dataEntries = Object.entries(rowData)
@@ -90,7 +90,6 @@ export default function Table({ data, user, getUser, setAddVisible }) {
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>
             <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
-
         </div>
     )
 
@@ -109,6 +108,12 @@ export default function Table({ data, user, getUser, setAddVisible }) {
                         >
                             <span className='text-black' style={{color:"gray"}}>ADD</span>
                             <i className='pi pi-plus-circle text-xl text-gray-400'></i>
+                        </div>
+                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                            onClick={()=>setUploadVisible(true)}
+                        >
+                            <span className='text-black' style={{color:"gray"}}>Upload</span>
+                            <i className='pi pi-upload text-xl text-gray-400'></i>
                         </div>
                     </div>
                 </div>
@@ -144,7 +149,6 @@ export default function Table({ data, user, getUser, setAddVisible }) {
                         ></Column>
                     </DataTable>
                     <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
-
                 </div>
             </div>
         </>
