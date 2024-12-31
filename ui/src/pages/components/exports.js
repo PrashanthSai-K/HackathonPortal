@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const backendUrl = "https://mklcwgkh-4500.inc1.devtunnels.ms/api"
+const backendUrl = "https://w2tpzms2-4500.inc1.devtunnels.ms/api"
 
 export const userGetRequest = async (url) => {
   try {
@@ -32,7 +32,7 @@ export const adminGetRequest = async (url) => {
 
 export const adminPostRequest = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");    
     const response = await axios.post(`${backendUrl}${url}`, data, {
       headers: {
         Authorization: `${token}`,

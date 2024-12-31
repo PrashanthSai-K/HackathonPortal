@@ -14,6 +14,8 @@ export default function TeamDetails() {
 
   const getTeamDetails = async () => {
     try {
+      console.log("called");
+      
       const response = await userGetRequest("/getTeamDetails");
       setTeamDetails(response.data);
     } catch (e) {

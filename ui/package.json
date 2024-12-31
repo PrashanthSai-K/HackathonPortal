@@ -22,7 +22,8 @@
     "react-router": "^7.0.2",
     "react-toastify": "^11.0.2",
     "slugify": "^1.6.6",
-    "ui": "file:"
+    "ui": "file:",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

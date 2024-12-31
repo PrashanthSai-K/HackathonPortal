@@ -81,7 +81,6 @@ export default function Login() {
             </a>
           </p>
         </center> 
-        <ToastContainer />
       </div>
     </>
   );
