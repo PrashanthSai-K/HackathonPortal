@@ -79,7 +79,7 @@ export default function Navbar() {
   const buttonTemplate = () => (
     <Link
       to={user ? "" : "/login"}
-      className="py-1 px-2 bg-violet-950 text-white rounded-lg"
+      className="py-1 px-2 bg-violet-950 text-white rounded-lg ml-3 md:ml-0"
       onClick={() => {
         user && handleLogout();
       }}
@@ -195,7 +195,7 @@ export default function Navbar() {
       label: "Final Participant",
       icon: "pi pi-database",
       role: "admin",
-      link: "/finalists",
+      link: "/finalist",
       template: itemtemplate,
     },
     {
@@ -216,7 +216,7 @@ export default function Navbar() {
       label: "Problem Statements",
       role: "admin",
       icon: "pi pi-database",
-      link: "/problemsManagement",
+      link: "/problems-manage",
       template: itemtemplate,
     },
     {

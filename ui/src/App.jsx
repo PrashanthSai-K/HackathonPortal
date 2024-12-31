@@ -6,6 +6,7 @@ import Registration from './pages/user/Registration';
 import LoginPage from './pages/user/LoginPage.jsx';
 import { ToastContainer } from 'react-toastify';
 import ProblemStatements from './pages/user/ProblemStatements.jsx';
+import  AdminProblemStatements from './pages/admin/ProblemStatements.jsx';
 import ProblemStatementsView from './pages/admin/ProblemStatementsView.jsx';
 import ProfilePage from './pages/user/ProfilePage.jsx';
 import Finalist from './pages/admin/Finalist.jsx';
@@ -40,6 +41,8 @@ function App() {
         <Route path='/Login' element={<LoginPage />} />
         {/* <Route path='/Login' element={<LoginPage />} /> */}
         <Route path='/problems' element={<ProblemStatements /> } />
+        <Route path='/problems-manage' element={<AdminProblemStatements /> } />
+
         <Route path='/problems/:id' element={<ProblemStatementsView /> } />
         <Route path='/profile' element={<ProfilePage /> } />
         <Route path='/finalist' element={<Finalist />} />

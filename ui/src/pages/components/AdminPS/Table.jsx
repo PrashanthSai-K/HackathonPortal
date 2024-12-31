@@ -8,7 +8,7 @@ import Base64 from 'crypto-js/enc-base64';
 import { useNavigate } from 'react-router';
 // import { ProductService } from './service/ProductService';
 
-export default function Table({ data, user, getUser }) {
+export default function Table({ data, user, getUser, setAddVisible }) {
 
     const [ps, setPs] = useState([]);
 
@@ -57,22 +57,22 @@ export default function Table({ data, user, getUser }) {
     const [visible, setVisible] = useState(false);
     const [modalData, setModalData] = useState({});
 
-        const formatKey = (key) => {
-            // Replace underscores with spaces and capitalize each word
-            return key
-                .replace(/_/g, ' ') // Replace underscores with spaces
-                .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
-        };
-    
+    const formatKey = (key) => {
+        // Replace underscores with spaces and capitalize each word
+        return key
+            .replace(/_/g, ' ') // Replace underscores with spaces
+            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+    };
+
 
 
     const setModal = (rowData) => {
         const dataEntries = Object.entries(rowData)
-        .slice(0,7)
-        .map(([key, value]) => ({
-            key: formatKey(key),
-            value,
-        }));
+            .slice(0, 7)
+            .map(([key, value]) => ({
+                key: formatKey(key),
+                value,
+            }));
         setModalData(dataEntries);
         setVisible(true);
     }
@@ -99,9 +99,17 @@ export default function Table({ data, user, getUser }) {
             <div className=''>
                 <div className='flex items-center justify-between'>
                     <h3 className='pb-2 g-black font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
-                        <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
-                        <i className='pi pi-search text-gray-300'></i>
+                    <div className='flex items-center justify-center gap-2'>
+                        <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                            <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
+                            <i className='pi pi-search text-gray-300'></i>
+                        </div>
+                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                            onClick={()=>setAddVisible(true)}
+                        >
+                            <span className='text-black' style={{color:"gray"}}>ADD</span>
+                            <i className='pi pi-plus-circle text-xl text-gray-400'></i>
+                        </div>
                     </div>
                 </div>
 
@@ -111,6 +119,7 @@ export default function Table({ data, user, getUser }) {
                         <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
                         <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
                         <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
+                        <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
                         <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'
                             body={(rowData) => (
                                 <div className='flex items-center justify-center gap-1'>

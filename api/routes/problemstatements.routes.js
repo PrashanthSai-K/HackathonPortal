@@ -10,9 +10,9 @@ module.exports = app => {
 
     router.get("/registration/:id", checkAdmin, problem_statements.getRegistration);
 
-    router.post("/select", checkAdmin, problem_statements.selectTeam);
+    // router.post("/select", checkAdmin, problem_statements.selectTeam);
 
-    router.post("/unselect", checkAdmin, problem_statements.unselectTeam);
+    // router.post("/unselect", checkAdmin, problem_statements.unselectTeam);
 
     app.use("/api/ps", router);
 }

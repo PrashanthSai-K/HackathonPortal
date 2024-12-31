@@ -70,20 +70,24 @@ export default function ProblemStatementsView() {
         }
     }, [user])
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchPs();
-    },[])
+    }, [])
 
     return (
         <>
             <Navbar />
-            {ps &&
+            {ps ?
                 <section className=" px-3 pt-24 home" id="home">
                     <div className='font-semibold text-sm lg:text-lg max-w-sm md:max-w-lg lg:max-w-full  text-justify'>
                         {`${data.ps_id} - ${data.title}`}
                     </div>
                     <Table data={ps} fetchPs={fetchPs} />
                 </section>
+                :
+                <div className='flex items-center justify-center min-h-96 h-full w-full '>
+                    <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
+                </div>
             }
         </>
     )

@@ -13,5 +13,10 @@
     color: black !important;
   }
 
+  .p-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   

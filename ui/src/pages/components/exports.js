@@ -32,7 +32,7 @@ export const adminGetRequest = async (url) => {
 
 export const adminPostRequest = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");    
     const response = await axios.post(`${backendUrl}${url}`, data, {
       headers: {
         Authorization: `${token}`,
