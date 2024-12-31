@@ -12,6 +12,7 @@ exports.createToken = (req,res) => {
       {
         username: result.username,  
         role: result.role,
+        institutionId : result.id,
         institutionCode : result.institution_code,
         institutionType: result.institution_type,
         address: result.address,

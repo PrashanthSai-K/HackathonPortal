@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { userGetRequest, userPostRequest } from "../exports";
 import { Dropdown } from "primereact/dropdown";
 import { ToastContainer, toast } from "react-toastify";
+import { useAuth } from "../../../AuthContext";
 
 export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
-  const [userData, setUserData] = useState({});
+  const { user, getUser } = useAuth();
   const [teamDetails, setTeamDetails] = useState({
     teamName: "",
     participants: "",
@@ -13,19 +14,10 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     leaderEmail: "",
     psId: "",
     teamMembers: [],
+    docLink: "",
   });
 
   const [ps, setPs] = useState([]);
-
-  const getUser = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await userGetRequest("/getUser", token);
-      setUserData(response.data);
-    } catch (e) {
-      console.log("Failed to get user", e);
-    }
-  };
 
   const getPsDetails = async () => {
     try {
@@ -53,17 +45,28 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     }));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const teamMembersString = teamDetails.teamMembers.join(", ");
     try {
+      const userData = await getUser();
       const response = await userPostRequest("/addTeamDetails", {
         ...teamDetails,
         teamMembers: teamMembersString,
-        psId : teamDetails.psId.ps_id,
-        institutionCode : userData.institutionCode
-      }); 
-      if(response.status === 201){
-        toast.success("Team Added Successfully");
+        psId: teamDetails.psId.ps_id,
+        institutionId: userData.institutionId,
+      });
+      if (response.status === 201) {
+        toast.success(response.data.message);
+        setTeamDetails({
+          teamName: "",
+          participants: "",
+          leaderName: "",
+          leaderEmail: "",
+          psId: "",
+          teamMembers: [],
+          docLink: "",
+        });
       }
     } catch (error) {
       console.log("Error adding team details");
@@ -92,10 +95,9 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
     );
   };
 
-  // console.log(ps);
+  // console.log(teamDetails);
 
   useEffect(() => {
-    getUser();
     getPsDetails();
   }, []);
 
@@ -110,7 +112,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
       >
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-xl font-semibold text-gray-700">Team Creation</h2>
-          <div className="w-full px-6">
+          <form onSubmit={handleSubmit} className="w-full px-6">
             {/* Institute Code */}
             <div className="mb-4">
               <label
@@ -123,7 +125,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
               <input
                 id="instituteCode"
                 type="text"
-                value={userData.institutionCode || ""}
+                value={user && user.institutionCode}
                 disabled
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
               />
@@ -141,6 +143,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 id="teamName"
                 name="teamName"
                 type="text"
+                required
                 value={teamDetails.teamName}
                 onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
@@ -160,6 +163,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 id="participants"
                 name="participants"
                 type="number"
+                required
                 value={teamDetails.participants}
                 onChange={(e) => {
                   handleChange(e);
@@ -188,6 +192,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                   id={`teamMember${index}`}
                   type="text"
                   value={member}
+                  required
                   onChange={(e) => handleMemberChange(index, e.target.value)}
                   className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
                 />
@@ -207,6 +212,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 id="leaderName"
                 name="leaderName"
                 type="text"
+                required
                 value={teamDetails.leaderName}
                 onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
@@ -226,6 +232,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 id="leaderEmail"
                 name="leaderEmail"
                 type="email"
+                required
                 value={teamDetails.leaderEmail}
                 onChange={handleChange}
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
@@ -255,6 +262,7 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                 options={ps}
                 optionLabel="name" // Assuming `ps` array objects have a `name` field for the dropdown label
                 filter
+                required
                 valueTemplate={selectedCountryTemplate}
                 itemTemplate={countryOptionTemplate}
                 className="mt-1 w-full px-3 py-3 border border-gray-300 rounded-md text-gray-800"
@@ -278,22 +286,42 @@ export default function TeamCreation({ visibleLeft, setVisibleLeft }) {
                       ?.title || ""
                   }
                   readOnly
+                  required
                   className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
                 />
               </div>
             )}
 
+            <div className="mb-4">
+              <label
+                htmlFor="docLink"
+                className="block text-sm font-medium text-gray-600"
+              >
+                <i className="fas fa-link  text-gray-500 mr-2"></i>Document Link
+                (only Drive link)
+              </label>
+              <input
+                id="docLink"
+                name="docLink"
+                type="text"
+                required
+                value={teamDetails.docLink}
+                onChange={handleChange}
+                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+              />
+            </div>
+
             {/* Submit Button */}
             <div className="flex justify-center mt-6">
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
+                // onClick={handleSubmit}
                 className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
               >
                 Create
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </Sidebar>
     </div>

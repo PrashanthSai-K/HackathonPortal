@@ -8,24 +8,23 @@ import { userGetRequest } from "../exports";
 import TeamCreation from "./TeamCreation";
 export default function TeamDetails() {
   const [ps, setPs] = useState();
-
-  //   const fetchPs = async () => {
-  //       try {
-  //           const response = await userGetRequest("/ps");
-  //           setPs(response.data.data);
-  //       } catch (error) {
-  //           console.log(error);
-  //       }
-  //   }
-
-  //   useEffect(() => {
-  //       fetchPs();
-  //   }, [])
-
   const [globalFilter, setGlobalFilter] = useState("");
   const [visibleLeft, setVisibleLeft] = useState(false);
+  const [teamDetails, setTeamDetails] = useState([]);
 
   const navigate = useNavigate();
+
+  const getTeamDetails = async () => {
+    try {
+      const response = await userGetRequest("/getTeamDetails");
+      setTeamDetails(response.data);
+      console.log(response.data);
+      
+    } catch (e) {
+      console.log("Failed to get team details", e);
+    }
+  };
+  console.log({ team: teamDetails });
 
   const customSortIcon = (options) => {
     const iconStyle = { color: "white" };
@@ -46,6 +45,10 @@ export default function TeamDetails() {
 
     return icon;
   };
+
+  useEffect(() => {
+    getTeamDetails();
+  }, []);
 
   return (
     <div className="w-full flex flex-col items-center justify-center mb-10 mt-10">
@@ -78,7 +81,7 @@ export default function TeamDetails() {
       <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
         <DataTable
           sortIcon={customSortIcon}
-          value={ps}
+          value={teamDetails}
           paginator
           rows={5}
           rowsPerPageOptions={[5, 10, 25, 50]}
@@ -89,7 +92,7 @@ export default function TeamDetails() {
         >
           <Column
             field="ps_id"
-            header="Code"
+            header="PS Id"
             align={"left"}
             style={{ height: "3rem" }}
             bodyStyle={{ width: "6rem" }}
@@ -97,30 +100,54 @@ export default function TeamDetails() {
             className="border-b p-1 text-center text-sm"
           ></Column>
           <Column
-            field="category"
+            field="team_name"
             sortable
-            header="Category"
+            header="Team Name"
             align={"left"}
             bodyStyle={{ height: "3rem", width: "8rem" }}
             headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
             className="border text-sm text-center "
           ></Column>
           <Column
-            field="title"
-            header="Title"
+            field="number_of_participants"
+            header="No of Participants"
             sortable
             align={"left"}
             headerClassName="text-white border-b text-end font-medium bg-violet-950 text-sm"
             className="border p-1 text-sm "
           ></Column>
           <Column
+            field="leader_name"
+            header="Leader Name"
+            align={"center"}
+            bodyStyle={{ height: "5rem" }}
+            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
+            className="border p-1 text-justify text-sm"
+          ></Column>
+          <Column
+            field="leader_email"
+            header="Leader Email"
+            align={"center"}
+            bodyStyle={{ height: "5rem" }}
+            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
+            className="border p-1 text-justify text-sm"
+          ></Column>
+          <Column
+            field="team_members"
+            header="Team Members"
+            align={"center"}
+            bodyStyle={{ height: "5rem" }}
+            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
+            className="border p-1 text-justify text-sm"
+          ></Column>
+          {/* <Column
             field="organization"
             header="Organization"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
             headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
             className="border p-1 text-justify text-sm"
-          ></Column>
+          ></Column> */}
           <Column
             field=""
             header="Action"
@@ -150,7 +177,6 @@ export default function TeamDetails() {
           visibleLeft={visibleLeft}
           setVisibleLeft={setVisibleLeft}
         />
-        {/* <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} /> */}
       </div>
     </div>
   );

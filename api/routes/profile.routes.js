@@ -10,5 +10,7 @@ module.exports = app => {
 
     router.get("/getInstituteDetails", checkUser , profile.getInstituteDetails)
 
+    router.get("/getTeamDetails", checkUser ,profile.getTeamDetails )
+
     app.use("/api/", router);
 }

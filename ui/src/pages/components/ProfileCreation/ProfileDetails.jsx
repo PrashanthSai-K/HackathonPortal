@@ -10,18 +10,6 @@ export default function ProfileDetails() {
     localStorage.getItem("token") ? true : false
   );
 
-  const getUser = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await userGetRequest("/getUser", token);
-      // setUser(response.data);
-    } catch (e) {
-      console.log("Failed to get user", e);
-    }
-  };
-
-  // console.log(user.username);
-
   const getInstituteDetails = async () => {
     try {
       const response = await userGetRequest("/getInstituteDetails");
@@ -33,7 +21,6 @@ export default function ProfileDetails() {
 
   useEffect(() => {
     if (checkUserLogin === true) {
-      getUser();
       getInstituteDetails();
     }
   }, []);
