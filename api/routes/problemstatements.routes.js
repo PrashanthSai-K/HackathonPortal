@@ -1,5 +1,8 @@
 const { checkAdmin, checkToken } = require('../middleware/auth/auth.middleware');
-const { validateCreateProblem } = require('../middleware/validators/problemValidator');
+const { validateCreateProblem, validateBulkUpload } = require('../middleware/validators/problemValidator');
+const { excelToJsonMiddleware } = require("../middleware/problems/problems.middleware");
+
+const { upload } = require('../storage/uploadPs');
 
 module.exports = app => {
 
@@ -12,6 +15,8 @@ module.exports = app => {
     router.get("/registration/:id", checkAdmin, problem_statements.getRegistration);
 
     router.post("/", checkAdmin, validateCreateProblem, problem_statements.createProblem);
+
+    router.post("/upload", validateBulkUpload, problem_statements.createProblemBulk);
 
     app.use("/api/ps", router);
 }

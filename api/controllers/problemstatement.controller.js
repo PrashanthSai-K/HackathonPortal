@@ -40,10 +40,15 @@ exports.createProblem = async (req, res) => {
                     organization: organization
                 }
             })
-        
-        res.status(201).send({"message" : "Problem created successfully !!"})
+
+        res.status(201).send({ "message": "Problem created successfully !!" })
     } catch (error) {
         console.log(error);
-        res.status(500).send({error : "Some internal error"});
+        res.status(500).send({ error: "Some internal error" });
     }
+}
+
+exports.createProblemBulk = async (req, res) => {
+    console.log(req.body);
+    res.send({ "data": "ok" });
 }

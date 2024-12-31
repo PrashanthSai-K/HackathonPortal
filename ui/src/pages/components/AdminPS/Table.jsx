@@ -112,8 +112,8 @@ export default function Table({ data, user, getUser, setAddVisible, setUploadVis
                         <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                             onClick={()=>setUploadVisible(true)}
                         >
-                            <span className='text-black' style={{color:"gray"}}>Upload</span>
-                            <i className='pi pi-upload text-xl text-gray-400'></i>
+                            <span className='text-black' style={{color:"gray"}}>Import</span>
+                            <i className='pi pi-upload text-xl text-gray-400 rotate-180'></i>
                         </div>
                     </div>
                 </div>
