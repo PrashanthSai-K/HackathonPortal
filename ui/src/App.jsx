@@ -15,12 +15,6 @@ import { useAuth } from './AuthContext.jsx';
 
 function App() {
 
-  const {getUser} = useAuth();
-
-  useEffect(()=>{
-    getUser();
-  },[])
-
   return (
     <>
       <ToastContainer
