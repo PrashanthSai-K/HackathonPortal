@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Menubar } from "primereact/menubar";
 import Logo from "../../../assets/logo.png";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../../../css/style-login.css";
 import axios from "axios";
 import { userGetRequest } from "../exports";
@@ -10,6 +10,7 @@ import { useAuth } from "../../../AuthContext";
 export default function Navbar() {
 
   const { user, loggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const itemtemplate = (item) => (
     loggedIn ? (
@@ -72,6 +73,7 @@ export default function Navbar() {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       localStorage.removeItem("token");
+      navigate("/");
       window.location.reload();
     }
   };
@@ -198,18 +200,18 @@ export default function Navbar() {
       link: "/finalist",
       template: itemtemplate,
     },
-    {
-      label: "User",
-      role: "admin",
-      icon: "pi pi-database",
-      link: "/userManagement",
-      template: itemtemplate,
-    },
+    // {
+    //   label: "User",
+    //   role: "admin",
+    //   icon: "pi pi-database",
+    //   link: "/userManagement",
+    //   template: itemtemplate,
+    // },
     {
       label: "Institute",
       role: "admin",
       icon: "pi pi-database",
-      link: "/adminManagement",
+      link: "/institute-manage",
       template: itemtemplate,
     },
     {

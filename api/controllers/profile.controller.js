@@ -27,7 +27,7 @@ exports.addTeamDetails = async (req, res) => {
           leader_email: leaderEmail,
           problem_statement_id: psId,
           team_members: teamMembers,
-          doc_link : docLink
+          doc_link: docLink
         },
         transaction,
       }
@@ -74,11 +74,23 @@ exports.getInstituteDetails = async (req, res) => {
 };
 
 
+exports.getAllInstituteDetails = async (req, res) => {
+  try {
+    const [instituteData, instituteMetadata] = await sequelize.query(
+      "SELECT * FROM institution",
+    );
+
+    return res.status(201).send({data: instituteData});
+
+  } catch (err) {
+    res.status(403).send({ message: "user name is not valid" });
+  }
+};
 
 exports.getTeamDetails = async (req, res) => {
   const institutionId = res.locals.userData.institutionId;
   // console.log(institutionId);
-  
+
   try {
     const [teamDetails, instituteMetadata] = await sequelize.query(
       "SELECT * FROM registration_details WHERE team_institution = ?",

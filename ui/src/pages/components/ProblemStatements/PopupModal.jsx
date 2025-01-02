@@ -8,7 +8,6 @@ export default function PopupModal({ visible, setVisible, modalData }) {
 
     return (
         <>
-
             <Dialog header="Problem Statement Details" headerClassName="p-2 w-full" visible={visible} onHide={() => { if (!visible) return; setVisible(false); }}
                 className='p-3 md:p-0  w-7/12 flex items-center justify-center' breakpoints={{ '960px': '75vw', '641px': '100vw' }}>
                 <center className='pb-4'>

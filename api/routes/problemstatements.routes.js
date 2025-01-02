@@ -18,5 +18,7 @@ module.exports = app => {
 
     router.post("/upload", validateBulkUpload, problem_statements.createProblemBulk);
 
+    router.post("/delete", checkAdmin, problem_statements.deletePs);
+
     app.use("/api/ps", router);
 }

@@ -7,7 +7,7 @@ export default function Finalist() {
         <>
             <Navbar />
             <section className=" px-3 pt-24 home" id="">
-                <div>Finalists</div>
+                <div className=' text-center text-violet-900 text-xl font-semibold'>FINALIST</div>
                 <Table />
             </section>
         </>

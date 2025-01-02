@@ -11,6 +11,7 @@ import ProblemStatementsView from './pages/admin/ProblemStatementsView.jsx';
 import ProfilePage from './pages/user/ProfilePage.jsx';
 import Finalist from './pages/admin/Finalist.jsx';
 import { useAuth } from './AuthContext.jsx';
+import Institution from './pages/admin/Institution.jsx';
 
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
     <>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={true}
         closeOnClick={false}
         rtl={false}
@@ -40,6 +41,7 @@ function App() {
         <Route path='/problems/:id' element={<ProblemStatementsView /> } />
         <Route path='/profile' element={<ProfilePage /> } />
         <Route path='/finalist' element={<Finalist />} />
+        <Route path='/institute-manage' element={<Institution />} />
       </Routes>
 
     </>

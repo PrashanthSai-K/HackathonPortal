@@ -68,7 +68,7 @@ export default function Table({ data, user, getUser }) {
 
     const setModal = (rowData) => {
         const dataEntries = Object.entries(rowData)
-        .slice(0,7)
+        .slice(0,6)
         .map(([key, value]) => ({
             key: formatKey(key),
             value,

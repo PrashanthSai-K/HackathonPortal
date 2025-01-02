@@ -25,7 +25,7 @@ export default function ProblemStatements() {
     }
 
     useEffect(() => {
-        if(user && user.role == 'admin'){
+        if(user.role == 'admin'){
             navigate("/problems-manage");
         }
         fetchPs();

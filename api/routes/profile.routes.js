@@ -1,4 +1,4 @@
-const { checkUser } = require('../middleware/auth/auth.middleware');
+const { checkUser, checkAdmin } = require('../middleware/auth/auth.middleware');
 
 module.exports = app => {
 
@@ -11,6 +11,9 @@ module.exports = app => {
     router.get("/getInstituteDetails", checkUser , profile.getInstituteDetails)
 
     router.get("/getTeamDetails", checkUser ,profile.getTeamDetails )
+
+    router.get("/institute", checkAdmin , profile.getAllInstituteDetails)
+
 
     app.use("/api/", router);
 }

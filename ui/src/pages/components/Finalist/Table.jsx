@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { adminGetRequest, adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 import PopupModal from './PopupModal';
+import { useActionState } from '../../../CustomHooks';
 
 export default function Table() {
 
@@ -52,7 +53,7 @@ export default function Table() {
 
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>
-            <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
+            <p>No Finalist Available</p>
         </div>
     )
 
@@ -79,9 +80,11 @@ export default function Table() {
         }
     }
 
+    const [finalistCall, isLoading] = useActionState(fetchFinalist, true);
+
 
     useEffect(() => {
-        fetchFinalist();
+        finalistCall();
     }, [])
 
     const selectTeam = async (data) => {
@@ -113,53 +116,55 @@ export default function Table() {
     }
 
 
-
-
-
-
     return (
         <>
-            <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
-                <DataTable sortIcon={customSortIcon} value={finalist} emptyMessage={tableLoader} paginator={finalist.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
-                    <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm ' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
-                    <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>
-                    <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
-                    <Column field="leader_name" header="Leader Name" sortable align={"center"} bodyStyle={{ height: "3rem", width: "10rem" }} headerClassName='text-white border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm '></Column>
-                    <Column field="number_of_participants" sortable header="Participants" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
-                    <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
+            {isLoading ?
+                <div className='flex items-center justify-center min-h-96 h-full w-full '>
+                    <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
+                </div>
+                :
+                <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
+                    <DataTable sortIcon={customSortIcon} value={finalist} emptyMessage={tableLoader} paginator={finalist.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
+                        <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm ' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
+                        <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>
+                        <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
+                        <Column field="leader_name" header="Leader Name" sortable align={"center"} bodyStyle={{ height: "3rem", width: "10rem" }} headerClassName='text-white border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm '></Column>
+                        <Column field="number_of_participants" sortable header="Participants" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
+                        <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
 
-                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2  p-1 text-center text-sm'
-                        body={(rowData) => (
+                        <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2  p-1 text-center text-sm'
+                            body={(rowData) => (
 
-                            <div className='flex  gap-1'>
-                                <button
-                                    onClick={() => setModal(rowData)}
-                                    className="px-2 py-1 bg-violet-500 text-white rounded"
-                                >
-                                    View
-                                </button>
-                                {rowData.status === "SUBMITTED" &&
+                                <div className='flex  gap-1'>
                                     <button
-                                        onClick={() => selectTeam(rowData)}
-                                        className="px-2 py-1 bg-violet-950 text-white rounded"
+                                        onClick={() => setModal(rowData)}
+                                        className="px-2 py-1 bg-violet-500 text-white rounded"
                                     >
-                                        Select
+                                        View
                                     </button>
-                                }
-                                {rowData.status === "APPROVED" &&
-                                    <button
-                                        onClick={() => unselectTeam(rowData)}
-                                        className="px-2 py-1 bg-violet-950 text-white rounded"
-                                    >
-                                        Unselect
-                                    </button>
-                                }
-                            </div>
-                        )}
-                    ></Column>
-                </DataTable>
-                <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
-            </div>
+                                    {rowData.status === "SUBMITTED" &&
+                                        <button
+                                            onClick={() => selectTeam(rowData)}
+                                            className="px-2 py-1 bg-violet-950 text-white rounded"
+                                        >
+                                            Select
+                                        </button>
+                                    }
+                                    {rowData.status === "APPROVED" &&
+                                        <button
+                                            onClick={() => unselectTeam(rowData)}
+                                            className="px-2 py-1 bg-violet-950 text-white rounded"
+                                        >
+                                            Unselect
+                                        </button>
+                                    }
+                                </div>
+                            )}
+                        ></Column>
+                    </DataTable>
+                    <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
+                </div>
+            }
         </>
     )
 }

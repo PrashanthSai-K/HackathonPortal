@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 
 
-export default function UploadPopup({ visible, setVisible }) {
+export default function UploadPopup({ visible, setVisible, fetchPs }) {
 
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState(null);
@@ -47,8 +47,9 @@ export default function UploadPopup({ visible, setVisible }) {
         }
         try {
             const response = await adminPostRequest("/ps/upload", fileData);
-            console.log(response.data);
             toast.success("Uploaded successfully!!");
+            setVisible(false);
+            fetchPs();
         } catch (error) {
             console.log(error);
             toast.error(error.response.data.error || error.response.data.errors[0].message)

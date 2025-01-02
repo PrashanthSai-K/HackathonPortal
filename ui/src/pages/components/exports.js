@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const backendUrl = "https://mklcwgkh-4500.inc1.devtunnels.ms/api"
+const backendUrl = "https://w2tpzms2-4500.inc1.devtunnels.ms/api"
 
 export const userGetRequest = async (url) => {
   try {

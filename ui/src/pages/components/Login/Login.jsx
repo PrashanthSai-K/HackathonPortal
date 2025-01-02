@@ -12,14 +12,15 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await userPostRequest("/login", {username: username, password: password});
+      const response = await userPostRequest("/login", { username: username, password: password });
 
       if (response.data.token !== undefined) {
         localStorage.setItem("token", response.data.token);
         toast.success("Successfully logged in");
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+          window.location.reload();
+        }, 1000);
       } else {
         toast.error(response.data.message);
       }
@@ -80,7 +81,7 @@ export default function Login() {
               Sign up now
             </a>
           </p>
-        </center> 
+        </center>
       </div>
     </>
   );

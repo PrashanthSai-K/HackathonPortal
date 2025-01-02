@@ -1,11 +1,13 @@
 import { useState } from "react";
 
-export function useActionState(fn) {
+export function useActionState(fn, isNotForm) {
   const [isLoading, setIsLoading] = useState(false);
 //   const [message, setMessage] = useState("");
 
   const formAction = async (e) => {
-    e.preventDefault();
+    if(!isNotForm){
+      e.preventDefault();
+    }
     setIsLoading(true);
     try {
       await fn();

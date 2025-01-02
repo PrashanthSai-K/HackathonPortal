@@ -61,6 +61,7 @@
             await Promise.all(validationChains.map((validation) => validation.run(req)));
     
             const errors = validationResult(req);
+            
             if (!errors.isEmpty()) {
                 // Return immediately with the error from the current row
                 return res.status(400).json({
@@ -68,13 +69,14 @@
                     message: `Validation error in row ${index + 1}`,
                     errors: errors.array().map((err) => ({
                         field: err.param,
-                        message: err.msg,
+                        message: `${err.msg} at row ${index + 1}`,
                     })),
                 });
             }
         }
+
+        req.body = rows;
     
-        // If no errors, proceed to the next middleware
         next();
     };
     
