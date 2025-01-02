@@ -4,21 +4,23 @@ import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useAuth } from "../../../AuthContext";
 import { useNavigate } from "react-router";
+import EditProfile from "./EditProfile";
 
 export default function ProfileDetails() {
   const emptyData = {
-    institution_code : "",
-    institution_name : "",
-    institution_type : "",
-    address : "",
-    city : "",
-    state : "",
-    pincode : "",
-    poc_name : "",
-    poc_email : "",
-    poc_number : ""
-  }
+    institution_code: "",
+    institution_name: "",
+    institution_type: "",
+    address: "",
+    city: "",
+    state: "",
+    pincode: "",
+    poc_name: "",
+    poc_email: "",
+    poc_number: "",
+  };
   const [instituteDetails, setInstituteDetails] = useState(emptyData);
+  const [visible, setVisible] = useState(false);
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
 
@@ -36,11 +38,10 @@ export default function ProfileDetails() {
     else navigate("/login");
   }, []);
 
-
   return (
     <>
       <div className="flex items-center lg:w-8/12 w-10/12 justify-center">
-        <form className="w-full">
+        <form className="w-full relative">
           {/* Institute Details */}
           <fieldset className="p-4 border-2 rounded-lg flex flex-col shadow-lg">
             <legend className="text-lg font-semibold text-gray-700 mb-2">
@@ -192,7 +193,19 @@ export default function ProfileDetails() {
               </div>
             </div>
           </fieldset>
+          <div
+            onClick={() => setVisible(true)}
+            className="absolute z-50 top-8 right-5"
+          >
+            <i className="fas fa-edit text-gray-600 cursor-pointer"></i>
+          </div>
         </form>
+        <EditProfile
+          visible={visible}
+          setVisible={setVisible}
+          instituteDetail={instituteDetails}
+          getInstituteDetails = {getInstituteDetails}
+        />
       </div>
     </>
   );

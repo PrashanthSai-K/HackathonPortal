@@ -21,7 +21,7 @@ export default function TeamCreation({
     docLink: "",
   };
   
-  const { user, getUser } = useAuth();
+  const { user } = useAuth();
   const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
 
@@ -54,12 +54,11 @@ export default function TeamCreation({
   const handleSubmit = async () => {
     const teamMembersString = teamDetails.teamMembers.join(", ");
     try {
-      const userData = await getUser();
       const response = await userPostRequest("/addTeamDetails", {
         ...teamDetails,
         teamMembers: teamMembersString,
         psId: teamDetails.psId.ps_id,
-        institutionId: userData.institutionId,
+        institutionId: user.institutionId,
       });
       if (response.status === 201) {
         toast.success(response.data.message);
@@ -130,7 +129,7 @@ export default function TeamCreation({
               <input
                 id="instituteCode"
                 type="text"
-                value={user && user.institutionCode}
+                value={user.institutionCode}
                 disabled
                 className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
               />

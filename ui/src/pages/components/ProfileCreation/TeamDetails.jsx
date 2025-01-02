@@ -12,10 +12,36 @@ export default function TeamDetails() {
   const [teamDetails, setTeamDetails] = useState([]);
   const [viewData, setViewData] = useState([]);
 
+  const [modalData, setModalData] = useState();
+  const [visible, setVisible] = useState(false);
+
+  const formatKey = (key) => {
+    // Replace underscores with spaces and capitalize each word
+    return key
+      .replace(/_/g, " ") // Replace underscores with spaces
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+  };
+
+  const setModal = (rowData) => {
+    const data = Object.entries(rowData)
+      .slice()
+      .map(([key, value]) => ({
+        key: formatKey(key),
+        value:
+          key === "specific_key" ? ( // Replace 'specific_key' with the actual key you want to check
+            <a href={value} target="_blank" rel="noopener noreferrer">
+              {value}
+            </a>
+          ) : (
+            value
+          ),
+      }));
+    setModalData(data);
+    setVisible(true);
+  };
+
   const getTeamDetails = async () => {
     try {
-      console.log("called");
-      
       const response = await userGetRequest("/getTeamDetails");
       setTeamDetails(response.data);
     } catch (e) {
@@ -37,14 +63,11 @@ export default function TeamDetails() {
       <i
         className="pi pi-arrow-right-arrow-left rotate-90 flex items-center justify-center"
         style={iconStyle}
-      ></i> // Default sort icon
+      ></i> 
     );
 
     return icon;
   };
-
-  console.log({"teamDetails" : teamDetails});
-  
 
   useEffect(() => {
     getTeamDetails();
@@ -102,18 +125,17 @@ export default function TeamDetails() {
           ></Column>
           <Column
             field="team_name"
-            sortable
             header="Team Name"
             align={"left"}
             bodyStyle={{ height: "3rem", width: "8rem" }}
-            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
+            headerClassName="border-b font-medium bg-violet-950 text-sm"
             className="border text-sm text-center "
           ></Column>
           <Column
             field="number_of_participants"
             header="No of Participants"
-            align={"left"}
-            headerClassName="text-white border-b text-end font-medium bg-violet-950 text-sm"
+            align={"center"}
+            headerClassName="text-white border-b font-medium bg-violet-950 text-sm"
             className="border p-1 text-sm "
           ></Column>
           <Column
@@ -121,38 +143,37 @@ export default function TeamDetails() {
             header="Leader Name"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
-            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
-            className="border p-1 text-justify text-sm"
+            headerClassName="border-b font-medium bg-violet-950 text-sm"
+            className="border p-1 text-sm"
           ></Column>
           <Column
             field="leader_email"
             header="Leader Email"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
-            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
-            className="border p-1 text-justify text-sm"
+            headerClassName="border-b font-medium bg-violet-950 text-sm"
+            className="border p-1 text-sm"
           ></Column>
           <Column
             field="team_members"
             header="Team Members"
             align={"center"}
             bodyStyle={{ height: "5rem" }}
-            headerClassName="border-b text-end font-medium bg-violet-950 text-sm"
-            className="border p-1 text-justify text-sm"
+            headerClassName="border-b font-medium bg-violet-950 text-sm"
+            className="border p-1 text-sm"
           ></Column>
           <Column
             field=""
             header="Action"
             align={"center"}
-            bodyStyle={{ width: "7rem" }}
-            headerClassName=" border-b text-end font-medium bg-violet-950 text-sm"
-            className="border p-1 text-center text-sm"
+            // bodyStyle={{ width: "5rem" }}
+            headerClassName=" border-b font-medium bg-violet-950 text-sm"
+            className="border p-1 text-sm"
             body={(rowData) => (
-              <div className="flex  gap-1">
+              <div className="flex justify-center w-full gap-1">
                 <button
                   onClick={() => {
-                    setVisibleView(true);
-                    setViewData(rowData);
+                    setModal(rowData);
                   }}
                   className="px-2 py-1 bg-blue-500 text-white rounded"
                 >
@@ -167,7 +188,11 @@ export default function TeamDetails() {
           setVisibleLeft={setVisibleLeft}
           getTeamDetails={getTeamDetails}
         />
-        <TeamView viewData={viewData} setVisibleView={setVisibleView} visibleView={visibleView} />
+        <TeamView
+          visible={visible}
+          setVisible={setVisible}
+          modalData={modalData}
+        />
       </div>
     </div>
   );

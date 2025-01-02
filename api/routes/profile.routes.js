@@ -12,5 +12,8 @@ module.exports = app => {
 
     router.get("/getTeamDetails", checkUser ,profile.getTeamDetails )
 
+    router.put("/updateInstituteDetails", checkUser ,profile.updateInstituteDetails )
+
+
     app.use("/api/", router);
 }

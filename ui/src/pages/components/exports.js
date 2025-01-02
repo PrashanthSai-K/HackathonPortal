@@ -58,4 +58,18 @@ export const userPostRequest = async (url, data) => {
   }
 };
 
+export const userPutRequest = async (url, data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${backendUrl}${url}`, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 
