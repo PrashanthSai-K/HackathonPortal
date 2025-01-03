@@ -120,7 +120,7 @@ export default function Table({ data, fetchPs }) {
                     </div>
                 </div> */}
 
-                <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
+                <div className="card w-full pt-3 flex relative -z-50 items-center justify-center px-4 md:px-8  ">
                     <DataTable sortIcon={customSortIcon} value={ps} emptyMessage={tableLoader} paginator={ps.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
                         <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm ' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
                         <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>

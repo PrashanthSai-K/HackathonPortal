@@ -13,7 +13,7 @@ export default function EventGuidelines() {
             TAN<span className="text-[#7f58f3]">S</span>HACK'22
           </h1>
         </div>
-        <div className="flex">
+        <div className="md:flex md:flex-row flex-col">
           <div className="continer">
             <h3>Registration</h3>
             <center>

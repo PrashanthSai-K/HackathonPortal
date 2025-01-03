@@ -142,7 +142,7 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
                 </div>
             </div>
 
-            <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
+            <div className="card w-full pt-3 flex relative -z-50 items-center justify-center px-4 md:px-8  ">
                 <DataTable loader selectionMode={"multiple"} selection={selectedRows} onSelectionChange={handleSelectionChange} sortIcon={customSortIcon} value={institute} emptyMessage={tableLoader} paginator={institute.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-xl'>
                     <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName=' p-1 bg-violet-950 text-sm' className='border-r border-b p-1 text-center text-sm'></Column>
                     <Column field="institution_code" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>

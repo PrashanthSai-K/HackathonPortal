@@ -6,17 +6,31 @@ import { HashLink as Link } from "react-router-hash-link";
 import { useNavigate } from "react-router";
 import "../../../css/style-login.css";
 import { useAuth } from "../../../AuthContext";
+import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
 
 export default function Navbar() {
   const { user, loggedIn } = useAuth();
   const location = useLocation();
-  console.log(location.pathname);
   const navigate = useNavigate();
+
+  const handleOpenPDF = () => {
+    window.open(Guidelines, "_blank");
+  };
 
   const itemtemplate = (item) =>
     loggedIn
-      ? user &&
-        user.role == item.role && (
+      ? user.role == item.role &&
+        (item.isExternal ? (
+          <a
+            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
+              item.isSubmenu ? "min-w-[150px] bg-white" : ""
+            }`}
+            onClick={() => handleOpenPDF()}
+            href={Guidelines}
+          >
+            Guidelines
+          </a>
+        ) : (
           <Link
             to={`${item.link}`}
             className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
@@ -28,7 +42,7 @@ export default function Navbar() {
           >
             <span>{item.label}</span>
           </Link>
-        )
+        ))
       : item.role == "all" && (
           <Link
             to={`${item.link}`}
@@ -201,7 +215,8 @@ export default function Navbar() {
           label: "Guidelines",
           icon: "pi pi-list-check",
           role: "user",
-          link: "/#guideline",
+          link: Guidelines,
+          isExternal: true,
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -254,16 +269,16 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">
+    <nav className="flex w-full bg-white items-center h-20 fixed z-50">
       <div className="w-2/3 md:w-1/3 flex ">
         <Link className="flex justify-center items-center gap-2" to={"/"}>
-        <img className="w-15 h-14" src={Logo} alt="Logo Image" />
-        <h3>TANSCHE</h3>
+          <img className="w-15 h-14" src={Logo} alt="Logo Image" />
+          <h3>TANSCHE</h3>
         </Link>
       </div>
 
       <Menubar
-        className="flex bg-white h-full w-1/3 md:w-2/3 justify-end"
+        className="flex bg-white h-full w-1/3 md:w-2/3 mr-3 justify-end"
         model={navItems}
       />
     </nav>
