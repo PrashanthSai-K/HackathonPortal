@@ -1,4 +1,5 @@
 const { validateInstituteData, handleValidation } = require("../middleware/validators/instituteValidator");
+const validateLogin = require("../middleware/validators/loginValidator");
 
 module.exports = app => {
     const authController = require("../controllers/auth.controller");
@@ -10,7 +11,7 @@ module.exports = app => {
 
     router.post("/register", validateInstituteData, authController.register_institute);
 
-    router.post("/login", authController.loginUser, authMiddelware.createToken);
+    router.post("/login", validateLogin ,authController.loginUser, authMiddelware.createToken);
 
     router.get("/getUser", authController.getUser);
     

@@ -17,7 +17,7 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
 
   const handleSubmit = async () => {
     try {
-      const response = await userPutRequest("/updateInstituteDetails", formData); // Remove extra object wrapping
+      const response = await userPutRequest("/updateInstituteDetails", formData);
       if (response.status === 201) {
         toast.success(response.data.message || "Institute details updated successfully.");
         setVisible(false);
@@ -25,14 +25,12 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
       } else {
         toast.error(response.data.message || "Failed to update institute details.");
         setVisible(false);
-        return;
       }
     } catch (error) {
       console.error("Error updating institute details:", error);
       toast.error("An unexpected error occurred.");
     }
   };
-  
 
   const [updateInstituteDetails, isLoading] = useActionState(handleSubmit);
 
@@ -46,7 +44,7 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
         visible={visible}
         position="right"
         className="w-1/3"
-        onHide={() => setVisible(false)}
+        onHide={() => setVisible(false)}    
       >
         <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
           Edit Institute Details
@@ -197,14 +195,14 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mb-2">
             <button
               type="submit"
               className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
               disabled={isLoading}
             >
               {!isLoading ? (
-                "Create Team"
+                "Update"
               ) : (
                 <i
                   style={{ color: "white", fontSize: "1rem" }}

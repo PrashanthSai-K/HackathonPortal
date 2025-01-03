@@ -213,12 +213,12 @@
         min-width: 80vw;
         height: fit-content;
     }
-    .reg {
+    /* .reg {
         display: flex;
         flex-wrap: wrap;
-        flex-direction: column;
+        flex-direction: column; 
         margin: 10px;
-    }
+    } */
     .continer {
         height: 45vh;
         width: 350px;
@@ -1307,12 +1307,12 @@
     width: 45%;
 }
 
-.reg {
+/* .reg {
     display: flex;
     flex-direction: row;
     padding: 5vh;
     margin: auto;
-}
+} */
 
 .continer h3 {
     text-align: center;

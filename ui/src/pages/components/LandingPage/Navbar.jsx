@@ -1,72 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { Menubar } from "primereact/menubar";
 import Logo from "../../../assets/logo.png";
-import { Link } from "react-router";
+import { useLocation } from "react-router";
+import { HashLink as Link } from "react-router-hash-link";
 import "../../../css/style-login.css";
-import axios from "axios";
-import { userGetRequest } from "../exports";
 import { useAuth } from "../../../AuthContext";
 
 export default function Navbar() {
-
   const { user, loggedIn } = useAuth();
+  const location = useLocation();
+  console.log(location.pathname);
 
-  const itemtemplate = (item) => (
-    loggedIn ? (
-      user && user.role == item.role && (
-        <Link
-          to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
-            }`}
-        >
-          <span>{item.label}</span>
-        </Link>
-      )
-    ) : (
-      item.role == 'all' && (
-        <Link
-          to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
-            }`}
-        >
-          <span>{item.label}</span>
-        </Link>
-      )
-    )
-  );
-
-
-  const dropDownItemTemplate = (item) => (
-    loggedIn ?  (
-      user && user.role == item.role && (
-      <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
-        <span>{item.label}</span>
-        <span
-          className="pi pi-angle-down transition-transform"
-          onClick={(e) => {
-            e.target.classList.toggle("rotate-180");
-          }}
-        >
-          {" "}
-        </span>
-      </a>
-      )
-    ) : (
-      item.role == 'all' && (
-        <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
-          <span>{item.label}</span>
-          <span
-            className="pi pi-angle-down transition-transform"
-            onClick={(e) => {
-              e.target.classList.toggle("rotate-180");
-            }}
+  const itemtemplate = (item) =>
+    loggedIn
+      ? user &&
+        user.role == item.role && (
+          <Link
+            to={`${item.link}`}
+            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
+              item.link === location.pathname ||
+              (location.pathname === "/" && item.label === "Home")
+                ? "bg-gray-200"
+                : ""
+            } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
           >
-            {" "}
-          </span>
-        </a>
-      )
-    )
-  );
+            <span>{item.label}</span>
+          </Link>
+        )
+      : item.role == "all" && (
+          <Link
+            to={`${item.link}`}
+            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer  ${
+              item.link === location.pathname ||
+              (location.pathname === "/" && item.label === "Home")
+                ? "bg-gray-200"
+                : ""
+            } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
+          >
+            <span>{item.label}</span>
+          </Link>
+        );
+
+  const dropDownItemTemplate = (item) =>
+    loggedIn
+      ? user &&
+        user.role == item.role && (
+          <a
+            href={`/${item.link}`}
+            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+          >
+            <span>{item.label}</span>
+            <span
+              className="pi pi-angle-down transition-transform"
+              onClick={(e) => {
+                e.target.classList.toggle("rotate-180");
+              }}
+            >
+              {" "}
+            </span>
+          </a>
+        )
+      : item.role == "all" && (
+          <a
+            href={`/${item.link}`}
+            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+          >
+            <span>{item.label}</span>
+            <span
+              className="pi pi-angle-down transition-transform"
+              onClick={(e) => {
+                e.target.classList.toggle("rotate-180");
+              }}
+            >
+              {" "}
+            </span>
+          </a>
+        );
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
@@ -88,13 +97,12 @@ export default function Navbar() {
     </Link>
   );
 
-
   const navItems = [
     {
       label: "Home",
       icon: "pi pi-home",
       role: "all",
-      link: "/",
+      link: "/#home",
       template: itemtemplate,
     },
     {
@@ -114,7 +122,7 @@ export default function Navbar() {
           label: "About",
           icon: "pi pi-info-circle",
           role: "all",
-          link: "/about",
+          link: "/#aboutus",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -122,7 +130,7 @@ export default function Navbar() {
           label: "Guidelines",
           icon: "pi pi-list-check",
           role: "all",
-          link: "/guidelines",
+          link: "/#guidelines",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -130,7 +138,7 @@ export default function Navbar() {
           label: "Contact Us",
           icon: "pi pi-address-book",
           role: "all",
-          link: "/contact",
+          link: "/#contactus",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -141,7 +149,7 @@ export default function Navbar() {
       label: "Home",
       icon: "pi pi-home",
       role: "user",
-      link: "/",
+      link: "/#home",
       template: itemtemplate,
     },
     {
@@ -168,7 +176,7 @@ export default function Navbar() {
           label: "About",
           icon: "pi pi-info-circle",
           role: "user",
-          link: "/about",
+          link: "/#aboutus",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -176,7 +184,7 @@ export default function Navbar() {
           label: "Guidelines",
           icon: "pi pi-list-check",
           role: "user",
-          link: "/guidelines",
+          link: "/#guideline",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -184,7 +192,7 @@ export default function Navbar() {
           label: "Contact Us",
           icon: "pi pi-address-book",
           role: "user",
-          link: "/contact",
+          link: "/#contactus",
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -225,16 +233,16 @@ export default function Navbar() {
       role: "user",
       link: "/login",
       template: buttonTemplate,
-    }
-  ]
+    },
+  ];
 
   return (
     <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">
-      <div className="w-2/3 md:w-1/3 flex items-center gap-2">
+      <a href="/" className="w-2/3 md:w-1/3 flex items-center gap-2">
         <img className="w-15 h-14" src={Logo} alt="Logo Image" />
         <h3>TANSCHE</h3>
         <h4></h4>
-      </div>
+      </a>
 
       <Menubar
         className="flex bg-white h-full w-1/3 md:w-2/3 justify-end"

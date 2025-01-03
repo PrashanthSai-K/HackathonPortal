@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { userPostRequest } from "../exports";
+import { useActionState } from "../../../CustomHooks";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,24 +10,27 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
-      const response = await userPostRequest("/login", {username: username, password: password});
-
+      const response = await userPostRequest("/login", {
+        username: username,
+        password: password,
+      });
       if (response.data.token !== undefined) {
         localStorage.setItem("token", response.data.token);
         toast.success("Successfully logged in");
         setTimeout(() => {
           navigate("/");
         }, 2000);
-      } else {
-        toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("Failed to login. Please try again.");
+      toast.error(
+        error.response.data.error || error.response.data.errors[0].message
+      );
       console.log(error);
     }
   };
+
+  const [loginFunction, isLoading] = useActionState(handleSubmit);
 
   return (
     <>
@@ -41,7 +44,7 @@ export default function Login() {
               <p className="text-[#465f82] font-medium">
                 Please enter your credentials to access your account.
               </p>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={loginFunction}>
                 <div className="form-group">
                   <input
                     type="text"
@@ -65,11 +68,20 @@ export default function Login() {
                   />
                 </div>
                 <div className="form-group">
-                  <input
+                  <button
                     type="submit"
-                    className="login_btn font-bold"
-                    value="Login"
-                  />
+                    className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+                    disabled={isLoading}
+                  >
+                    {!isLoading ? (
+                      "Login"
+                    ) : (
+                      <i
+                        style={{ color: "white", fontSize: "1rem" }}
+                        className="gap-2 px-3 py-1 pi pi-spin pi-spinner"
+                      ></i>
+                    )}
+                  </button>
                 </div>
               </form>
             </div>
@@ -80,7 +92,7 @@ export default function Login() {
               Sign up now
             </a>
           </p>
-        </center> 
+        </center>
       </div>
     </>
   );

@@ -8,10 +8,7 @@ import TeamView from "./TeamView";
 export default function TeamDetails() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [visibleLeft, setVisibleLeft] = useState(false);
-  const [visibleView, setVisibleView] = useState(false);
   const [teamDetails, setTeamDetails] = useState([]);
-  const [viewData, setViewData] = useState([]);
-
   const [modalData, setModalData] = useState();
   const [visible, setVisible] = useState(false);
 
@@ -49,6 +46,15 @@ export default function TeamDetails() {
     }
   };
 
+  const tableLoader = () => (
+    <div className="flex items-center justify-center min-h-96 h-full w-full ">
+      <i
+        className="pi pi-spin pi-spinner"
+        style={{ color: "gray", fontSize: "2rem" }}
+      ></i>
+    </div>
+  );
+
   const customSortIcon = (options) => {
     const iconStyle = { color: "white" };
     const updownstyle = { color: "white", fontSize: "0.9rem" }; // Style for the icons
@@ -63,7 +69,7 @@ export default function TeamDetails() {
       <i
         className="pi pi-arrow-right-arrow-left rotate-90 flex items-center justify-center"
         style={iconStyle}
-      ></i> 
+      ></i>
     );
 
     return icon;
@@ -103,6 +109,7 @@ export default function TeamDetails() {
 
       <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
         <DataTable
+          emptyMessage={tableLoader}
           sortIcon={customSortIcon}
           value={teamDetails}
           paginator

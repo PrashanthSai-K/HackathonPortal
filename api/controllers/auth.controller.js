@@ -102,13 +102,10 @@ exports.loginUser = async (req, res, next) => {
       const result = await bcrypt.compare( password, adminData.password);
       if(result){
         adminData.role = "admin";
-        // console.log(adminData.role);
-        // var data = {...instituteDetails , adminData};
         res.locals.payload = {...adminData,...instituteDetails};
         return next();
       }
     }
-
 
     const [userData, userMetadata] = await sequelize.query(
       "SELECT * FROM users WHERE username = ?",
@@ -117,27 +114,25 @@ exports.loginUser = async (req, res, next) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    // console.log({ results: userData });
     if(userData != undefined){
       const result = await bcrypt.compare( password, userData.password);      
       if(result){
         userData.role = "user";
-        // console.log(userData);
         res.locals.payload = {...userData,...instituteDetails};
         return next();
       }
     }
-    return res.status(401).send({ message: "Invalid username or password" });
+    return res.status(401).send({ error: "Invalid username or password" });
   } catch (error) {
     console.error({ "Error in Loginuser": error });
     return res
       .status(500)
-      .send({ message: "An error occurred while logging in" });
+      .send({ error: "An error occurred while logging in" });
   }
 };
 
 exports.getUser = async (req, res) => {
-  const token = req.headers.authorization;  
+  const token = req.headers.authorization;
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);
