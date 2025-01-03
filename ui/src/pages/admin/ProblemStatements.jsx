@@ -5,6 +5,7 @@ import { useAuth } from '../../AuthContext';
 import Table from '../components/AdminPS/Table';
 import AddPopup from '../components/AdminPS/AddPopup';
 import UploadPopup from '../components/AdminPS/UploadPopup';
+import { useNavigate } from 'react-router';
 
 
 export default function AdminProblemStatements() {
@@ -13,6 +14,7 @@ export default function AdminProblemStatements() {
 
     const { user } = useAuth();
 
+    const navigate = useNavigate();
 
     const fetchPs = async () => {
         try {
@@ -24,8 +26,10 @@ export default function AdminProblemStatements() {
     }
 
     useEffect(() => {
+        if(user.role != 'admin'){
+            navigate("/problems")
+        }
         fetchPs();
-        // getUser();
     }, [])
 
     const [visible, setVisible] = useState(false);
@@ -34,15 +38,15 @@ export default function AdminProblemStatements() {
     return (
         <>
             <Navbar />
-            <section className="home" id="home">
+            <section className="home w-full flex flex-col items-center justify-center" id="home">
                 <div className="circle hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
-                <Table user={user} data={ps} setAddVisible={setVisible} setUploadVisible={setUploadVisible} />
-                <AddPopup visible={visible} setVisible={setVisible} />
-                <UploadPopup visible={uploadVisible} setVisible={setUploadVisible} />
+                <Table user={user} data={ps} fetchPs={fetchPs} setAddVisible={setVisible} setUploadVisible={setUploadVisible} />
+                <AddPopup visible={visible} setVisible={setVisible} fetchPs={fetchPs} />
+                <UploadPopup visible={uploadVisible} setVisible={setUploadVisible} fetchPs={fetchPs} />
             </section>
 
         </>

@@ -3,6 +3,7 @@ import { Menubar } from "primereact/menubar";
 import Logo from "../../../assets/logo.png";
 import { useLocation } from "react-router";
 import { HashLink as Link } from "react-router-hash-link";
+import { useNavigate } from "react-router";
 import "../../../css/style-login.css";
 import { useAuth } from "../../../AuthContext";
 
@@ -10,6 +11,7 @@ export default function Navbar() {
   const { user, loggedIn } = useAuth();
   const location = useLocation();
   console.log(location.pathname);
+  const navigate = useNavigate();
 
   const itemtemplate = (item) =>
     loggedIn
@@ -81,6 +83,7 @@ export default function Navbar() {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
       localStorage.removeItem("token");
+      navigate("/");
       window.location.reload();
     }
   };
@@ -110,6 +113,13 @@ export default function Navbar() {
       icon: "pi pi-database",
       role: "all",
       link: "/problems",
+      template: itemtemplate,
+    },
+    {
+      label: "Final Participants",
+      icon: "pi pi-database",
+      role: "all",
+      link: "/finalist",
       template: itemtemplate,
     },
     {
@@ -160,6 +170,13 @@ export default function Navbar() {
       template: itemtemplate,
     },
     {
+      label: "Final Participants",
+      icon: "pi pi-database",
+      role: "user",
+      link: "/userfinalist",
+      template: itemtemplate,
+    },
+    {
       label: "Profile",
       icon: "pi pi-user",
       role: "user",
@@ -206,18 +223,18 @@ export default function Navbar() {
       link: "/finalist",
       template: itemtemplate,
     },
-    {
-      label: "User",
-      role: "admin",
-      icon: "pi pi-database",
-      link: "/userManagement",
-      template: itemtemplate,
-    },
+    // {
+    //   label: "User",
+    //   role: "admin",
+    //   icon: "pi pi-database",
+    //   link: "/userManagement",
+    //   template: itemtemplate,
+    // },
     {
       label: "Institute",
       role: "admin",
       icon: "pi pi-database",
-      link: "/adminManagement",
+      link: "/institute-manage",
       template: itemtemplate,
     },
     {
@@ -238,11 +255,12 @@ export default function Navbar() {
 
   return (
     <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">
-      <a href="/" className="w-2/3 md:w-1/3 flex items-center gap-2">
+      <div className="w-2/3 md:w-1/3 flex ">
+        <Link className="flex justify-center items-center gap-2" to={"/"}>
         <img className="w-15 h-14" src={Logo} alt="Logo Image" />
         <h3>TANSCHE</h3>
-        <h4></h4>
-      </a>
+        </Link>
+      </div>
 
       <Menubar
         className="flex bg-white h-full w-1/3 md:w-2/3 justify-end"

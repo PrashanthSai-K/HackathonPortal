@@ -7,9 +7,12 @@ import SHA256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 import { useNavigate } from 'react-router';
 import UploadPopup from './UploadPopup';
+import { useActionState } from '../../../CustomHooks';
+import { adminPostRequest } from '../exports';
+import { toast } from 'react-toastify';
 // import { ProductService } from './service/ProductService';
 
-export default function Table({ data, user, getUser, setAddVisible, setUploadVisible }) {
+export default function Table({ data, user, setAddVisible, setUploadVisible, fetchPs }) {
 
     const [ps, setPs] = useState([]);
 
@@ -93,64 +96,102 @@ export default function Table({ data, user, getUser, setAddVisible, setUploadVis
         </div>
     )
 
+    const [selectedRows, setSelectedRows] = useState([]); // To store selected rows
+
+    const handleSelectionChange = (e) => {
+        setSelectedRows(e.value);
+    }
+
+    const deleteProblems = async () => {
+        try {
+
+            const id = selectedRows.map((row) => row && row.ps_id)
+            if (id.length <= 0) {
+                alert("None selected !! Select rows to delete")
+                return;
+            }
+            const response = await adminPostRequest("/ps/delete", id);
+            toast.success("Deleted successfully !!");
+            fetchPs();
+        } catch (error) {
+            console.log(error);
+            toast.error("Error deleting ");
+        }
+    }
+
+    const [deleteFunctionCall, deleteLoading] = useActionState(deleteProblems, true);
+
     return (
         <>
-            <div className=''>
-                <div className='flex items-center justify-between'>
-                    <h3 className='pb-2 g-black font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
-                    <div className='flex items-center justify-center gap-2'>
-                        <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
-                            <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
-                            <i className='pi pi-search text-gray-300'></i>
-                        </div>
-                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={()=>setAddVisible(true)}
-                        >
-                            <span className='text-black' style={{color:"gray"}}>ADD</span>
-                            <i className='pi pi-plus-circle text-xl text-gray-400'></i>
-                        </div>
-                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={()=>setUploadVisible(true)}
-                        >
-                            <span className='text-black' style={{color:"gray"}}>Import</span>
-                            <i className='pi pi-upload text-xl text-gray-400 rotate-180'></i>
-                        </div>
+            {/* <div className=''> */}
+            <div className='flex w-11/12 max-w-screen-xl items-center justify-between'>
+                <h3 className='pt-1 font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
+                <div className='flex items-center justify-center gap-2'>
+                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                        <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
+                        <i className='pi pi-search text-gray-300'></i>
                     </div>
-                </div>
-
-                <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
-                    <DataTable loader sortIcon={customSortIcon} value={ps} emptyMessage={tableLoader} paginator={ps.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
-                        <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>
-                        <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
-                        <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
-                        <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
-                        <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                        <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'
-                            body={(rowData) => (
-                                <div className='flex items-center justify-center gap-1'>
-                                    <button
-                                        onClick={() => setModal(rowData)}
-                                        className="px-2 py-1 bg-violet-500 text-white rounded"
-                                    >
-                                        View
-                                    </button>
-                                    {
-                                        user && user.role == "admin" &&
-                                        <button
-                                            onClick={() => redirectApprove(rowData)}
-                                            className="px-2 py-1 bg-violet-950 text-white rounded"
-                                        >
-
-                                            Approve
-                                        </button>
-                                    }
-                                </div>
-                            )}
-                        ></Column>
-                    </DataTable>
-                    <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
+                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                        onClick={() => setAddVisible(true)}
+                    >
+                        <span className='text-black' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
+                        <i className='pi pi-plus-circle text-xl text-violet-500'></i>
+                    </div>
+                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                        onClick={() => setUploadVisible(true)}
+                    >
+                        <span className='text-black' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</span>
+                        <i className='pi pi-upload text-xl text-violet-950 rotate-180'></i>
+                    </div>
+                    {deleteLoading ?
+                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                        >
+                            <i className='pi pi-spin pi-spinner text-xl text-red-400 '></i>
+                        </div>
+                    :
+                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                            onClick={() => deleteFunctionCall()}
+                        >
+                            <i className='pi pi-trash text-xl text-red-400 '></i>
+                        </div>
+                    }
                 </div>
             </div>
+
+            <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
+                <DataTable loader selectionMode={"multiple"} selection={selectedRows} onSelectionChange={handleSelectionChange} sortIcon={customSortIcon} value={ps} emptyMessage={tableLoader} paginator={ps.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-xl'>
+                    <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
+                    <Column field="ps_id" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>
+                    <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
+                    <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
+                    <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
+                    <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
+                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'
+                        body={(rowData) => (
+                            <div className='flex items-center justify-center gap-1'>
+                                <button
+                                    onClick={() => setModal(rowData)}
+                                    className="px-2 py-1 bg-violet-500 text-white rounded"
+                                >
+                                    View
+                                </button>
+                                {
+                                    user && user.role == "admin" &&
+                                    <button
+                                        onClick={() => redirectApprove(rowData)}
+                                        className="px-2 py-1 bg-violet-950 text-white rounded"
+                                    >
+
+                                        Approve
+                                    </button>
+                                }
+                            </div>
+                        )}
+                    ></Column>
+                </DataTable>
+                <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
+            </div>
+            {/* </div> */}
         </>
     );
 }

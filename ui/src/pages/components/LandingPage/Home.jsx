@@ -1,4 +1,5 @@
 import React from "react";
+import tnlogo from "../../../assets/tnlogo.png"
 
 export default function Home() {
   return (
@@ -9,9 +10,11 @@ export default function Home() {
         <div className="circle"></div>
         <div className="circle"></div>
         <div className="circle"></div>
-
-        <h4 className="main_title" style={{ marginTop: "22vh" }}>
-          TAN<span style={{ fontSize: "60px", color:"#7f58f3", fontWeight:"bold" }}>S</span> HACK'24
+        <h4 className="main_title items-center" style={{ marginTop: "10vh" }} >
+          <center>
+            <img src={tnlogo} alt="" className="w-24 h-24" />
+          </center>
+          TN I<span style={{ fontSize: "60px", color: "#7f58f3", fontWeight: "bold" }}>D</span>EATHON'25
         </h4>
         <center>
           <h5
@@ -24,7 +27,7 @@ export default function Home() {
               paddingBottom: "0%",
             }}
           >
-            TANSCHE SOFTWARE HACKATHON 2024
+            TAMILNADU HIGHER EDUCATION IDEATHON 2025
           </h5>
         </center>
         <br />

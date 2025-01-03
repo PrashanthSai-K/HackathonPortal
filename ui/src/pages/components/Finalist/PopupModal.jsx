@@ -3,7 +3,6 @@ import { Dialog } from 'primereact/dialog';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 
-
 export default function PopupModal({ visible, setVisible, modalData }) {
 
 

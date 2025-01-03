@@ -3,6 +3,7 @@ import Table from '../components/ProblemStatements/Table'
 import Navbar from '../components/LandingPage/Navbar'
 import { userGetRequest } from '../components/exports';
 import { useAuth } from '../../AuthContext';
+import { useNavigate } from 'react-router';
 
 
 export default function ProblemStatements() {
@@ -10,6 +11,8 @@ export default function ProblemStatements() {
     const [ps, setPs] = useState([]);
 
     const { user } = useAuth();
+
+    const navigate = useNavigate();
 
 
     const fetchPs = async () => {
@@ -22,8 +25,10 @@ export default function ProblemStatements() {
     }
 
     useEffect(() => {
+        if(user.role == 'admin'){
+            navigate("/problems-manage");
+        }
         fetchPs();
-        // getUser();
     }, [])
 
     return (

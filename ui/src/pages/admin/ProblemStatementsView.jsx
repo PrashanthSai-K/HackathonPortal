@@ -65,7 +65,7 @@ export default function ProblemStatementsView() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user && user.role != "admin") {
+        if (user.role != "admin") {
             navigate("/")
         }
     }, [user])

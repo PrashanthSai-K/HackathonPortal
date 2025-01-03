@@ -20,7 +20,8 @@ export default function Login() {
         toast.success("Successfully logged in");
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+          window.location.reload();
+        }, 1000);
       }
     } catch (error) {
       toast.error(

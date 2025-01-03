@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
 
 
-export default function UploadPopup({ visible, setVisible }) {
+export default function UploadPopup({ visible, setVisible, fetchPs }) {
 
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState(null);
@@ -15,14 +15,14 @@ export default function UploadPopup({ visible, setVisible }) {
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
-        const allowedExtensions = /(\.xls|\.xlsx)$/i;    
+        const allowedExtensions = /(\.xls|\.xlsx)$/i;
         const maxSize = 10 * 1024 * 1024; // 10 MB limit
 
         if (selectedFile && allowedExtensions.test(selectedFile.name) && selectedFile.size < maxSize) {
             setFileSize(selectedFile.size);
             setFile(selectedFile);
             setError("");
-    
+
             const reader = new FileReader();
             reader.onload = (event) => {
                 const data = event.target.result;
@@ -40,17 +40,19 @@ export default function UploadPopup({ visible, setVisible }) {
         }
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
             alert("Select proper file.")
         }
         try {
             const response = await adminPostRequest("/ps/upload", fileData);
-            console.log(response.data);
-            
+            toast.success("Uploaded successfully!!");
+            setVisible(false);
+            fetchPs();
         } catch (error) {
             console.log(error);
+            toast.error(error.response.data.error || error.response.data.errors[0].message)
         }
     };
 
@@ -68,7 +70,7 @@ export default function UploadPopup({ visible, setVisible }) {
 
     return (
         <>
-            <Sidebar position='top' visible={visible} className={`w-11/12 md:w-6/12 ${file ? "h-4/6" : "h-3/6"} p-3 rounded-lg mt-5`} onHide={() => {setVisible(false) }}>
+            <Sidebar position='top' visible={visible} className={`w-11/12 md:w-6/12 ${file ? "h-4/6" : "h-3/6"} p-3 rounded-lg mt-5`} onHide={() => { setVisible(false) }}>
                 <div className=' flex flex-col items-center justify-between'>
                     <h2 className="text-xl font-semibold text-gray-700 mb-2">Upload Problems</h2>
 

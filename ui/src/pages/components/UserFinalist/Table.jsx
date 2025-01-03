@@ -1,41 +1,12 @@
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 import React, { useEffect, useState } from 'react'
-import { adminGetRequest, adminPostRequest } from '../exports';
-import { toast } from 'react-toastify';
-import PopupModal from './PopupModal';
+import { userGetRequest } from '../exports';
 import { useActionState } from '../../../CustomHooks';
 
 export default function Table() {
     const [finalist, setFinalist] = useState([]);
     const [globalFilter, setGlobalFilter] = useState();
-    const [modalData, setModalData] = useState();
-    const [visible, setVisible] = useState(false);
-
-    const formatKey = (key) => {
-        // Replace underscores with spaces and capitalize each word
-        return key
-            .replace(/_/g, " ") // Replace underscores with spaces
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
-    };
-
-    const setModal = (rowData) => {
-        const data = Object.entries(rowData)
-            .slice()
-            .map(([key, value]) => ({
-                key: formatKey(key),
-                value:
-                    key === "specific_key" ? ( // Replace 'specific_key' with the actual key you want to check
-                        <a href={value} target="_blank" rel="noopener noreferrer">
-                            {value}
-                        </a>
-                    ) : (
-                        value
-                    ),
-            }));
-        setModalData(data);
-        setVisible(true);
-    };
 
     const customSortIcon = (options) => {
         const iconStyle = { color: "white" };
@@ -80,12 +51,11 @@ export default function Table() {
 
     const fetchFinalist = async () => {
         try {
-            const response = await adminGetRequest("/finalist");
+            const response = await userGetRequest("/finalist/getFinalist");
             setFinalist(response.data.data);
         } catch (error) {
             console.log(error);
         }
-
     }
 
 
@@ -95,20 +65,6 @@ export default function Table() {
     useEffect(() => {
         finalistCall();
     }, [])
-
-    const selectTeam = async (data) => {
-        try {
-            if (!window.confirm("Du you want to move participant to final ?")) {
-                return
-            }
-            const response = await adminPostRequest("/finalist/select", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Selected Sucessfully");
-            fetchFinalist();
-        } catch (error) {
-            console.log(error);
-            toast.error("Some Error");
-        }
-    };
 
     return (
         <>
@@ -124,39 +80,8 @@ export default function Table() {
                         <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
                         <Column field="leader_name" header="Leader Name" sortable align={"center"} bodyStyle={{ height: "3rem", width: "10rem" }} headerClassName='text-white border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm '></Column>
                         <Column field="number_of_participants" sortable header="Participants" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
-                        <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
-
-                        <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2  p-1 text-center text-sm'
-                            body={(rowData) => (
-
-                                <div className='flex  gap-1'>
-                                    <button
-                                        onClick={() => setModal(rowData)}
-                                        className="px-2 py-1 bg-violet-500 text-white rounded"
-                                    >
-                                        View
-                                    </button>
-                                    {rowData.status === "SUBMITTED" &&
-                                        <button
-                                            onClick={() => selectTeam(rowData)}
-                                            className="px-2 py-1 bg-violet-950 text-white rounded"
-                                        >
-                                            Select
-                                        </button>
-                                    }
-                                    {rowData.status === "APPROVED" &&
-                                        <button
-                                            onClick={() => unselectTeam(rowData)}
-                                            className="px-2 py-1 bg-violet-950 text-white rounded"
-                                        >
-                                            Unselect
-                                        </button>
-                                    }
-                                </div>
-                            )}
-                        ></Column>
+                        <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 justify-center items-center flex border-r-2 p-1 text-sm'></Column>
                     </DataTable>
-                    <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} />
                 </div>
             }
         </>

@@ -4,9 +4,40 @@ import React, { useState } from 'react'
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 
-export default function AddPopup({ visible, setVisible }) {
+export default function AddPopup({ visible, setVisible, fetchPs }) {
 
-   cc
+    const data = {
+        psId: "",
+        category: "",
+        title: "",
+        description: "",
+        organization: ""
+    }
+
+    const [ps, setPs] = useState(data);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setPs({ ...ps, [e.target.name]: e.target.value });
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setIsLoading(true);
+            const response = await adminPostRequest("/ps", ps);
+            toast.success("Created successfully !!");
+            setIsLoading(false);
+            setVisible(false);
+            setPs(data);
+            fetchPs();
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+            toast.error(error.response.data.error || error.response.data.errors[0].message)
+        }
+    }
+    
     return (
         <>
             <Sidebar position='right' visible={visible} className='w-11/12 md:w-6/12 ' onHide={() => setVisible(false)}>

@@ -22,7 +22,7 @@ exports.register_institute = async (req, res) => {
     } = req.body;
 
     const hashedPass = await bcrypt.hash(password, 10);
-    console.log(hashedPass);
+    // console.log(hashedPass);
   
     const [result, metadata] = await sequelize.query(
       `INSERT INTO institution (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number ) 
@@ -99,7 +99,7 @@ exports.loginUser = async (req, res, next) => {
     );
 
     if(adminData != undefined){
-      const result = await bcrypt.compare( password, adminData.password);
+      const result = await bcrypt.compare(password, adminData.password);
       if(result){
         adminData.role = "admin";
         res.locals.payload = {...adminData,...instituteDetails};
