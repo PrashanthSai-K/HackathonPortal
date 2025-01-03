@@ -7,7 +7,9 @@ module.exports = app => {
 
     var router = require('express').Router();
 
-    router.get("/", (req, res)=> res.send("Hiii from Backed !!!"))
+    router.get("/", (req, res)=> res.send("Hiii from Backed !!!"));
+
+    router.get("/suggestions", authController.getSuggestions)
 
     router.post("/register", validateInstituteData, authController.register_institute);
 

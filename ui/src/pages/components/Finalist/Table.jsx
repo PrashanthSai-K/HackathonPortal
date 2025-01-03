@@ -21,7 +21,7 @@ export default function Table() {
 
     const setModal = (rowData) => {
         const data = Object.entries(rowData)
-            .slice(2, 18)
+            .slice(2)
             .map(([key, value]) => ({
                 key: formatKey(key),
                 value:
@@ -31,7 +31,7 @@ export default function Table() {
                         </a>
                     ) : (
                         value
-                    ),
+                    )
             }));
         setModalData(data);
         setVisible(true);
@@ -110,20 +110,6 @@ export default function Table() {
         }
     };
 
-    const unselectTeam = async (data) => {
-        try {
-            if (!window.confirm("Du you want to remove participant from final ?")) {
-                return
-            }
-            const response = await adminPostRequest("/finalist/unselect", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Removed Sucessfully");
-            fetchFinalist();
-        } catch (error) {
-            console.log(error);
-            toast.error("Some Error");
-        }
-    }
-
     return (
         <>
             {isLoading ?
@@ -131,7 +117,7 @@ export default function Table() {
                     <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
                 </div>
                 :
-                <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
+                <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">
                     <DataTable sortIcon={customSortIcon} value={finalist} emptyMessage={tableLoader} paginator={finalist.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
                         <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm ' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
                         <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>
@@ -143,7 +129,7 @@ export default function Table() {
                         <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2  p-1 text-center text-sm'
                             body={(rowData) => (
 
-                                <div className='flex  gap-1'>
+                                <div className='flex  gap-1 '>
                                     <button
                                         onClick={() => setModal(rowData)}
                                         className="px-2 py-1 bg-violet-500 text-white rounded"

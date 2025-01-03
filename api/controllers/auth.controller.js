@@ -23,7 +23,7 @@ exports.register_institute = async (req, res) => {
 
     const hashedPass = await bcrypt.hash(password, 10);
     // console.log(hashedPass);
-  
+
     const [result, metadata] = await sequelize.query(
       `INSERT INTO institution (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number ) 
            VALUES ( :institution_code, :institution_name, :institution_type, :address, :city, :state, :pincode, :poc_name, :poc_email, :poc_number)`,
@@ -98,11 +98,11 @@ exports.loginUser = async (req, res, next) => {
       }
     );
 
-    if(adminData != undefined){
+    if (adminData != undefined) {
       const result = await bcrypt.compare(password, adminData.password);
-      if(result){
+      if (result) {
         adminData.role = "admin";
-        res.locals.payload = {...adminData,...instituteDetails};
+        res.locals.payload = { ...adminData, ...instituteDetails };
         return next();
       }
     }
@@ -114,11 +114,11 @@ exports.loginUser = async (req, res, next) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    if(userData != undefined){
-      const result = await bcrypt.compare( password, userData.password);      
-      if(result){
+    if (userData != undefined) {
+      const result = await bcrypt.compare(password, userData.password);
+      if (result) {
         userData.role = "user";
-        res.locals.payload = {...userData,...instituteDetails};
+        res.locals.payload = { ...userData, ...instituteDetails };
         return next();
       }
     }
@@ -141,3 +141,13 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getSuggestions = async (req, res) => {
+  try {
+    const [result, metadata] = await sequelize.query("SELECT * FROM institution_predefined");
+    res.status(200).send({ data: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: "Some error" });
+
+  }
+}

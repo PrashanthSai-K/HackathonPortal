@@ -21,7 +21,7 @@ export default function TeamDetails() {
 
   const setModal = (rowData) => {
     const data = Object.entries(rowData)
-      .slice(2,11)
+      .slice(2, 11)
       .map(([key, value]) => ({
         key: formatKey(key),
         value:

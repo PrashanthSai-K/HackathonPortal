@@ -13,7 +13,7 @@ export default function TeamView({ visible, setVisible, modalData }) {
         if (!visible) return;
         setVisible(false);
       }}
-      className="p-3 md:p-0  w-7/12 flex items-center justify-center"
+      className="p-3 md:p-0 w-7/12 flex items-center justify-center relative -z-50"
       breakpoints={{ "960px": "75vw", "641px": "100vw" }}
     >
       <center className="pb-4">
