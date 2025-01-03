@@ -10,9 +10,11 @@ import { useNavigate } from 'react-router';
 import { useActionState } from '../../../CustomHooks';
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
+import EditInstitution from './EditInstitution';
+import PasswordPopup from './PasswordPopup';
 // import { ProductService } from './service/ProductService';
 
-export default function Table({ data, user, setAddVisible, setUploadVisible, fetchPs }) {
+export default function Table({ data, user, setAddVisible, fetchInstitutionCall, fetchPs }) {
 
     const [institute, setInstitute] = useState([]);
 
@@ -58,41 +60,20 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
         return icon;
     };
 
-    const [visible, setVisible] = useState(false);
+    // const [visible, setVisible] = useState(false);
 
     const [modalData, setModalData] = useState({});
 
-    const formatKey = (key) => {
-        // Replace underscores with spaces and capitalize each word
-        return key
-            .replace(/_/g, ' ') // Replace underscores with spaces
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
-    };
 
     const setModal = (rowData) => {
-        const dataEntries = Object.entries(rowData)
-            .slice(0, 7)
-            .map(([key, value]) => ({
-                key: formatKey(key),
-                value,
-            }));
-        setModalData(dataEntries);
-        setVisible(true);
+        setModalData(rowData);
+        setEditVisible(true);
     }
 
-    const redirectApprove = (rowData) => {
-        console.log(rowData);
-
-        if (rowData && rowData.count > 0) {
-            navigate(`/problems/${rowData.route}`)
-        } else {
-            window.alert("Opps !! No registrations found.");
-        }
-    }
 
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>
-            <i className="pi pi-spin pi-spinner" style={{ color: "gray", fontSize: '2rem' }}></i>
+            <p>No Data Available</p>
         </div>
     )
 
@@ -105,17 +86,17 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
     const deleteProblems = async () => {
         try {
 
-            const id = selectedRows.map((row) => row && row.ps_id)
+            const id = selectedRows.map((row) => row && row.id)
             if (id.length <= 0) {
                 alert("None selected !! Select rows to delete")
                 return;
             }
-            if(!(window.confirm("Do you want to delete the selected instituions ?"))){
+            if (!(window.confirm("Do you want to delete the selected instituions ?"))) {
                 return;
             }
-            const response = await adminPostRequest("/ps/op", id);
+            const response = await adminPostRequest("/institute/delete", id);
             toast.success("Deleted successfully !!");
-            fetchPs();
+            fetchInstitutionCall();
         } catch (error) {
             console.log(error);
             toast.error("Error deleting ");
@@ -123,6 +104,12 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
     }
 
     const [deleteFunctionCall, deleteLoading] = useActionState(deleteProblems, true);
+
+    const [editVisible, setEditVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [password, setPassword] = useState("");
+
+
 
     return (
         <>
@@ -140,18 +127,12 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
                         <span className='text-black' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
                         <i className='pi pi-plus-circle text-xl text-violet-500'></i>
                     </div>
-                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                        onClick={() => setUploadVisible(true)}
-                    >
-                        <span className='text-black' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</span>
-                        <i className='pi pi-upload text-xl text-violet-950 rotate-180'></i>
-                    </div>
                     {deleteLoading ?
                         <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         >
                             <i className='pi pi-spin pi-spinner text-xl text-red-400 '></i>
                         </div>
-                    :
+                        :
                         <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                             onClick={() => deleteFunctionCall()}
                         >
@@ -181,23 +162,14 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
                                     onClick={() => setModal(rowData)}
                                     className="px-2 py-1 bg-violet-500 text-white rounded"
                                 >
-                                    View
+                                    Edit
                                 </button>
-                                {
-                                    user && user.role == "admin" &&
-                                    <button
-                                        onClick={() => redirectApprove(rowData)}
-                                        className="px-2 py-1 bg-violet-950 text-white rounded"
-                                    >
-
-                                        Approve
-                                    </button>
-                                }
                             </div>
                         )}
                     ></Column>
                 </DataTable>
-                {/* <PopupModal visible={visible} setVisible={setVisible} modalData={modalData} /> */}
+                <EditInstitution visible={editVisible} setVisible={setEditVisible} instituteDetail={modalData} fetchInstitutionCall={fetchInstitutionCall} setPasswordVisible={setPasswordVisible} setPassword={setPassword} />
+                <PasswordPopup visible={passwordVisible} setVisible={setPasswordVisible} password={password} />
             </div>
             {/* </div> */}
         </>

@@ -4,11 +4,21 @@ import { adminGetRequest } from '../components/exports';
 import { useActionState } from '../../CustomHooks';
 import Table from '../components/Institution/Table';
 import { useAuth } from '../../AuthContext';
-import AddPopup from '../components/Institution/AddPopup';
+import AddInstitution from '../components/Institution/AddPopup';
+import PasswordPopup from '../components/Institution/PasswordPopup';
+import { useNavigate } from 'react-router';
 
 export default function Institution() {
 
-    const {user} = useAuth();
+    const { user } = useAuth();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (user.role != 'admin') {
+            navigate("/profile")
+        }
+    }, [])
 
     const [institution, setInstitution] = useState([]);
 
@@ -30,6 +40,8 @@ export default function Institution() {
     }, [])
 
     const [addVisible, setAddVisible] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const [password, setPassword] = useState("");
 
     return (
         <>
@@ -41,8 +53,9 @@ export default function Institution() {
                     </div>
                     :
                     <section className="home w-full flex flex-col items-center" id="home">
-                        <Table data={institution}  fetchInstitutionCall={fetchInstitutionCall}/>
-                        <AddPopup visible={addVisible} setVisible={setAddVisible} />
+                        <Table data={institution}  fetchInstitutionCall={fetchInstitutionCall} setAddVisible={setAddVisible}/>
+                        <AddInstitution visible={addVisible} setVisible={setAddVisible} fetchInstitutionCall={fetchInstitutionCall} setPassword={setPassword} setPasswordVisible={setPasswordVisible} />
+                        <PasswordPopup visible={passwordVisible} setVisible={setPasswordVisible} password={password} />
                     </section>
 
             }

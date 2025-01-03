@@ -7,7 +7,6 @@ import PopupModal from './PopupModal';
 import { useActionState } from '../../../CustomHooks';
 
 export default function Table() {
-
     const [finalist, setFinalist] = useState([]);
     const [globalFilter, setGlobalFilter] = useState();
     const [modalData, setModalData] = useState();
@@ -16,7 +15,7 @@ export default function Table() {
     const formatKey = (key) => {
         // Replace underscores with spaces and capitalize each word
         return key
-            .replace(/_/g, ' ') // Replace underscores with spaces
+            .replace(/_/g, " ") // Replace underscores with spaces
             .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
     };
 
@@ -25,17 +24,22 @@ export default function Table() {
             .slice()
             .map(([key, value]) => ({
                 key: formatKey(key),
-                value: key === 'specific_key' // Replace 'specific_key' with the actual key you want to check
-                    ? <a href={value} target="_blank" rel="noopener noreferrer">{value}</a>
-                    : value,
+                value:
+                    key === "specific_key" ? ( // Replace 'specific_key' with the actual key you want to check
+                        <a href={value} target="_blank" rel="noopener noreferrer">
+                            {value}
+                        </a>
+                    ) : (
+                        value
+                    ),
             }));
         setModalData(data);
         setVisible(true);
-    }
+    };
 
     const customSortIcon = (options) => {
         const iconStyle = { color: "white" };
-        const updownstyle = { color: "white", fontSize: "0.9rem", } // Style for the icons
+        const updownstyle = { color: "white", fontSize: "0.9rem" }; // Style for the icons
 
         let icon = options.sorted ? (
             options.sortOrder < 0 ? (
@@ -44,7 +48,10 @@ export default function Table() {
                 <i className="pi pi-arrow-up" style={updownstyle}></i> // Up arrow
             )
         ) : (
-            <i className="pi pi-arrow-right-arrow-left rotate-90 flex items-center justify-center" style={iconStyle}></i> // Default sort icon
+            <i
+                className="pi pi-arrow-right-arrow-left rotate-90 flex items-center justify-center"
+                style={iconStyle}
+            ></i> // Default sort icon
         );
 
         return icon;
@@ -78,7 +85,9 @@ export default function Table() {
         } catch (error) {
             console.log(error);
         }
+
     }
+
 
     const [finalistCall, isLoading] = useActionState(fetchFinalist, true);
 
@@ -99,22 +108,7 @@ export default function Table() {
             console.log(error);
             toast.error("Some Error");
         }
-    }
-
-    const unselectTeam = async (data) => {
-        try {
-            if (!window.confirm("Du you want to remove participant from final ?")) {
-                return
-            }
-            const response = await adminPostRequest("/finalist/unselect", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Removed Sucessfully");
-            fetchFinalist();
-        } catch (error) {
-            console.log(error);
-            toast.error("Some Error");
-        }
-    }
-
+    };
 
     return (
         <>

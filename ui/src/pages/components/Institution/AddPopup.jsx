@@ -1,170 +1,296 @@
-import { Dropdown } from 'primereact/dropdown';
-import { Sidebar } from 'primereact/sidebar'
-import React, { useState } from 'react'
-import { adminPostRequest } from '../exports';
-import { toast } from 'react-toastify';
+import { Sidebar } from "primereact/sidebar";
+import React, { useEffect, useState } from "react";
+import { adminPostRequest, adminPutRequest, userPutRequest } from "../exports";
+import { useActionState } from "../../../CustomHooks";
+import { toast } from "react-toastify";
 
-export default function AddPopup({ visible, setVisible, fetchPs }) {
+export default function AddInstitution({ visible, setVisible, fetchInstitutionCall, setPasswordVisible, setPassword }) {
 
-    const data = {
-        psId: "",
-        category: "",
-        title: "",
-        description: "",
-        organization: ""
-    }
+    const instituteDetail = {
+        instituteCode: "",
+        instituteName: "",
+        instituteType: "",
+        instituteAddress: "",
+        instituteCity: "",
+        instituteState: "",
+        institutePincode: "",
+        pocName: "",
+        pocEmail: "",
+        pocPhone: "",
+    };
 
-    const [ps, setPs] = useState(data);
-    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState(instituteDetail);
 
     const handleChange = (e) => {
-        setPs({ ...ps, [e.target.name]: e.target.value });
-    }
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+
+    const handleSubmit = async () => {
         try {
-            setIsLoading(true);
-            const response = await adminPostRequest("/ps", ps);
-            toast.success("Created successfully !!");
-            setIsLoading(false);
-            setVisible(false);
-            setPs(data);
-            fetchPs();
+            const response = await adminPostRequest("/addInstitute", formData);
+            if (response.status === 201) {
+                if (response.data.password) {
+                    toast.success(response.data.message || "Institute details updated successfully.");
+                    setPassword(response.data.password);
+                    fetchInstitutionCall();
+                    setVisible(false);
+                    setPasswordVisible(true);
+                    return;
+                }
+                toast.success(response.data.message || "Institute details updated successfully.");
+                setVisible(false);
+                fetchInstitutionCall();
+            } else {
+                toast.error(response.data.message || "Failed to update institute details.");
+                setVisible(false);
+                return;
+            }
         } catch (error) {
-            setIsLoading(false);
-            console.log(error);
-            toast.error(error.response.data.error || error.response.data.errors[0].message)
+            console.error("Error updating institute details:", error);
+            toast.error(error.response.data.error || error.response.data.errors[0].message);
         }
-    }
+    };
+
+
+    const [addInstitute, isLoading] = useActionState(handleSubmit);
+
+
     return (
         <>
-            <Sidebar position='right' visible={visible} className='w-11/12 md:w-6/12 ' onHide={() => setVisible(false)}>
-                <div className=' flex items-center justify-between'>
-                    <h2 className="text-xl font-semibold text-gray-700">PS Creation</h2>
+            <Sidebar
+                visible={visible}
+                position="right"
+                className="w-1/3"
+                onHide={() => setVisible(false)}
+            >
+                <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
+                    Add Institute Details
+                </h2>
+                <form onSubmit={addInstitute} className="w-full px-6">
+                    {/* Institute Code */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_code"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-university text-gray-500 mr-2"></i>
+                            Institute Code
+                        </label>
+                        <input
+                            id="instituteCode"
+                            type="text"
+                            name="instituteCode"
+                            value={formData.instituteCode}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                </div>
-                <div className="flex flex-col items-center gap-4">
-                    <form onSubmit={handleSubmit} className="w-full px-6">
+                    {/* Institute Name */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_name"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-building text-gray-500 mr-2"></i>
+                            Institute Name
+                        </label>
+                        <input
+                            id="instituteName"
+                            type="text"
+                            name="instituteName"
+                            value={formData.instituteName}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="psId"
-                                className="block text-sm font-medium text-gray-600"
-                            >
-                                <i className="fas fa-hashtag text-gray-500 mr-2"></i>
-                                Problem Statement Id
-                            </label>
-                            <input
-                                id="psId"
-                                name='psId'
-                                type="text"
-                                value={ps.psId}
-                                onChange={handleChange}
-                                required
-                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-                            />
-                        </div>
+                    {/* Institute Address */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="address"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                            Institute Address
+                        </label>
+                        <textarea
+                            id="instituteAddress"
+                            type="text"
+                            name="instituteAddress"
+                            value={formData.instituteAddress}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="category"
-                                className="block text-sm font-medium text-gray-600"
-                            >
-                                <i className="fas fa-tags text-gray-500 mr-2"></i>Category
-                            </label>
-                            <select
-                                id="category"
-                                name="category"
-                                type="text"
-                                required
-                                value={ps.category}
-                                onChange={handleChange}
-                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-                            >
-                                <option value="" disabled selected hidden>Select category</option>
-                                <option value="software">Software</option>
-                                <option value="hardware">Hardware</option>
+                    {/* City */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="city"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-city text-gray-500 mr-2"></i>Institute City
+                        </label>
+                        <input
+                            id="instituteCity"
+                            type="text"
+                            name="instituteCity"
+                            value={formData.instituteCity}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                            </select>
-                        </div>
+                    {/* State and Pincode */}
+                    {/* <div className="flex mb-4"> */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="state"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-map text-gray-500 mr-2"></i>Institute State
+                        </label>
+                        <input
+                            id="instituteState"
+                            type="text"
+                            name="instituteState"
+                            value={formData.instituteState}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="pincode"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-envelope text-gray-500 mr-2"></i>
+                            Pincode
+                        </label>
+                        <input
+                            id="institutePincode"
+                            type="number"
+                            name="institutePincode"
+                            value={formData.institutePincode}
+                            onChange={handleChange}
+                            // pattern="\d{6}"
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
+                    {/* </div> */}
 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="title"
-                                className="block text-sm font-medium text-gray-600"
-                            >
-                                <i className="fas fa-pencil-alt text-gray-500 mr-2"></i>Title
-                            </label>
-                            <input
-                                id="title"
-                                name="title"
-                                type="text"
-                                required
-                                value={ps.title}
-                                onChange={handleChange}
-                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-                            />
-                        </div>
+                    {/* Institute Type */}
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_type"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-list text-gray-500 mr-2"></i>Institute Type
+                        </label>
+                        <select
+                            id="instituteType"
+                            name="instituteType"
+                            value={formData.instituteType}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        >
+                            <option value="" disabled>
+                                Select Institute Type
+                            </option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Arts">Arts</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
 
-                        {/* Leader Email */}
-                        <div className="mb-4">
-                            <label
-                                htmlFor="description"
-                                className="block text-sm font-medium text-gray-600"
-                            >
-                                <i className="fas fa-align-left text-gray-500 mr-2"></i>Description
-                            </label>
-                            <textarea
-                                id="description"
-                                name="description"
-                                type="text"
-                                required
-                                value={ps.description}
-                                onChange={handleChange}
-                                className="mt-1 w-full h-24 px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-                            />
-                        </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_type"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                        </label>
+                        <input
+                            id="pocName"
+                            type="text"
+                            name="pocName"
+                            value={formData.pocName}
+                            onChange={handleChange}
+                            // pattern="\d{6}"
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="organization"
-                                className="block text-sm font-medium text-gray-600"
-                            >
-                                <i className="fas fa-building  text-gray-500 mr-2"></i>Organization
-                            </label>
-                            <input
-                                id="organization"
-                                name="organization"
-                                type="text"
-                                required
-                                value={ps.organization}
-                                onChange={handleChange}
-                                className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
-                            />
-                        </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_type"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                        </label>
+                        <input
+                            id="pocEmail"
+                            type="text"
+                            name="pocEmail"
+                            value={formData.pocEmail}
+                            onChange={handleChange}
+                            // pattern="\d{6}"
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
 
-                        <div className="flex justify-center mt-3 gap-3">
-                            {!isLoading ?
-                                <button
-                                    type="submit"
-                                    className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
-                                >
-                                    Create
-                                </button>
-                                :
-                                <div className='flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700'>
-                                    <i className="pi pi-spin pi-spinner" style={{ color: "white", fontSize: '2rem' }}></i>
-                                </div>
-                            }
-                            {/* <div className=' flex  items-center justify-center gap-2 px-2 py-1 rounded-lg text-white bg-green-500 cursor-pointer hover:bg-green-600'>
-                                <p className=' text-white'>Upload</p>
-                                <i className='pi pi-upload text-white'></i>
-                            </div> */}
-                        </div>
-                    </form>
-                </div>
+                    <div className="mb-4">
+                        <label
+                            htmlFor="institution_type"
+                            className="block text-sm font-medium text-gray-600"
+                        >
+                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                        </label>
+                        <input
+                            id="pocPhone"
+                            type="text"
+                            name="pocPhone"
+                            value={formData.pocPhone}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
+                        />
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="flex justify-center mt-4 mb-3">
+                        <button
+                            type="submit"
+                            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+                            disabled={isLoading}
+                        >
+                            {!isLoading ? (
+                                "Create"
+                            ) : (
+                                <i
+                                    style={{ color: "white", fontSize: "1rem" }}
+                                    className="pi pi-spin pi-spinner"
+                                ></i>
+                            )}
+                        </button>
+                    </div>
+                </form>
             </Sidebar>
         </>
-    )
+    );
 }

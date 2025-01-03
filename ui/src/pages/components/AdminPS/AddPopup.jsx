@@ -37,6 +37,7 @@ export default function AddPopup({ visible, setVisible, fetchPs }) {
             toast.error(error.response.data.error || error.response.data.errors[0].message)
         }
     }
+    
     return (
         <>
             <Sidebar position='right' visible={visible} className='w-11/12 md:w-6/12 ' onHide={() => setVisible(false)}>

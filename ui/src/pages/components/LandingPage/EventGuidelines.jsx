@@ -6,7 +6,7 @@ import Benefits from "../../../assets/benefits.png";
 export default function EventGuidelines() {
   return (
     <>
-    <section className="reg">
+    <section className="reg" id='aboutus'>
                     <div className="continer">
                         <h3>Registration</h3>
                         <center>

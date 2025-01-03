@@ -5,7 +5,7 @@ const backendUrl = "https://w2tpzms2-4500.inc1.devtunnels.ms/api"
 export const userGetRequest = async (url) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`${backendUrl}${url}`,{
+    const response = await axios.get(`${backendUrl}${url}`, {
       headers: {
         Authorization: `${token}`,
       },
@@ -19,7 +19,7 @@ export const userGetRequest = async (url) => {
 export const adminGetRequest = async (url) => {
   try {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`${backendUrl}${url}`,{
+    const response = await axios.get(`${backendUrl}${url}`, {
       headers: {
         Authorization: `${token}`,
       },
@@ -32,7 +32,7 @@ export const adminGetRequest = async (url) => {
 
 export const adminPostRequest = async (url, data) => {
   try {
-    const token = localStorage.getItem("token");    
+    const token = localStorage.getItem("token");
     const response = await axios.post(`${backendUrl}${url}`, data, {
       headers: {
         Authorization: `${token}`,
@@ -44,10 +44,39 @@ export const adminPostRequest = async (url, data) => {
   }
 };
 
+export const adminPutRequest = async (url, data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${backendUrl}${url}`, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 export const userPostRequest = async (url, data) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(`${backendUrl}${url}`, data, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const userPutRequest = async (url, data) => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.put(`${backendUrl}${url}`, data, {
       headers: {
         Authorization: `${token}`,
       },

@@ -116,7 +116,7 @@ export default function Navbar() {
           label: "About",
           icon: "pi pi-info-circle",
           role: "all",
-          link: "/about",
+          link: "/#aboutus",
           template: itemtemplate,
           isSubmenu: true,
         },
