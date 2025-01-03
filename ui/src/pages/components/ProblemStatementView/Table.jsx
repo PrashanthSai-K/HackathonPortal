@@ -49,7 +49,7 @@ export default function Table({ data, fetchPs }) {
 
     const setModal = (rowData) => {
         const dataEntries = Object.entries(rowData)
-            .slice()
+            .slice(2,15)
             .map(([key, value]) => ({
                 key: formatKey(key),
                 value: key === 'doc_link' // Replace 'specific_key' with the actual key you want to check

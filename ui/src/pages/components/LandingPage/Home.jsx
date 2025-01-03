@@ -39,7 +39,8 @@ export default function Home() {
           <span
             style={{
               letterSpacing: "5px",
-              fontSize: "50px",
+              fontSize: "40px",
+              fontWeight: "bold",
               paddingTop: "10px",
               color: "#7f58f3"
             }}
@@ -47,7 +48,6 @@ export default function Home() {
             3 LAKHS
           </span>
         </h4>
-
 
         <h2 style={{ marginTop: "20vh" }}>
           <center>
@@ -71,7 +71,7 @@ export default function Home() {
           </span>
         </h2>
 
-        <a className="login-button join nodeHover" href="prob-state.php">
+        <a className="login-button join nodeHover" href="/problems">
           Join the Event{" "}
         </a>
         <p

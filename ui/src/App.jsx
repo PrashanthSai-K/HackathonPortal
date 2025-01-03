@@ -12,6 +12,7 @@ import ProfilePage from './pages/user/ProfilePage.jsx';
 import Finalist from './pages/admin/Finalist.jsx';
 import { useAuth } from './AuthContext.jsx';
 import Institution from './pages/admin/Institution.jsx';
+import UserFinalist from './pages/user/UserFinalist.jsx';
 
 
 function App() {
@@ -37,13 +38,12 @@ function App() {
         {/* <Route path='/Login' element={<LoginPage />} /> */}
         <Route path='/problems' element={<ProblemStatements /> } />
         <Route path='/problems-manage' element={<AdminProblemStatements /> } />
-
         <Route path='/problems/:id' element={<ProblemStatementsView /> } />
         <Route path='/profile' element={<ProfilePage /> } />
         <Route path='/finalist' element={<Finalist />} />
+        <Route path='/finalists' element={<UserFinalist />} />
         <Route path='/institute-manage' element={<Institution />} />
       </Routes>
-
     </>
   )
 }

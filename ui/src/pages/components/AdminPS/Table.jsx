@@ -124,32 +124,32 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
     return (
         <>
             {/* <div className=''> */}
-            <div className='flex w-11/12 max-w-screen-xl items-center justify-between'>
-                <h3 className='pt-1 font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
-                <div className='flex items-center justify-center gap-2'>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+            <div className='flex w-11/12 max-w-screen-xl items-center justify-between flex-col md:flex-row'>
+                <div className='pt-1 font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</div>
+                <div className='flex items-center justify-center gap-2 mt-3 md:mt-0'>
+                    <div className=' border h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
                         <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
                     </div>
-                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                    <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         onClick={() => setAddVisible(true)}
                     >
-                        <span className='text-black' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
+                        <span className='text-black hidden md:block' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
                         <i className='pi pi-plus-circle text-xl text-violet-500'></i>
                     </div>
-                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                    <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         onClick={() => setUploadVisible(true)}
                     >
-                        <span className='text-black' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</span>
+                        <span className='text-black hidden md:block' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</span>
                         <i className='pi pi-upload text-xl text-violet-950 rotate-180'></i>
                     </div>
                     {deleteLoading ?
-                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                        <div className=' flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         >
                             <i className='pi pi-spin pi-spinner text-xl text-red-400 '></i>
                         </div>
                     :
-                        <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                        <div className=' flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                             onClick={() => deleteFunctionCall()}
                         >
                             <i className='pi pi-trash text-xl text-red-400 '></i>

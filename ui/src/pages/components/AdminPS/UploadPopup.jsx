@@ -70,7 +70,7 @@ export default function UploadPopup({ visible, setVisible, fetchPs }) {
 
     return (
         <>
-            <Sidebar position='top' visible={visible} className={`w-11/12 md:w-6/12 ${file ? "h-4/6" : "h-3/6"} p-3 rounded-lg mt-5`} onHide={() => { setVisible(false) }}>
+            <Sidebar position='top' visible={visible} className={`w-11/12 md:w-6/12 ${file ? "h-3/5 md:h-4/6" : "h-3/6"} p-3 rounded-lg mt-5`} onHide={() => { setVisible(false) }}>
                 <div className=' flex flex-col items-center justify-between'>
                     <h2 className="text-xl font-semibold text-gray-700 mb-2">Upload Problems</h2>
 

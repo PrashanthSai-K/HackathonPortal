@@ -4,6 +4,7 @@ import ProfileDetails from "../components/ProfileCreation/ProfileDetails";
 import TeamDetails from "../components/ProfileCreation/TeamDetails";
 
 export default function ProfilePage() {
+  
   return (
     <>
       <Navbar />

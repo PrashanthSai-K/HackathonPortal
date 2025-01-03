@@ -33,6 +33,7 @@ export default function TeamCreation({
       console.log("Failed to get Problem Statement Details", e);
     }
   };
+  console.log("ps0",ps);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,15 +63,7 @@ export default function TeamCreation({
       });
       if (response.status === 201) {
         toast.success(response.data.message);
-        setTeamDetails({
-          teamName: "",
-          participants: "",
-          leaderName: "",
-          leaderEmail: "",
-          psId: "",
-          teamMembers: [],
-          docLink: "",
-        });
+        setTeamDetails(emptyData);
         getTeamDetails();
         setVisibleLeft(false);
       }
@@ -81,7 +74,7 @@ export default function TeamCreation({
 
   const [formAction, isLoading] = useActionState(handleSubmit);
 
-  const selectedCountryTemplate = (option, props) => {
+  const selectTemplate = (option, props) => {
     if (option) {
       return (
         <div className="flex align-items-center">
@@ -92,7 +85,7 @@ export default function TeamCreation({
     return <span>{props.placeholder}</span>;
   };
 
-  const countryOptionTemplate = (option) => {
+  const optionTemplate = (option) => {
     return (
       <div className="flex align-items-center max-w-28 py-2 px-4">
         <div>
@@ -111,7 +104,7 @@ export default function TeamCreation({
       <Sidebar
         visible={visibleLeft}
         position="right"
-        className="w-1/3"
+        className="w-11/12 md:w-1/3"
         onHide={() => setVisibleLeft(false)}
       >
         <div className="flex flex-col items-center gap-4">
@@ -263,11 +256,12 @@ export default function TeamCreation({
                   })
                 }
                 options={ps}
-                optionLabel="name" // Assuming `ps` array objects have a `name` field for the dropdown label
+                optionLabel="title"
                 filter
+                filterBy="title,ps_id" 
                 required
-                valueTemplate={selectedCountryTemplate}
-                itemTemplate={countryOptionTemplate}
+                valueTemplate={selectTemplate}
+                itemTemplate={optionTemplate}
                 className="mt-1 w-full px-3 py-3 border border-gray-300 rounded-md text-gray-800"
               />
             </div>

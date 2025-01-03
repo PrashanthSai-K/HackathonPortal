@@ -58,6 +58,7 @@ exports.addTeamDetails = async (req, res) => {
 exports.getInstituteDetails = async (req, res) => {
   const username = res.locals.userData.username;
   try {
+    
     const [instituteData, instituteMetadata] = await sequelize.query(
       "SELECT * FROM institution WHERE poc_email = :username",
       {
@@ -88,7 +89,13 @@ exports.updateInstituteDetails = async (req, res) => {
     pincode,
   } = req.body;
 
+  const institutionId = res.locals.userData.institutionId
   try {
+
+    if(id != institutionId){
+      return res.status(401).send({message : "Trying to modify unauthorized data"})
+    }
+
     const [affectedRows] = await sequelize.query(
       `UPDATE institution 
        SET institution_code = :institution_code, 
@@ -98,10 +105,10 @@ exports.updateInstituteDetails = async (req, res) => {
            city = :city, 
            state = :state, 
            pincode = :pincode 
-       WHERE id = :id`,
+       WHERE id = :institutionId`,
       {
         replacements: {
-          id,
+          institutionId,
           institution_code,
           institution_name,
           institution_type,

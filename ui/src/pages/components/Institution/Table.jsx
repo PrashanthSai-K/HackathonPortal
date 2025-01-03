@@ -116,8 +116,8 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
             {/* <div className=''> */}
             <div className='flex w-11/12 max-w-screen-xl items-center justify-between'>
                 <h3 className='pt-1 font-semibold text-2xl text-violet-950 text-center'>INSTITUTION</h3>
-                <div className='flex items-center justify-center gap-2'>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                <div className='flex items-center justify-center gap-2 mt-3 md:mt-0'>
+                    <div className='hidden border md:mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
                         <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
                     </div>

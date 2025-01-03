@@ -1,4 +1,4 @@
-const { checkAdmin } = require("../middleware/auth/auth.middleware");
+const { checkAdmin, checkUser } = require("../middleware/auth/auth.middleware");
 
 module.exports = app => {
 
@@ -9,6 +9,8 @@ module.exports = app => {
     router.post("/select", checkAdmin, finalist.selectTeam);
 
     router.post("/unselect", checkAdmin, finalist.unselectTeam);
+
+    router.get("/getFinalist", checkUser, finalist.getFinalist);
 
     router.get("/", checkAdmin, finalist.getFinalist);
 

@@ -52,14 +52,14 @@ export default function ProfileDetails() {
               <div className="w-full">
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="instituteCode"
+                    htmlFor="institution_code"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-university text-gray-500"></i>{" "}
                     Institute Code
                   </label>
                   <input
-                    id="instituteCode"
+                    id="institution_code"
                     type="text"
                     value={instituteDetails.institution_code}
                     readOnly
@@ -70,14 +70,14 @@ export default function ProfileDetails() {
                 {/* Institute Name */}
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="instituteName"
+                    htmlFor="institution_name"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-building text-gray-500"></i> Institute
                     Name
                   </label>
                   <input
-                    id="instituteName"
+                    id="institution_name"
                     type="text"
                     value={instituteDetails.institution_name}
                     readOnly
@@ -88,13 +88,13 @@ export default function ProfileDetails() {
                 {/* Institute Type */}
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="instituteType"
+                    htmlFor="institution_type"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-tags text-gray-500"></i> Institute Type
                   </label>
                   <input
-                    id="instituteType"
+                    id="institution_type"
                     type="text"
                     value={instituteDetails.institution_type}
                     readOnly
@@ -105,14 +105,14 @@ export default function ProfileDetails() {
                 {/* Institute Address */}
                 <div className="p-3 w-full">
                   <label
-                    htmlFor="instituteAddress"
+                    htmlFor="address"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-map-marker-alt text-gray-500"></i>{" "}
                     Institute Address
                   </label>
                   <input
-                    id="instituteAddress"
+                    id="address"
                     value={`${instituteDetails.address}, ${instituteDetails.city}, ${instituteDetails.state}`}
                     readOnly
                     rows="2"
@@ -125,14 +125,14 @@ export default function ProfileDetails() {
               <div className="w-full">
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="institutePincode"
+                    htmlFor="pincode"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-envelope text-gray-500"></i> Institute
                     Pincode
                   </label>
                   <input
-                    id="institutePincode"
+                    id="pincode"
                     type="text"
                     value={instituteDetails.pincode}
                     readOnly
@@ -143,13 +143,13 @@ export default function ProfileDetails() {
                 {/* POC Name */}
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="pocName"
+                    htmlFor="poc_name"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-user text-gray-500"></i> POC Name
                   </label>
                   <input
-                    id="pocName"
+                    id="poc_name"
                     type="text"
                     value={instituteDetails.poc_name}
                     readOnly
@@ -160,13 +160,13 @@ export default function ProfileDetails() {
                 {/* POC Email */}
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="pocEmail"
+                    htmlFor="poc_email"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-envelope text-gray-500"></i> POC Email
                   </label>
                   <input
-                    id="pocEmail"
+                    id="poc_email"
                     type="email"
                     value={instituteDetails.poc_email}
                     readOnly
@@ -177,13 +177,13 @@ export default function ProfileDetails() {
                 {/* POC Number */}
                 <div className="p-3 w-full md:w-1/2">
                   <label
-                    htmlFor="pocNumber"
+                    htmlFor="poc_number"
                     className="flex items-center gap-2 text-sm font-medium text-gray-600"
                   >
                     <i className="fas fa-phone text-gray-500"></i> POC Number
                   </label>
                   <input
-                    id="pocNumber"
+                    id="poc_number"
                     type="text"
                     value={instituteDetails.poc_number}
                     readOnly

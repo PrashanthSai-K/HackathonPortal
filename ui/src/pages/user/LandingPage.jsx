@@ -18,8 +18,6 @@ function LangingPage() {
       <Initiatives />
       <Timer />
       <Roadmap />
-      <p className="infooo">ABOUT</p>
-      <h1 className="info">TAN<span className="text-[#7f58f3]">S</span>HACK'22</h1>
       <EventGuidelines />
       <Footer />
     </>
