@@ -6,10 +6,11 @@ import "../../../css/style-login.css";
 import axios from "axios";
 import { userGetRequest } from "../exports";
 import { useAuth } from "../../../AuthContext";
+import { use } from "react";
 
 export default function Navbar() {
 
-  const { user, loggedIn } = useAuth();
+  const { user, loggedIn, getUser } = useAuth();
   const navigate = useNavigate();
 
   const itemtemplate = (item) => (
@@ -38,19 +39,19 @@ export default function Navbar() {
 
 
   const dropDownItemTemplate = (item) => (
-    loggedIn ?  (
+    loggedIn ? (
       user && user.role == item.role && (
-      <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
-        <span>{item.label}</span>
-        <span
-          className="pi pi-angle-down transition-transform"
-          onClick={(e) => {
-            e.target.classList.toggle("rotate-180");
-          }}
-        >
-          {" "}
-        </span>
-      </a>
+        <a className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer">
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
+          >
+            {" "}
+          </span>
+        </a>
       )
     ) : (
       item.role == 'all' && (
@@ -229,6 +230,8 @@ export default function Navbar() {
       template: buttonTemplate,
     }
   ]
+
+
 
   return (
     <nav className="flex w-full bg-white items-center h-20 fixed z-10 ">

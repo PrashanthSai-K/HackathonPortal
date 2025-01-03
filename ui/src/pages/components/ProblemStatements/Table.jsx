@@ -97,10 +97,10 @@ export default function Table({ data, user, getUser }) {
     return (
         <>
             <div className=''>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between flex-col md:flex-row'>
                     <h3 className='pb-2 g-black font-semibold text-2xl text-violet-950 text-center'>PROBLEM STATEMENTS</h3>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
-                        <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
+                    <div className=' border md:mt-24 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                        <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
                     </div>
                 </div>
