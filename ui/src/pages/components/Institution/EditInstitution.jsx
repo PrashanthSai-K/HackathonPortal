@@ -19,9 +19,9 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
 
   const handleSubmit = async () => {
     try {
-      const response = await adminPutRequest("/institute", formData); 
+      const response = await adminPutRequest("/institute", formData);
       if (response.status === 201) {
-        if(response.data.password ){
+        if (response.data.password) {
           toast.success(response.data.message || "Institute details updated successfully.");
           setPassword(response.data.password);
           setVisible(false);
@@ -38,13 +38,13 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
       }
     } catch (error) {
       console.error("Error updating institute details:", error);
-      toast.error("An unexpected error occurred.");
+      toast.error(error.response.data.error || error.response.data.errors[0].message);
     }
   };
-  
+
 
   const [updateInstituteDetails, isLoading] = useActionState(handleSubmit);
-  
+
   useEffect(() => {
     setFormData(instituteDetail);
   }, [instituteDetail]);

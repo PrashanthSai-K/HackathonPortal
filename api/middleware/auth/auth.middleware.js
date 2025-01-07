@@ -6,7 +6,7 @@ exports.createToken = (req,res) => {
   try {
     const result = res.locals.payload;
     JSON.parse(JSON.stringify(result));
-    // console.log(result);
+    console.log(result);
     
     const token = jwt.sign(
       {
@@ -24,8 +24,8 @@ exports.createToken = (req,res) => {
       },
       key
     );
-    // console.log(token);
     return res.status(201).send({token: token});
+
   } catch (error) {
     console.log({"Error Creating Token":error});
   }
@@ -33,7 +33,10 @@ exports.createToken = (req,res) => {
 
 exports.checkAdmin = (req, res, next) => {
   try {
-    const token = req.headers.authorization
+    const token = req.headers.authorization;
+    const cookieToken = req.cookie;
+    console.log("cookieToken :", cookieToken);
+    
     const userData = jwt.verify(token, key);
     if(userData.role != 'admin'){
       return res.status(403).send({ message: "Not Authorized" });
@@ -41,6 +44,8 @@ exports.checkAdmin = (req, res, next) => {
     res.locals.userData = userData;
     next();
   } catch (error) {
+    console.log(error);
+    
     res.status(403).send({ message: "Token is not valid" });
   }
 }

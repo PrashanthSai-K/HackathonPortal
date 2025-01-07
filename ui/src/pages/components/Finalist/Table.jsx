@@ -110,6 +110,23 @@ export default function Table() {
         }
     };
 
+    const unselectTeam = async (data) => {
+        try {
+            if (!window.confirm("Du you want to remove participant from final ?")) {
+                return;
+            }
+            const response = await adminPostRequest("/finalist/unselect", {
+                ps_id: data.ps_id,
+                team_id: data.team_id,
+            });
+            toast.success("Removed Sucessfully");
+            fetchFinalist();
+        } catch (error) {
+            console.log(error);
+            toast.error("Some Error");
+        }
+    };
+
     return (
         <>
             {isLoading ?

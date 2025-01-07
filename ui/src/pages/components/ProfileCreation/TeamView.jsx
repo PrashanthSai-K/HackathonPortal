@@ -6,9 +6,10 @@ export default function TeamView({ visible, setVisible, modalData }) {
     
   return (
     <Dialog
-      header="Problem Statement Details"
+      header="Team Details"
       headerClassName="p-2 w-full"
       visible={visible}
+      draggable={false}
       onHide={() => {
         if (!visible) return;
         setVisible(false);

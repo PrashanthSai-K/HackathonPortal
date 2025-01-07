@@ -23,6 +23,7 @@ export const adminGetRequest = async (url) => {
       headers: {
         Authorization: `${token}`,
       },
+      withCredentials: true,
     });
     return response;
   } catch (error) {
@@ -37,6 +38,7 @@ export const adminPostRequest = async (url, data) => {
       headers: {
         Authorization: `${token}`,
       },
+      withCredentials: true,
     });
     return response;
   } catch (error) {
@@ -51,6 +53,7 @@ export const adminPutRequest = async (url, data) => {
       headers: {
         Authorization: `${token}`,
       },
+      withCredentials: true,
     });
     return response;
   } catch (error) {
@@ -88,3 +91,10 @@ export const userPutRequest = async (url, data) => {
 };
 
 
+export const deBounce = (fn, timeout = 300) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), timeout);
+  };
+};

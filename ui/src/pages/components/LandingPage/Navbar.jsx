@@ -20,78 +20,84 @@ export default function Navbar() {
   const itemtemplate = (item) =>
     loggedIn
       ? user.role == item.role &&
-        (item.isExternal ? (
-          <a
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
-              item.isSubmenu ? "min-w-[150px] bg-white" : ""
+      (item.isExternal ? (
+        <a
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
             }`}
-            onClick={() => handleOpenPDF()}
-            href={Guidelines}
-          >
-            Guidelines
-          </a>
-        ) : (
-          <Link
-            to={`${item.link}`}
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
-              item.link === location.pathname ||
+          onClick={() => handleOpenPDF()}
+          href={Guidelines}
+        >
+          Guidelines
+        </a>
+      ) : (
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
               (location.pathname === "/" && item.label === "Home")
-                ? "bg-gray-200"
-                : ""
+              ? "bg-gray-200"
+              : ""
             } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-          >
-            <span>{item.label}</span>
-          </Link>
-        ))
-      : item.role == "all" && (
-          <Link
-            to={`${item.link}`}
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer  ${
-              item.link === location.pathname ||
+        >
+          <span>{item.label}</span>
+        </Link>
+      ))
+      : item.role == "all" && (item.isExternal ? (
+        <a
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
+            }`}
+          onClick={() => handleOpenPDF()}
+          href={Guidelines}
+        >
+          Guidelines
+        </a>
+      ) : (
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
               (location.pathname === "/" && item.label === "Home")
-                ? "bg-gray-200"
-                : ""
+              ? "bg-gray-200"
+              : ""
             } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-          >
-            <span>{item.label}</span>
-          </Link>
-        );
+        >
+          <span>{item.label}</span>
+        </Link>
+      ));
 
   const dropDownItemTemplate = (item) =>
     loggedIn
       ? user &&
-        user.role == item.role && (
-          <a
-            href={`/${item.link}`}
-            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+      user.role == item.role && (
+        <a
+          href={`/${item.link}`}
+          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        >
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
           >
-            <span>{item.label}</span>
-            <span
-              className="pi pi-angle-down transition-transform"
-              onClick={(e) => {
-                e.target.classList.toggle("rotate-180");
-              }}
-            >
-              {" "}
-            </span>
-          </a>
-        )
+            {" "}
+          </span>
+        </a>
+      )
       : item.role == "all" && (
-          <a
-            href={`/${item.link}`}
-            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        <a
+          href={`/${item.link}`}
+          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        >
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
           >
-            <span>{item.label}</span>
-            <span
-              className="pi pi-angle-down transition-transform"
-              onClick={(e) => {
-                e.target.classList.toggle("rotate-180");
-              }}
-            >
-              {" "}
-            </span>
-          </a>
-        );
+            {" "}
+          </span>
+        </a>
+      );
 
   const handleLogout = () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
@@ -155,6 +161,7 @@ export default function Navbar() {
           icon: "pi pi-list-check",
           role: "all",
           link: "/#guidelines",
+          isExternal: true,
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -238,13 +245,6 @@ export default function Navbar() {
       link: "/finalist",
       template: itemtemplate,
     },
-    // {
-    //   label: "User",
-    //   role: "admin",
-    //   icon: "pi pi-database",
-    //   link: "/userManagement",
-    //   template: itemtemplate,
-    // },
     {
       label: "Institute",
       role: "admin",

@@ -71,8 +71,8 @@ export default function Home() {
           </span>
         </h2>
 
-        <a className="login-button join nodeHover" href="/problems">
-          Join the Event{" "}
+        <a className="login-button join nodeHover" href="/team">
+          Register Now{" "}
         </a>
         <p
           style={{

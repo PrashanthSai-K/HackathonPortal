@@ -22,6 +22,8 @@ export default function TeamCreation({
   };
   
   const { user } = useAuth();
+  console.log(user);
+  
   const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
 
