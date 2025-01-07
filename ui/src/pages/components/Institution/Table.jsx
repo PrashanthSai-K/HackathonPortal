@@ -2,42 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-// import PopupModal from './PopupModal';
-import SHA256 from 'crypto-js/sha256';
-import Base64 from 'crypto-js/enc-base64';
-import { useNavigate } from 'react-router';
-// import UploadPopup from './UploadPopup';
 import { useActionState } from '../../../CustomHooks';
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 import EditInstitution from './EditInstitution';
 import PasswordPopup from './PasswordPopup';
-// import { ProductService } from './service/ProductService';
 
 export default function Table({ data, user, setAddVisible, fetchInstitutionCall, fetchPs }) {
 
     const [institute, setInstitute] = useState([]);
 
     const [globalFilter, setGlobalFilter] = useState("")
-
-    const navigate = useNavigate();
-
-    // const appendSlug = (data) => {
-    //     const result = data.map((d) => {
-    //         // Generate a consistent hash using the problem ID (or any other field you want)
-    //         const hash = SHA256(d.ps_id.toString());  // Hash the problem ID or any other field
-    //         let slug = Base64.stringify(hash).substring(0, 10);  // Convert to Base64 and take first 10 characters
-
-    //         // Replace URL-unsafe characters with URL-safe alternatives
-    //         slug = slug.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-
-    //         return {
-    //             ...d, route: slug
-    //         };
-    //     });
-    //     setPs(result);
-    // }
-
 
     useEffect(() => {
         setInstitute(data)
@@ -60,16 +35,12 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
         return icon;
     };
 
-    // const [visible, setVisible] = useState(false);
-
     const [modalData, setModalData] = useState({});
-
 
     const setModal = (rowData) => {
         setModalData(rowData);
         setEditVisible(true);
     }
-
 
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>

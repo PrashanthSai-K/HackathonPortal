@@ -57,6 +57,7 @@ exports.addTeamDetails = async (req, res) => {
 
 exports.getInstituteDetails = async (req, res) => {
   const username = res.locals.userData.username;
+
   try {
     
     const [instituteData, instituteMetadata] = await sequelize.query(

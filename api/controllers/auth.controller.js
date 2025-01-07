@@ -23,7 +23,7 @@ exports.register_institute = async (req, res) => {
 
     const hashedPass = await bcrypt.hash(password, 10);
     // console.log(hashedPass);
-  
+
     const [result, metadata] = await sequelize.query(
       `INSERT INTO institution (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number ) 
            VALUES ( :institution_code, :institution_name, :institution_type, :address, :city, :state, :pincode, :poc_name, :poc_email, :poc_number)`,
@@ -78,61 +78,18 @@ exports.register_institute = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-
-    const [instituteDetails, instituteDetailsMetaData] = await sequelize.query(
-      "SELECT * FROM institution WHERE poc_email = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    const [adminData, adminMetadata] = await sequelize.query(
-      "SELECT * FROM admin_users WHERE username = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    if(adminData != undefined){
-      const result = await bcrypt.compare(password, adminData.password);
-      if(result){
-        adminData.role = "admin";
-        res.locals.payload = {...adminData,...instituteDetails};
-        return next();
-      }
-    }
-
-    const [userData, userMetadata] = await sequelize.query(
-      "SELECT * FROM users WHERE username = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-    if(userData != undefined){
-      const result = await bcrypt.compare( password, userData.password);      
-      if(result){
-        userData.role = "user";
-        res.locals.payload = {...userData,...instituteDetails};
-        return next();
-      }
-    }
-    return res.status(401).send({ error: "Invalid username or password" });
-  } catch (error) {
-    console.error({ "Error in Loginuser": error });
-    return res
-      .status(500)
-      .send({ error: "An error occurred while logging in" });
-  }
+exports.userLogin = async (req, res) => {
+  const token = res.locals.token;
+  console.log("fvd");
+  
+  return res.status(201).send({token: token});
 };
+
+
 
 exports.getUser = async (req, res) => {
   const token = req.headers.authorization;
+  
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);
@@ -141,3 +98,29 @@ exports.getUser = async (req, res) => {
   }
 };
 
+
+exports.updateLogout = async (req, res) => {
+  const token = req.headers.authorization;
+  console.log(token);
+
+  if (!token) {
+    return res.status(400).send({ message: "Authorization token missing" }); 
+  }
+
+  try {
+    const [data] = await sequelize.query(
+      "INSERT INTO unauth_tokens (token) VALUES (:token)", {
+        replacements: { token },
+      }
+    );
+
+    if (!data) {
+      return res.status(500).send({ message: "Failed to update logout data" });
+    }
+
+    return res.status(201).send({ message: "Logout data updated successfully" });
+  } catch (err) {
+    console.error("Error updating logout information:", err);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};

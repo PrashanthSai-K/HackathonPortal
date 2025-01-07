@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { useNavigate } from 'react-router';
 import PopupModal from './PopupModal';
-import { adminPostRequest, userPostRequest } from '../exports';
+import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 
 
@@ -13,8 +12,6 @@ export default function Table({ data, fetchPs }) {
     const [ps, setPs] = useState([]);
 
     const [globalFilter, setGlobalFilter] = useState("")
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         setPs(data)
@@ -112,14 +109,6 @@ export default function Table({ data, fetchPs }) {
     return (
         <>
             <div className=''>
-                {/* <div className='flex items-center justify-between'>
-                    <h3 className='pb-2 g-black font-semibold text-2xl text-[#7f58f3] text-center'>PROBLEM STATEMENTS</h3>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
-                        <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
-                        <i className='pi pi-search text-gray-300'></i>
-                    </div>
-                </div> */}
-
                 <div className="card w-full pt-3 flex relative -z-50 items-center justify-center px-4 md:px-8  ">
                     <DataTable sortIcon={customSortIcon} value={ps} emptyMessage={tableLoader} paginator={ps.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
                         <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm ' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>

@@ -87,4 +87,10 @@ export const userPutRequest = async (url, data) => {
   }
 };
 
-
+export const deBounce = (fn, timeout = 300) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), timeout);
+  };
+};

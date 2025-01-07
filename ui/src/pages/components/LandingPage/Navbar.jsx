@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Menubar } from "primereact/menubar";
 import Logo from "../../../assets/logo.png";
 import { useLocation } from "react-router";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import "../../../css/style-login.css";
 import { useAuth } from "../../../AuthContext";
 import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
+import { userPostRequest } from "../exports";
 
 export default function Navbar() {
   const { user, loggedIn } = useAuth();
@@ -20,87 +21,100 @@ export default function Navbar() {
   const itemtemplate = (item) =>
     loggedIn
       ? user.role == item.role &&
-        (item.isExternal ? (
-          <a
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
-              item.isSubmenu ? "min-w-[150px] bg-white" : ""
+      (item.isExternal ? (
+        <a
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
             }`}
-            onClick={() => handleOpenPDF()}
-            href={Guidelines}
-          >
-            Guidelines
-          </a>
-        ) : (
-          <Link
-            to={`${item.link}`}
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${
-              item.link === location.pathname ||
-              (location.pathname === "/" && item.label === "Home")
-                ? "bg-gray-200"
-                : ""
+          onClick={() => handleOpenPDF()}
+          href={Guidelines}
+        >
+          Guidelines
+        </a>
+      ) : (
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
+            (location.pathname === "/" && item.label === "Home")
+            ? "bg-gray-200"
+            : ""
             } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-          >
-            <span>{item.label}</span>
-          </Link>
-        ))
+        >
+          <span>{item.label}</span>
+        </Link>
+      ))
       : item.role == "all" && (
-          <Link
-            to={`${item.link}`}
-            className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer  ${
-              item.link === location.pathname ||
-              (location.pathname === "/" && item.label === "Home")
-                ? "bg-gray-200"
-                : ""
+        <Link
+          to={`${item.link}`}
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer  ${item.link === location.pathname ||
+            (location.pathname === "/" && item.label === "Home")
+            ? "bg-gray-200"
+            : ""
             } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-          >
-            <span>{item.label}</span>
-          </Link>
-        );
+        >
+          <span>{item.label}</span>
+        </Link>
+      );
 
   const dropDownItemTemplate = (item) =>
     loggedIn
       ? user &&
-        user.role == item.role && (
-          <a
-            href={`/${item.link}`}
-            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+      user.role == item.role && (
+        <a
+          href={`/${item.link}`}
+          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        >
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
           >
-            <span>{item.label}</span>
-            <span
-              className="pi pi-angle-down transition-transform"
-              onClick={(e) => {
-                e.target.classList.toggle("rotate-180");
-              }}
-            >
-              {" "}
-            </span>
-          </a>
-        )
+            {" "}
+          </span>
+        </a>
+      )
       : item.role == "all" && (
-          <a
-            href={`/${item.link}`}
-            className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        <a
+          href={`/${item.link}`}
+          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+        >
+          <span>{item.label}</span>
+          <span
+            className="pi pi-angle-down transition-transform"
+            onClick={(e) => {
+              e.target.classList.toggle("rotate-180");
+            }}
           >
-            <span>{item.label}</span>
-            <span
-              className="pi pi-angle-down transition-transform"
-              onClick={(e) => {
-                e.target.classList.toggle("rotate-180");
-              }}
-            >
-              {" "}
-            </span>
-          </a>
-        );
+            {" "}
+          </span>
+        </a>
+      );
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     const confirmLogout = window.confirm("Are you sure you want to log out?");
     if (confirmLogout) {
+      await updateLogout();
       localStorage.removeItem("token");
       navigate("/");
       window.location.reload();
     }
   };
+
+  const updateLogout = async () => {
+    try {
+      const response = await userPostRequest("/updateLogout");
+  
+      if (response.status === 201) {
+        console.log(response.data.message); 
+      } else {
+        console.log("Failed to update logout:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error updating logout information:", error);
+    }
+  };
+  
 
   const buttonTemplate = () => (
     <Link
@@ -238,13 +252,6 @@ export default function Navbar() {
       link: "/finalist",
       template: itemtemplate,
     },
-    // {
-    //   label: "User",
-    //   role: "admin",
-    //   icon: "pi pi-database",
-    //   link: "/userManagement",
-    //   template: itemtemplate,
-    // },
     {
       label: "Institute",
       role: "admin",

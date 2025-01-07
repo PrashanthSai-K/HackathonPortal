@@ -6,7 +6,6 @@ import Base64 from 'crypto-js/enc-base64';
 import Navbar from '../components/LandingPage/Navbar';
 import Table from '../components/ProblemStatementView/Table';
 import { useAuth } from '../../AuthContext';
-import { use } from 'react';
 
 export default function ProblemStatementsView() {
 

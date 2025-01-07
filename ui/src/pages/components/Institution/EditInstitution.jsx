@@ -1,6 +1,6 @@
 import { Sidebar } from "primereact/sidebar";
 import React, { useEffect, useState } from "react";
-import { adminPostRequest, adminPutRequest, userPutRequest } from "../exports";
+import {adminPutRequest } from "../exports";
 import { useActionState } from "../../../CustomHooks";
 import { toast } from "react-toastify";
 
@@ -19,7 +19,7 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
 
   const handleSubmit = async () => {
     try {
-      const response = await adminPutRequest("/institute", formData); 
+      const response = await adminPutRequest("/institute", formData);
       if (response.status === 201) {
         if(response.data.password ){
           toast.success(response.data.message || "Institute details updated successfully.");

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
