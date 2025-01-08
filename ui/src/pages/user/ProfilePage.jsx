@@ -19,7 +19,7 @@ export default function ProfilePage() {
         </h3>
         <div className="flex flex-col justify-center items-center w-full">
           <ProfileDetails />
-          <TeamDetails/>
+          {/* <TeamDetails/> */}
         </div>
       </section>
     </>

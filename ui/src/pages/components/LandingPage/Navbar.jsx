@@ -7,7 +7,8 @@ import { useNavigate } from "react-router";
 import "../../../css/style-login.css";
 import { useAuth } from "../../../AuthContext";
 import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
-import { userPostRequest } from "../exports";
+import { updateLogout } from "../exports";
+
 
 export default function Navbar() {
   const { user, loggedIn } = useAuth();
@@ -33,7 +34,7 @@ export default function Navbar() {
       ) : (
         <Link
           to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
+          className={`flex gap-2 items-center px-3 py-1 text-nowrap rounded-lg cursor-pointer ${item.link === location.pathname ||
             (location.pathname === "/" && item.label === "Home")
             ? "bg-gray-200"
             : ""
@@ -42,10 +43,19 @@ export default function Navbar() {
           <span>{item.label}</span>
         </Link>
       ))
-      : item.role == "all" && (
+      : item.role == "all" && (item.isExternal ? (
+        <a
+          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
+            }`}
+          onClick={() => handleOpenPDF()}
+          href={Guidelines}
+        >
+          Guidelines
+        </a>
+      ) : (
         <Link
           to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer  ${item.link === location.pathname ||
+          className={`flex gap-2 items-center px-3 text-nowrap py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
             (location.pathname === "/" && item.label === "Home")
             ? "bg-gray-200"
             : ""
@@ -53,7 +63,7 @@ export default function Navbar() {
         >
           <span>{item.label}</span>
         </Link>
-      );
+      ));
 
   const dropDownItemTemplate = (item) =>
     loggedIn
@@ -61,7 +71,7 @@ export default function Navbar() {
       user.role == item.role && (
         <a
           href={`/${item.link}`}
-          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
+          className="flex gap-2 text-nowrap items-center px-3 py-1 rounded-lg cursor-pointer"
         >
           <span>{item.label}</span>
           <span
@@ -101,25 +111,10 @@ export default function Navbar() {
     }
   };
 
-  const updateLogout = async () => {
-    try {
-      const response = await userPostRequest("/updateLogout");
-  
-      if (response.status === 201) {
-        console.log(response.data.message); 
-      } else {
-        console.log("Failed to update logout:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error updating logout information:", error);
-    }
-  };
-  
-
   const buttonTemplate = () => (
     <Link
       to={user ? "" : "/login"}
-      className="py-1 px-2 bg-violet-950 text-white rounded-lg ml-3 md:ml-0"
+      className="py-2 px-3 md:py-1 md:px-2 bg-violet-950 text-white rounded-lg ml-3 md:ml-0"
       onClick={() => {
         user && handleLogout();
       }}
@@ -147,7 +142,7 @@ export default function Navbar() {
       label: "Final Participants",
       icon: "pi pi-database",
       role: "all",
-      link: "/finalist",
+      link: "/finalists",
       template: itemtemplate,
     },
     {
@@ -169,6 +164,7 @@ export default function Navbar() {
           icon: "pi pi-list-check",
           role: "all",
           link: "/#guidelines",
+          isExternal: true,
           template: itemtemplate,
           isSubmenu: true,
         },
@@ -201,7 +197,7 @@ export default function Navbar() {
       label: "Final Participants",
       icon: "pi pi-database",
       role: "user",
-      link: "/userfinalist",
+      link: "/finalists",
       template: itemtemplate,
     },
     {
@@ -275,6 +271,7 @@ export default function Navbar() {
     },
   ];
 
+  const isMobile = window.innerWidth <= 800;
   return (
     <nav className="flex w-full bg-white items-center h-20 fixed z-50">
       <div className="w-2/3 md:w-1/3 flex ">
@@ -285,8 +282,9 @@ export default function Navbar() {
       </div>
 
       <Menubar
-        className="flex bg-white h-full w-1/3 md:w-2/3 mr-3 justify-end"
+        className="flex bg-white h-12 md:h-full w-1/3 md:w-2/3 mr-3 justify-end"
         model={navItems}
+        style={isMobile ? { height: "40px", width: "100%", lineHeight: "45px" } : {}}
       />
     </nav>
   );

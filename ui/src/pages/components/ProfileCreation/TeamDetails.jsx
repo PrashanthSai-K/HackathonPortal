@@ -23,7 +23,7 @@ export default function TeamDetails() {
 
   const setModal = (rowData) => {
     const data = Object.entries(rowData)
-      .slice()
+      .slice(2, 11)
       .map(([key, value]) => ({
         key: formatKey(key),
         value:
@@ -83,9 +83,9 @@ export default function TeamDetails() {
 
   return (
     <div className="w-full flex flex-col items-center justify-center mb-10 mt-10">
-      <div className="flex items-center justify-around w-8/12 py-2">
+      <div className="flex items-center justify-around w-8/12 py-2]">
         {/* Name aligned to the left */}
-        <div className="pb-2 font-semibold text-2xl text-[#7f58f3] text-center">
+        <div className=" font-semibold text-lg md:text-2xl text-[#7f58f3] text-center">
           TEAM DETAILS
         </div>
 

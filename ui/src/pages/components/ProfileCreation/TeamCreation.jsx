@@ -22,6 +22,8 @@ export default function TeamCreation({
   };
   
   const { user } = useAuth();
+  // console.log(user);
+  
   const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
 
@@ -33,7 +35,7 @@ export default function TeamCreation({
       console.log("Failed to get Problem Statement Details", e);
     }
   };
-  console.log("ps0",ps);
+  // console.log("ps0",ps);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -104,7 +106,7 @@ export default function TeamCreation({
       <Sidebar
         visible={visibleLeft}
         position="right"
-        className="w-1/3"
+        className="w-11/12 md:w-1/3"
         onHide={() => setVisibleLeft(false)}
       >
         <div className="flex flex-col items-center gap-4">

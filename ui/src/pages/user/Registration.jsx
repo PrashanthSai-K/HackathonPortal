@@ -3,11 +3,12 @@ import "../../css/style-login.css";
 import { deBounce, userGetRequest, userPostRequest } from "../components/exports";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import { Dropdown } from "primereact/dropdown";
-import { useActionState } from "../../CustomHooks";
+import { useActionState, useInstitutionFetcher } from "../../CustomHooks";
 import { AutoComplete } from "primereact/autocomplete";
 
 export default function Registration() {
+
+
   const data = {
     instituteCode: "",
     instituteName: "",
@@ -50,27 +51,51 @@ export default function Registration() {
     }
   };
 
+  const [registration, isLoading] = useActionState(handleSubmit)
+
   const [instituteCode, setInstituteCode] = useState([]);
   const [instituteName, setInstituteName] = useState([]);
 
-  const searchSuggestions = deBounce(async (event) => {
+  const searchCodeSuggestions = deBounce(async (event) => {
     const query = event.query;
     if (!query) {
       setInstituteCode([]);
+      return
+    }
+    try {
+      const response = await userGetRequest(`/suggestions/code?query=${query}`);
+      const codes = response.data.data.map((d) => d.InstitutionCode);
+      setInstituteCode(codes);
+    } catch (error) {
+      console.log(error);
+    }
+  })
+
+  const searchNameSuggestions = deBounce(async (event) => {
+    const query = event.query;
+    if (!query) {
       setInstituteName([]);
       return
     }
     try {
-      const response = await userGetRequest(`/suggestions?query=${query}`);
-      const codes = response.data.data.map((d) => d.InstitutionCode);
+      const response = await userGetRequest(`/suggestions/name?query=${query}`);
       const names = response.data.data.map((d) => d.InstitutionName);
-      setInstituteCode(codes);
       setInstituteName(names);
     } catch (error) {
       console.log(error);
     }
   })
 
+  const fetchInstitutionName  = useInstitutionFetcher(setFormData);
+
+  const onInstitutionCodeChange = async (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    fetchInstitutionName(value);
+  }
 
   return (
     <>
@@ -81,15 +106,15 @@ export default function Registration() {
               Institute Registration
             </legend>
             <p>Fill out the details below to register your institute</p>
-            <form onSubmit={handleSubmit} className="w-full">
+            <form onSubmit={registration} className="w-full">
               {/* Institute Details */}
               <fieldset>
                 <legend>Institute Details</legend>
                 <div className="form-group_signup">
-                  <AutoComplete className="w-full" required name="instituteCode" placeholder="Institute Code" value={formData.instituteCode} completeMethod={searchSuggestions} suggestions={instituteCode} onChange={handleChange} />
+                  <AutoComplete className="w-full" required name="instituteCode" placeholder="Institute Code" value={formData.instituteCode} completeMethod={searchCodeSuggestions} suggestions={instituteCode} onChange={onInstitutionCodeChange} />
                 </div>
                 <div className="form-group_signup">
-                  <AutoComplete className="w-full" required name="instituteName" placeholder="Institute Name" value={formData.instituteName} completeMethod={searchSuggestions} suggestions={instituteName} onChange={handleChange} />
+                  <AutoComplete className="w-full" required name="instituteName" placeholder="Institute Name" value={formData.instituteName} completeMethod={searchNameSuggestions} suggestions={instituteName} onChange={handleChange} />
                 </div>
 
                 <div className="form-group_signup">
@@ -111,9 +136,9 @@ export default function Registration() {
                     <option value="" disabled>
                       Select Institute Type
                     </option>
-                    <option value="University">Engineering</option>
-                    <option value="College">Arts</option>
-                    <option value="School">Others</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Others">Others</option>
                   </select>
                 </div>
               </fieldset>
@@ -142,7 +167,20 @@ export default function Registration() {
 
               {/* Submit Button */}
               <div className="form-group_signup">
-                <input type="submit" className="login_btn font-semibold" value="Submit" />
+                <button
+                  type="submit"
+                  className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+                  disabled={isLoading}
+                >
+                  {!isLoading ? (
+                    "Register"
+                  ) : (
+                    <i
+                      style={{ color: "white", fontSize: "1rem" }}
+                      className="gap-2 px-3 py-1 pi pi-spin pi-spinner"
+                    ></i>
+                  )}
+                </button>
               </div>
             </form>
           </div>

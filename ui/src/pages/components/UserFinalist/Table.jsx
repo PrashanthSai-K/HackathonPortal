@@ -39,11 +39,11 @@ export default function Table() {
 
         rowData.status === "SUBMITTED" ?
             (
-                <div className='bg-orange-500 p-1 h-8 w-24 rounded-lg flex items-center justify-center' >
+                <div className='bg-orange-500 p-1   rounded-lg flex items-center justify-center' >
                     <p className='text-white text-sm'>{rowData.status}</p>
                 </div>
             ) : (
-                <div className='bg-green-500 p-1 h-8 w-24 rounded-lg flex items-center justify-center' >
+                <div className='bg-green-500 p-1 rounded-lg flex items-center justify-center' >
                     <p className='text-white text-sm'>{rowData.status}</p>
                 </div>
             )
@@ -75,7 +75,7 @@ export default function Table() {
                         <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
                         <Column field="leader_name" header="Leader Name" sortable align={"center"} bodyStyle={{ height: "3rem", width: "10rem" }} headerClassName='text-white border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm '></Column>
                         <Column field="number_of_participants" sortable header="Participants" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
-                        <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 justify-center items-center flex border-r-2 p-1 text-sm'></Column>
+                        <Column field="status" header="Status" body={statusTemplate} align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2 border-r-2 p-1 text-sm'></Column>
                     </DataTable>
                 </div>
         </>

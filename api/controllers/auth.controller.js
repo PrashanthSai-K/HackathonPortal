@@ -44,12 +44,16 @@ exports.register_institute = async (req, res) => {
       }
     );
 
+    console.log("id : ", result);
+
+
     const [result1, metadata1] = await sequelize.query(
-      `INSERT INTO users (username, password ) VALUES ( :poc_email, :password )`,
+      `INSERT INTO users (username, password, institution_id ) VALUES ( :poc_email, :password, :institution_id )`,
       {
         replacements: {
           poc_email: pocEmail,
           password: hashedPass,
+          institution_id: result,
         },
         transaction,
       }
@@ -79,9 +83,7 @@ exports.register_institute = async (req, res) => {
 };
 
 exports.userLogin = async (req, res) => {
-  const token = res.locals.token;
-  console.log("fvd");
-  
+  const token = res.locals.token;  
   return res.status(201).send({token: token});
 };
 
@@ -97,7 +99,6 @@ exports.getUser = async (req, res) => {
     res.status(403).send({ message: "Token is not valid" });
   }
 };
-
 
 exports.updateLogout = async (req, res) => {
   const token = req.headers.authorization;
@@ -124,3 +125,58 @@ exports.updateLogout = async (req, res) => {
     return res.status(500).send({ message: "Internal server error" });
   }
 };
+
+
+exports.getCodeSuggestions = async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const [result, metadata] = await sequelize.query("SELECT * FROM institution_predefined where InstitutionCode LIKE :query LIMIT 20", {
+      replacements: {
+        query: `%${query}%`
+      }
+    });
+    res.status(200).send({ data: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: "Some error" });
+  }
+}
+
+exports.getNameSuggestions = async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const [result, metadata] = await sequelize.query("SELECT * FROM institution_predefined where InstitutionName LIKE :query LIMIT 20", {
+      replacements: {
+        query: `%${query}%`
+      }
+    });
+    res.status(200).send({ data: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ error: "Some error" });
+  }
+}
+
+exports.getInstituteData = async (req, res) => {
+  try {
+    const  {id}  = req.params;
+
+    const [result, _] = await sequelize.query("SELECT * FROM institution_predefined where InstitutionCode = :id",
+      {
+        replacements: {
+          id: id
+        }
+      }
+    );
+console.log(result[0]);
+
+    return res.status(200).send({ data: result[0] });
+
+  } catch (error) {
+    console.log(error);
+    
+    res.status(500).send({ error: "Some error" });
+  }
+}

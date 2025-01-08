@@ -59,7 +59,7 @@ exports.getInstituteDetails = async (req, res) => {
   const username = res.locals.userData.username;
 
   try {
-    
+
     const [instituteData, instituteMetadata] = await sequelize.query(
       "SELECT * FROM institution WHERE poc_email = :username",
       {
@@ -93,8 +93,8 @@ exports.updateInstituteDetails = async (req, res) => {
   const institutionId = res.locals.userData.institutionId
   try {
 
-    if(id != institutionId){
-      return res.status(401).send({message : "Trying to modify unauthorized data"})
+    if (id != institutionId) {
+      return res.status(401).send({ message: "Trying to modify unauthorized data" })
     }
 
     const [affectedRows] = await sequelize.query(
@@ -222,6 +222,7 @@ exports.updateInstituteDetailsAdmin = async (req, res) => {
         transaction
       }
     );
+
     console.log("completed update");
 
     if (passReq != true) {
@@ -232,10 +233,13 @@ exports.updateInstituteDetailsAdmin = async (req, res) => {
     }
 
     const [password, hashedPassword] = await generateEncryptedPassword();
+    console.log(password , "   ", hashedPassword);
+    
 
-    await sequelize.query("UPDATE users SET username = :poc_email, password = :password WHERE username = :poc_email", {
+    await sequelize.query("UPDATE users SET username = :poc_email, password = :password WHERE institution_id = :institution_id", {
       replacements: {
         poc_email: poc_email,
+        institution_id: institute[0].id,
         password: hashedPassword
       },
       transaction

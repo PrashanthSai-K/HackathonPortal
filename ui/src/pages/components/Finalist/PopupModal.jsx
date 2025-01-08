@@ -5,7 +5,6 @@ import { Column } from 'primereact/column';
 
 export default function PopupModal({ visible, setVisible, modalData }) {
 
-
     return (
         <>
             <Dialog header="Problem Statement Details" headerClassName="p-2 w-full" visible={visible} onHide={() => { if (!visible) return; setVisible(false); }}

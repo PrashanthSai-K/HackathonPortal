@@ -38,7 +38,7 @@ export default function AdminProblemStatements() {
     return (
         <>
             <Navbar />
-            <section className="home w-full flex flex-col items-center justify-center" id="home">
+            <section className="home w-full flex flex-col items-center justify-center pt-24" id="home">
                 <div className="circle hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>
                 <div className="circle  hidden md:block"></div>

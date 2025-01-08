@@ -3,6 +3,7 @@ const key = process.env.JWT_KEY;
 const jwt = require("jsonwebtoken");
 const sequelize = require("../../config/database");
 const bcrypt = require("bcrypt");
+const { TokenExpiredError } = jwt; 
 
 exports.createToken = async (req, res, next) => {
   try {
@@ -23,7 +24,7 @@ exports.createToken = async (req, res, next) => {
         pocEmail: result.poc_email,
       },
       key,
-      { expiresIn: "1h" }
+      { expiresIn: "4h" }
     );
 
     res.locals.token = token;
@@ -97,6 +98,9 @@ exports.loginUser = async (req, res, next) => {
 exports.checkAdmin = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
+    const cookieToken = req.cookie;
+    console.log("cookieToken :", cookieToken);
+    
     const userData = jwt.verify(token, key);
     if (userData.role != "admin") {
       return res.status(403).send({ message: "Not Authorized" });
@@ -109,6 +113,11 @@ exports.checkAdmin = async (req, res, next) => {
     }
     next();
   } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      console.log("Token expired:", error);
+      return res.status(401).send({ message: "Token expired , Please Login again", expiredAt: error.expiredAt });
+    }
+    console.log(error);
     res.status(403).send({ message: "Token is not valid" });
   }
 };
@@ -117,17 +126,23 @@ exports.checkUser = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const userData = jwt.verify(token, key);
+    console.log("userdata",userData);
+    
     if (userData.role != "user") {
       return res.status(403).send({ message: "Not Authorized" });
     }
     res.locals.userData = userData;
-    const inValidToken = await checkUnauthorizedToken(token);
-    if (inValidToken !== null) {
+    const inValidToken = await checkUnauthorizedToken(token);    
+    if (inValidToken) {
       console.log("unauth");
       return res.status(401).send({ message: "unauthorized access" });
     }
     next();
   } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      console.log("Token expired:", error);
+      return res.status(401).send({ message: "Token expired , Please Login again", expiredAt: error.expiredAt });
+    }
     console.log(error);
     res.status(403).send({ message: "Token is not valid" });
   }
@@ -143,12 +158,13 @@ const checkUnauthorizedToken = async (token) => {
         },
       }
     );
-    if (!inValidToken) {
-      return null;
+    if (inValidToken.length > 0) {      
+      return true;
     }
-    return inValidToken;
+    return false;
   } catch (error) {
-    throw error;
+    console.log(error);
+    return false;
   }
 };
 
@@ -159,6 +175,10 @@ exports.checkToken = (req, res, next) => {
     res.locals.userData = userData;
     next();
   } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      console.log("Token expired:", error);
+      return res.status(401).send({ message: "Token expired , Please Login again", expiredAt: error.expiredAt });
+    }
     res.status(403).send({ message: "Token is not valid" });
   }
 };

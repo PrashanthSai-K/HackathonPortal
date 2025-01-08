@@ -65,7 +65,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
             <Sidebar
                 visible={visible}
                 position="right"
-                className="w-1/3"
+                className="w-10/12 md:w-1/3"
                 onHide={() => setVisible(false)}
             >
                 <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">

@@ -87,8 +87,8 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
             {/* <div className=''> */}
             <div className='flex w-11/12 max-w-screen-xl items-center justify-between'>
                 <h3 className='pt-1 font-semibold text-2xl text-violet-950 text-center'>INSTITUTION</h3>
-                <div className='flex items-center justify-center gap-2'>
-                    <div className='hidden border mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                <div className='flex items-center justify-center gap-2 mt-3 md:mt-0'>
+                    <div className='hidden border md:mt-28 h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
                         <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
                     </div>
@@ -113,7 +113,7 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
                 </div>
             </div>
 
-            <div className="card w-full pt-3 flex relative -z-50 items-center justify-center px-4 md:px-8  ">
+            <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
                 <DataTable loader selectionMode={"multiple"} selection={selectedRows} onSelectionChange={handleSelectionChange} sortIcon={customSortIcon} value={institute} emptyMessage={tableLoader} paginator={institute.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-xl'>
                     <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName=' p-1 bg-violet-950 text-sm' className='border-r border-b p-1 text-center text-sm'></Column>
                     <Column field="institution_code" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>

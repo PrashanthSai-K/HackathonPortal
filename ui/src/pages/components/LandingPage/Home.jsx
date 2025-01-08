@@ -39,7 +39,8 @@ export default function Home() {
           <span
             style={{
               letterSpacing: "5px",
-              fontSize: "50px",
+              fontSize: "40px",
+              fontWeight: "bold",
               paddingTop: "10px",
               color: "#7f58f3"
             }}
@@ -48,33 +49,35 @@ export default function Home() {
           </span>
         </h4>
 
-        <h2 style={{ marginTop: "30vh" }}>
-          TAN'
+        <h2 style={{ marginTop: "20vh" }}>
+          <center>
+            <img src={tnlogo} alt="" className="w-24 h-24 mb-5" />
+          </center>
+          TN I
           <span
-            style={{ color: "#7f58f3", fontSize: "30px", paddingBottom: "0%" }}
+            style={{ color: "#7f58f3", fontSize: "30px", paddingBottom: "0%", fontWeight: "bold" }}
           >
-            S
-          </span>{" "}
-          HACK'24
+            D
+          </span>{""}
+          EATHON'25
         </h2>
-        <br />
         <h2
           className="main_title"
-          style={{ paddingTop: "0%", fontSize: "15px", marginBottom: "10vh" }}
+          style={{ paddingTop: "2%", fontSize: "15px", marginBottom: "10vh" }}
         >
           CASH PRIZE WORTH{" "}
-          <span style={{ letterSpacing: "5px", fontSize: "20px" }}>
+          <span className=" text-violet-500" style={{ letterSpacing: "5px", fontSize: "20px", fontWeight: "bold", color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>
             3 LAKHS
           </span>
         </h2>
 
-        <a className="login-button join nodeHover" href="prob-state.php">
-          Join the Event{" "}
+        <a className="login-button join nodeHover" href="/team">
+          Register Now{" "}
         </a>
         <p
           style={{
             textAlign: "center",
-            marginTop: "20px",
+            marginTop: "35px",
             fontFamily: "poppins",
             fontSize: "22px",
           }}
