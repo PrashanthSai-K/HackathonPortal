@@ -9,29 +9,28 @@ import {
 
 export function NotificationButton({ announcements }) {
 
-    const [isOpen, setIsOpen] = useState(false)
-  
-    return (
-      <div className="fixed bottom-4 right-4 z-50">
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              className="rounded-full w-16 h-16 shadow-lg hover:shadow-xl transition-all duration-300 animate-bounce bg-violet-800 hover:bg-violet-950"
-              onClick={() => setIsOpen(true)}
-            >
-              <Bell className="scale-150 " color="white" />
-              <span className="sr-only">Open notifications</span>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <div className="grid gap-4">
-              {/* <h2 className="font-bold text-lg">Announcements</h2> */}
-              {announcements.length === 0 ? (
-                <p>No new announcements</p>
-              ) : (
-                announcements.map((announcement) => (
-                  <div key={announcement.id} className="grid gap-1">
+  const [isOpen, setIsOpen] = useState(false)
 
+  return (
+    <div className="fixed bottom-4 right-4 z-50">
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            className={`rounded-full w-16 h-16 shadow-lg hover:shadow-xl transition-all duration-300 ${isOpen ? "" : "animate-bounce"}  bg-violet-800 hover:bg-violet-950`}
+            onClick={() => setIsOpen(true)}
+          >
+            <Bell className="scale-150 " color="white" />
+            <span className="sr-only">Open notifications</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 max-h-96 overflow-scroll pr-2">
+          <div className="grid gap-4 ">
+            {announcements.length === 0 ? (
+              <p>No new announcements</p>
+            ) : (
+              announcements.map((announcement) => (
+                <>
+                  <div key={announcement.id} className="grid gap-1 w-full text-justify border-b pb-2">
                     <h3 className="font-semibold">{announcement.title}</h3>
                     <p className="text-sm">{announcement.description}</p>
                     {announcement.date && (
@@ -47,11 +46,12 @@ export function NotificationButton({ announcements }) {
                       <span className="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Important Date</span>
                     )}
                   </div>
-                ))
-              )}
-            </div>
-          </PopoverContent>
-        </Popover>
-      </div>
-    )
-  }
+                </>
+              ))
+            )}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}

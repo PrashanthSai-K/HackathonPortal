@@ -160,13 +160,13 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
 
             <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">
                 <DataTable loader selectionMode={"multiple"} selection={selectedRows} onSelectionChange={handleSelectionChange} sortIcon={customSortIcon} value={ps} emptyMessage={tableLoader} paginator={ps.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-xl'>
-                    <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="ps_id" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>
-                    <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
-                    <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
-                    <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
-                    <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'
+                    <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="ps_id" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm relative z-10' className='border-b p-1 text-center text-sm'></Column>
+                    <Column field="category" sortable header="Category" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border text-sm text-center '></Column>
+                    <Column field="title" header="Title" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-sm '></Column>
+                    <Column field="organization" header="Organization" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-justify text-sm'></Column>
+                    <Column field="count" header="Count" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'
                         body={(rowData) => (
                             <div className='flex items-center justify-center gap-1'>
                                 <button

@@ -1,7 +1,6 @@
 import React from "react";
-import Navbar from "../components/LandingPage/Navbar";
 import ProfileDetails from "../components/ProfileCreation/ProfileDetails";
-import TeamDetails from "../components/ProfileCreation/TeamDetails";
+import Navbar from "../components/LandingPage/Navbar";
 
 export default function ProfilePage() {
   
@@ -19,7 +18,6 @@ export default function ProfilePage() {
         </h3>
         <div className="flex flex-col justify-center items-center w-full">
           <ProfileDetails />
-          {/* <TeamDetails/> */}
         </div>
       </section>
     </>

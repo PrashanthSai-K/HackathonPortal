@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import Navbar from '../components/LandingPage/Navbar'
 import Table from '../components/Finalist/Table'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../AuthContext';
+import Navbar from '../components/LandingPage/Navbar';
 
 export default function Finalist() {
 

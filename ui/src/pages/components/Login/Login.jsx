@@ -3,11 +3,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { userPostRequest } from "../exports";
 import { useActionState } from "../../../CustomHooks";
+import { useAuth } from "../../../AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { getUser } = useAuth();
 
   const handleSubmit = async (e) => {
     try {
@@ -17,10 +19,10 @@ export default function Login() {
       });
       if (response.data.token !== undefined) {
         localStorage.setItem("token", response.data.token);
+        getUser();
         toast.success("Successfully logged in");
         setTimeout(() => {
           navigate("/");
-          window.location.reload();
         }, 1000);
       }
     } catch (error) {
