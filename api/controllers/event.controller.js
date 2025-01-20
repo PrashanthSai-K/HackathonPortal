@@ -1,4 +1,5 @@
 const sequelize = require("../config/database");
+const sendEmailToParticipants = require("../config/mail");
 
 exports.getEventDetails = async (req, res) => {
     try {
@@ -31,4 +32,24 @@ exports.updateEventDetails = async (req, res) => {
         return res.status(500).send({ error: "Some internal error" });
     }
 
+}
+
+exports.sendFinalistEmail = async (req, res) => {
+    const { finalistEmail } = req.body;
+    try {
+        const [finalist] = await sequelize.query("SELECT * FROM final_participants_details");
+
+        let recipients = [];
+
+        finalist.map((f) => {
+            recipients.push(f.leader_email);
+            recipients.push(f.poc_email);
+        })
+        console.log(recipients);
+        await sendEmailToParticipants(recipients, finalistEmail);
+        return res.status(201).send({ message: "Mail sent successfully!!!" })
+    } catch (error) {
+        return res.status(500).send({ error: "Some internal error" });
+
+    }
 }

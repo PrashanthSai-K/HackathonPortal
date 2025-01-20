@@ -15,7 +15,7 @@ export default function EventDetails() {
           </p>
         </h3>
         <div className="about-container">
-          <h2 style={{ color: "#4523ac" }}>TAN<span className="text-[#7f58f3]">S</span>HACK'22</h2>
+          <h2 style={{ color: "#4523ac" }}>TN I<span className="text-[#7f58f3] font-medium">D</span>EATHON'25</h2>
           <p>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; It is a pioneer program for TN
             students to explore the depth of recent technologies and its usage

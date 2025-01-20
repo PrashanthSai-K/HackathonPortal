@@ -79,18 +79,6 @@ export default function Team() {
                             No teams found. Add a new team to get started!
                         </div>
                     )}
-
-                    {/* <AddTeamModal
-                    isOpen={isAddModalOpen}
-                    onClose={() => setIsAddModalOpen(false)}
-                    onAddTeam={handleAddTeam}
-                /> */}
-
-                    {/* <TeamDetailsModal
-                    isOpen={!!selectedTeam}
-                    onClose={() => setSelectedTeam(null)}
-                    team={selectedTeam}
-                /> */}
                 </div>
             </div>
             <TeamView

@@ -22,3 +22,7 @@
   html {
     scroll-behavior: smooth;
   }
+
+  .ql-editor{
+    min-height: 16rem;
+  }

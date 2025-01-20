@@ -29,7 +29,7 @@ export default function Navbar() {
     const navItems = [
         { label: "Home", href: "/#home", role: ["all", "user"] },
         { label: "Problem Statement", href: "/problems", role: ["all", "user"] },
-        { label: "Final Participants", href: "/finalists", role: ["all", "user"] },
+        { label: "Final Participants", href: "/finalists", role: ["user"] },
         { label: "Profile", href: "/profile", role: ["user"] },
         {
             label: "Info",
@@ -85,9 +85,6 @@ export default function Navbar() {
     }, [])
 
     if (!mounted) return null
-
-    console.log(pathname);
-
 
     return (
         <>
@@ -206,12 +203,12 @@ export default function Navbar() {
                         {/* Login/Logout Button */}
                         <Button
                             variant="outline"
-                            className="ml-4"
-                            onClick={loggedIn ? handleLogout : () => { }}
+                            className="ml-4 font-normal"
+                            onClick={loggedIn ? handleLogout : () => {navigate("/login") }}
                         >
-                            <Link to={loggedIn ? "/" : "/login"}>
+                            {/* <Link className='' to={loggedIn ? "/" : "/login"}> */}
                                 {loggedIn ? "Logout" : "Login"}
-                            </Link>
+                            {/* </Link> */}
                         </Button>
                     </div>
                 </div>

@@ -27,8 +27,6 @@ export function AuthProvider({ children }) {
         const response = await userGetRequest("/getUser", token);
         setUser(response.data);
         setLoggedIn(true);
-        console.log("called");
-
       } catch (error) {
         setLoggedIn(false);
         console.error("Failed to get user", error);
