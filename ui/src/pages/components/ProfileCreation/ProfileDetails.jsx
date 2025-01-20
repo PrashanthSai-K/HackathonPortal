@@ -194,9 +194,18 @@ export default function ProfileDetails() {
           </fieldset>
           <div
             onClick={() => setVisible(true)}
-            className="absolute z-50 top-8 right-5"
+            className="absolute z-50 top-8 right-5 flex items-center gap-2 border rounded bg-gray-50 cursor-pointer"
           >
+                        <p>Edit</p>
+
             <i className="fas fa-edit text-gray-600 cursor-pointer"></i>
+          </div>
+          <div
+            onClick={() => navigate("/team")}
+            className="absolute z-50 top-8 right-28 flex items-center gap-2 border rounded bg-gray-50 cursor-pointer  "
+          >
+            <p>Team</p>
+            <i className="fas fa-eye text-gray-600 cursor-pointer"></i>
           </div>
         </form>
         <EditProfile

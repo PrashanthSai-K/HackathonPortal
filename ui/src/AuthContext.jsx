@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
         
       const token = localStorage.getItem("token");
       if (!token) {
+        setUser(null);
         setLoggedIn(false);
         setLoading(false);
         return;

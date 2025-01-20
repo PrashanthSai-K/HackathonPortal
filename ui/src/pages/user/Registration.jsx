@@ -90,11 +90,20 @@ export default function Registration() {
 
   const onInstitutionCodeChange = async (e) => {
     const { name, value } = e.target;
+    if(!value){
+      setFormData((prevData) => ({
+        ...prevData,
+        instituteName: "",
+        instituteType: "",
+        instituteAddress: ""
+      }));
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
     fetchInstitutionName(value);
+
   }
 
   return (

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { TeamCard } from '../components/ProfileCreation/TeamCard';
 import { Button } from "../../components/components/ui/button"
-import { Input } from "../../components/components/ui/input"
-import { PlusCircle, Search } from 'lucide-react'
-import Navbar from '../components/LandingPage/Navbar';
+import { PlusCircle } from 'lucide-react'
 import { userGetRequest } from '../components/exports';
 import TeamView from '../components/ProfileCreation/TeamView';
 import TeamCreation from '../components/ProfileCreation/TeamCreation';
+import Navbar from '../components/LandingPage/Navbar';
 
 export default function Team() {
 
@@ -16,10 +15,9 @@ export default function Team() {
     const [visible, setVisible] = useState(false);
 
     const formatKey = (key) => {
-        // Replace underscores with spaces and capitalize each word
         return key
-            .replace(/_/g, " ") // Replace underscores with spaces
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize the first letter of each word
+            .replace(/_/g, " ") 
+            .replace(/\b\w/g, (char) => char.toUpperCase()); 
     };
 
     const setModal = (rowData) => {
@@ -28,7 +26,7 @@ export default function Team() {
             .map(([key, value]) => ({
                 key: formatKey(key),
                 value:
-                    key === "specific_key" ? ( // Replace 'specific_key' with the actual key you want to check
+                    key === "specific_key" ? ( 
                         <a href={value} target="_blank" rel="noopener noreferrer">
                             {value}
                         </a>

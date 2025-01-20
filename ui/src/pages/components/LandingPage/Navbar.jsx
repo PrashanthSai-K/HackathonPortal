@@ -1,291 +1,224 @@
-import React from "react";
-import { Menubar } from "primereact/menubar";
+import React, { useEffect, useState } from 'react';
+import { Button } from "../../../components/components/ui/button"
 import Logo from "../../../assets/logo.png";
-import { useLocation } from "react-router";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../../../components/components/ui/dropdown-menu"
+import {
+    Sheet,
+    SheetContent,
+    SheetTrigger,
+    SheetClose,
+    SheetHeader,
+    SheetTitle,
+} from "../../../components/components/ui/sheet"
+import { Menu, X } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router';
 import { HashLink as Link } from "react-router-hash-link";
-import { useNavigate } from "react-router";
-import "../../../css/style-login.css";
-import { useAuth } from "../../../AuthContext";
+import { useAuth } from '../../../AuthContext';
 import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
 import { updateLogout } from "../exports";
 
 
+
 export default function Navbar() {
-  const { user, loggedIn } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
 
-  const handleOpenPDF = () => {
-    window.open(Guidelines, "_blank");
-  };
+    const [mounted, setMounted] = useState(false)
 
-  const itemtemplate = (item) =>
-    loggedIn
-      ? user.role == item.role &&
-      (item.isExternal ? (
-        <a
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
-            }`}
-          onClick={() => handleOpenPDF()}
-          href={Guidelines}
-        >
-          Guidelines
-        </a>
-      ) : (
-        <Link
-          to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 py-1 text-nowrap rounded-lg cursor-pointer ${item.link === location.pathname ||
-            (location.pathname === "/" && item.label === "Home")
-            ? "bg-gray-200"
-            : ""
-            } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-        >
-          <span>{item.label}</span>
-        </Link>
-      ))
-      : item.role == "all" && (item.isExternal ? (
-        <a
-          className={`flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer ${item.isSubmenu ? "min-w-[150px] bg-white" : ""
-            }`}
-          onClick={() => handleOpenPDF()}
-          href={Guidelines}
-        >
-          Guidelines
-        </a>
-      ) : (
-        <Link
-          to={`${item.link}`}
-          className={`flex gap-2 items-center px-3 text-nowrap py-1 rounded-lg cursor-pointer ${item.link === location.pathname ||
-            (location.pathname === "/" && item.label === "Home")
-            ? "bg-gray-200"
-            : ""
-            } ${item.isSubmenu ? "min-w-[150px] bg-white" : ""}`}
-        >
-          <span>{item.label}</span>
-        </Link>
-      ));
-
-  const dropDownItemTemplate = (item) =>
-    loggedIn
-      ? user &&
-      user.role == item.role && (
-        <a
-          href={`/${item.link}`}
-          className="flex gap-2 text-nowrap items-center px-3 py-1 rounded-lg cursor-pointer"
-        >
-          <span>{item.label}</span>
-          <span
-            className="pi pi-angle-down transition-transform"
-            onClick={(e) => {
-              e.target.classList.toggle("rotate-180");
-            }}
-          >
-            {" "}
-          </span>
-        </a>
-      )
-      : item.role == "all" && (
-        <a
-          href={`/${item.link}`}
-          className="flex gap-2 items-center px-3 py-1 rounded-lg cursor-pointer"
-        >
-          <span>{item.label}</span>
-          <span
-            className="pi pi-angle-down transition-transform"
-            onClick={(e) => {
-              e.target.classList.toggle("rotate-180");
-            }}
-          >
-            {" "}
-          </span>
-        </a>
-      );
-
-  const handleLogout = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to log out?");
-    if (confirmLogout) {
-      await updateLogout();
-      localStorage.removeItem("token");
-      navigate("/");
-      window.location.reload();
-    }
-  };
-
-  const buttonTemplate = () => (
-    <Link
-      to={user ? "" : "/login"}
-      className="py-2 px-3 md:py-1 md:px-2 bg-violet-950 text-white rounded-lg ml-3 md:ml-0"
-      onClick={() => {
-        user && handleLogout();
-      }}
-    >
-      {user ? "Logout" : "Login"}
-    </Link>
-  );
-
-  const navItems = [
-    {
-      label: "Home",
-      icon: "pi pi-home",
-      role: "all",
-      link: "/#home",
-      template: itemtemplate,
-    },
-    {
-      label: "Problem Statement",
-      icon: "pi pi-database",
-      role: "all",
-      link: "/problems",
-      template: itemtemplate,
-    },
-    {
-      label: "Final Participants",
-      icon: "pi pi-database",
-      role: "all",
-      link: "/finalists",
-      template: itemtemplate,
-    },
-    {
-      label: "Info",
-      icon: "pi pi-info-circle",
-      role: "all",
-      link: "/info",
-      items: [
+    const navItems = [
+        { label: "Home", href: "/#home", role: ["all", "user"] },
+        { label: "Problem Statement", href: "/problems", role: ["all", "user"] },
+        { label: "Final Participants", href: "/finalists", role: ["all", "user"] },
+        { label: "Profile", href: "/profile", role: ["user"] },
         {
-          label: "About",
-          icon: "pi pi-info-circle",
-          role: "all",
-          link: "/#aboutus",
-          template: itemtemplate,
-          isSubmenu: true,
+            label: "Info",
+            href: "/info",
+            role: ["all", "user"],
+            items: [
+                { label: "About", href: "/#aboutus" },
+                { label: "Guidelines", href: Guidelines, isExternal: true },
+                { label: "Contact Us", href: "/#contactus" },
+            ],
         },
-        {
-          label: "Guidelines",
-          icon: "pi pi-list-check",
-          role: "all",
-          link: "/#guidelines",
-          isExternal: true,
-          template: itemtemplate,
-          isSubmenu: true,
-        },
-        {
-          label: "Contact Us",
-          icon: "pi pi-address-book",
-          role: "all",
-          link: "/#contactus",
-          template: itemtemplate,
-          isSubmenu: true,
-        },
-      ],
-      template: dropDownItemTemplate,
-    },
-    {
-      label: "Home",
-      icon: "pi pi-home",
-      role: "user",
-      link: "/#home",
-      template: itemtemplate,
-    },
-    {
-      label: "Problem Statement",
-      icon: "pi pi-database",
-      role: "user",
-      link: "/problems",
-      template: itemtemplate,
-    },
-    {
-      label: "Final Participants",
-      icon: "pi pi-database",
-      role: "user",
-      link: "/finalists",
-      template: itemtemplate,
-    },
-    {
-      label: "Profile",
-      icon: "pi pi-user",
-      role: "user",
-      link: "/profile",
-      template: itemtemplate,
-    },
-    {
-      label: "Info",
-      icon: "pi pi-info-circle",
-      role: "user",
-      link: "/info",
-      items: [
-        {
-          label: "About",
-          icon: "pi pi-info-circle",
-          role: "user",
-          link: "/#aboutus",
-          template: itemtemplate,
-          isSubmenu: true,
-        },
-        {
-          label: "Guidelines",
-          icon: "pi pi-list-check",
-          role: "user",
-          link: Guidelines,
-          isExternal: true,
-          template: itemtemplate,
-          isSubmenu: true,
-        },
-        {
-          label: "Contact Us",
-          icon: "pi pi-address-book",
-          role: "user",
-          link: "/#contactus",
-          template: itemtemplate,
-          isSubmenu: true,
-        },
-      ],
-      template: dropDownItemTemplate,
-    },
-    {
-      label: "Final Participant",
-      icon: "pi pi-database",
-      role: "admin",
-      link: "/finalist",
-      template: itemtemplate,
-    },
-    {
-      label: "Institute",
-      role: "admin",
-      icon: "pi pi-database",
-      link: "/institute-manage",
-      template: itemtemplate,
-    },
-    {
-      label: "Problem Statements",
-      role: "admin",
-      icon: "pi pi-database",
-      link: "/problems-manage",
-      template: itemtemplate,
-    },
-    {
-      label: "Login / Register",
-      icon: "pi pi-button",
-      role: "user",
-      link: "/login",
-      template: buttonTemplate,
-    },
-  ];
+        { label: "Final Participant", href: "/finalist", role: ["admin"] },
+        { label: "Institute", href: "/institute-manage", role: ["admin"] },
+        { label: "Problem Statements", href: "/problems-manage", role: ["admin"] },
+        { label: "Tools", href: "/tools", role: ["admin"] },
+        { label: "Notify", href: "/notify", role: ["admin"] },
+    ]
 
-  const isMobile = window.innerWidth <= 800;
-  return (
-    <nav className="flex w-full bg-white items-center h-20 fixed z-50">
-      <div className="w-2/3 md:w-1/3 flex ">
-        <Link className="flex justify-center items-center gap-2" to={"/"}>
-          <img className="w-15 h-14" src={Logo} alt="Logo Image" />
-          <h3>TANSCHE</h3>
-        </Link>
-      </div>
+    const [isOpen, setIsOpen] = useState(false)
+    const location = useLocation();
+    const navigate = useNavigate();
+    const pathname = location.pathname;
 
-      <Menubar
-        className="flex bg-white h-12 md:h-full w-1/3 md:w-2/3 mr-3 justify-end"
-        model={navItems}
-        style={isMobile ? { height: "40px", width: "100%", lineHeight: "45px" } : {}}
-      />
-    </nav>
-  );
+    const { user, loggedIn, getUser } = useAuth()
+
+    const handleLogout = async () => {
+        const confirmLogout = window.confirm("Are you sure you want to log out?");
+        if (confirmLogout) {
+            localStorage.removeItem("token");
+            getUser();
+            navigate("/");
+        }
+    };
+
+    const filteredNavItems = navItems.filter(item => {
+        if (!user) {
+            // Show only items with role 'all' when no user is logged in
+            return item.role.includes("all");
+        }
+        if (user.role === "user") {
+            // Show only items with role 'user'
+            return item.role.includes("user");
+        }
+        if (user.role === "admin") {
+            // Show only items with role 'admin'
+            return item.role.includes("admin");
+        }
+        return false; // Fallback for any unexpected roles
+    });
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) return null
+
+    console.log(pathname);
+
+
+    return (
+        <>
+            <nav className="fixed top-0 z-50 w-full bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                {/* <div className="-"> */}
+                <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center justify-start">
+                        <Link to="/" className="flex ml-2 md:mr-24">
+                            <img src={Logo} className="h-14 mr-3" alt="Logo" />
+                            <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">TANSCHE</span>
+                        </Link>
+                    </div>
+                    <div className="flex items-center">
+                        {/* Desktop Menu */}
+                        <ul className="hidden lg:flex md:space-x-8 items-center">
+                            {filteredNavItems.map((item, index) => (
+                                <li key={index}>
+                                    {item.items ? (
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <div variant="ghost" className=" dark:text-white px-3 py-1.5 rounded-lg hover:bg-gray-50  cursor-pointer">
+                                                    {item.label}
+                                                </div>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent>
+                                                {item.items.map((subItem, subIndex) => (
+                                                    <DropdownMenuItem key={subIndex}>
+                                                        {subItem.isExternal ? (
+                                                            <a href={subItem.href} target="_blank" rel="noopener noreferrer" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                {subItem.label}
+                                                            </a>
+                                                        ) : (
+                                                            <Link to={subItem.href} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                {subItem.label}
+                                                            </Link>
+                                                        )}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    ) : (
+                                        <div className={`hover:bg-gray-50 px-3 py-1.5 rounded-lg ${pathname == "/" && item.href == "/#home" && "bg-gray-50"} ${pathname == item.href && "bg-gray-50"}`}>
+                                            <Link
+                                                to={item.href}
+                                                className={
+                                                    ` text-gray-900 dark:text-white hover:bg-gray-100",
+                                                    ${pathname === item.href && "text-blue-700 dark:text-blue-500"}
+                                                    ${pathname == "/" && item.href == "/#home" && "text-blue-700 dark:text-blue-500"}`
+                                                }
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        </div>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+
+                        {/* Mobile Menu */}
+                        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="lg:hidden">
+                                    <Menu className="h-6 w-6" />
+                                    <span className="sr-only">Toggle menu</span>
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                                <nav className="flex flex-col space-y-4">
+                                    {filteredNavItems.map((item, index) => (
+                                        <div key={index}>
+                                            {item.items ? (
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <div variant="ghost" className=" dark:text-white px-3 py-1.5 rounded-lg hover:bg-gray-50  cursor-pointer">
+                                                            {item.label}
+                                                        </div>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent>
+                                                        {item.items.map((subItem, subIndex) => (
+                                                            <DropdownMenuItem key={subIndex}>
+                                                                {subItem.isExternal ? (
+                                                                    <a href={subItem.href} target="_blank" rel="noopener noreferrer" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                                        {subItem.label}
+                                                                    </a>
+                                                                ) : (
+                                                                    <Link to={subItem.href} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={() => setIsOpen(false)}>
+                                                                        {subItem.label}
+                                                                    </Link>
+                                                                )}
+                                                            </DropdownMenuItem>
+                                                        ))}
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            ) : (
+                                                <div className={`hover:bg-gray-50 px-3 py-1.5 rounded-lg ${pathname == "/" && item.href == "/#home" && "bg-gray-50"} ${pathname == item.href && "bg-gray-50"}`}>
+
+                                                    <Link
+                                                        to={item.href}
+                                                        className={
+                                                            ` text-gray-900 dark:text-white hover:bg-gray-100",
+                                                        ${pathname === item.href && "text-blue-700 dark:text-blue-500"}
+                                                        ${pathname == "/" && item.href == "/#home" && "text-blue-700 dark:text-blue-500"}`
+                                                        }
+                                                        onClick={() => setIsOpen(false)}
+                                                    >
+                                                        {item.label}
+                                                    </Link>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </nav>
+                            </SheetContent>
+                        </Sheet>
+
+                        {/* Login/Logout Button */}
+                        <Button
+                            variant="outline"
+                            className="ml-4"
+                            onClick={loggedIn ? handleLogout : () => { }}
+                        >
+                            <Link to={loggedIn ? "/" : "/login"}>
+                                {loggedIn ? "Logout" : "Login"}
+                            </Link>
+                        </Button>
+                    </div>
+                </div>
+                {/* </div> */}
+            </nav>
+        </>
+    )
 }

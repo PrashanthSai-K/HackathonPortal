@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from '../components/LandingPage/Navbar'
 import { adminGetRequest } from '../components/exports';
 import { useActionState } from '../../CustomHooks';
 import Table from '../components/Institution/Table';
@@ -7,6 +6,7 @@ import { useAuth } from '../../AuthContext';
 import AddInstitution from '../components/Institution/AddPopup';
 import PasswordPopup from '../components/Institution/PasswordPopup';
 import { useNavigate } from 'react-router';
+import Navbar from '../components/LandingPage/Navbar';
 
 export default function Institution() {
 

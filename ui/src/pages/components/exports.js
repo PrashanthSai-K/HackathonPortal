@@ -9,7 +9,7 @@ const handleLogout = () => {
   }, 2000);
 };
 
-const backendUrl = "https://mklcwgkh-4500.inc1.devtunnels.ms/api";
+const backendUrl = "http://localhost:4500/api";
 
 export const userGetRequest = async (url) => {
   try {

@@ -92,10 +92,10 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
                         <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                         <i className='pi pi-search text-gray-300'></i>
                     </div>
-                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                    <div className='mt-28 flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg  bg-gray-50 text-sm'
                         onClick={() => setAddVisible(true)}
                     >
-                        <span className='text-black' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
+                        <div className='text-black' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</div>
                         <i className='pi pi-plus-circle text-xl text-violet-500'></i>
                     </div>
                     {deleteLoading ?
@@ -115,18 +115,18 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
 
             <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8  ">
                 <DataTable loader selectionMode={"multiple"} selection={selectedRows} onSelectionChange={handleSelectionChange} sortIcon={customSortIcon} value={institute} emptyMessage={tableLoader} paginator={institute.length > 5 ? true : false} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-xl'>
-                    <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName=' p-1 bg-violet-950 text-sm' className='border-r border-b p-1 text-center text-sm'></Column>
-                    <Column field="institution_code" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm' className='border-b p-1 text-center text-sm'></Column>
-                    <Column field="institution_name" sortable header="Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border text-sm text-center '></Column>
-                    <Column field="institution_type" header="Type" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-sm '></Column>
-                    <Column field="address" header="Address" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-justify text-sm'></Column>
-                    <Column field="city" header="City" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="state" header="State" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="pincode" header="Pincode" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="poc_name" header="POC Name" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="poc_email" header="POC Email" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="poc_number" header="POC Number" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm' className='border p-1 text-center text-sm'></Column>
-                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm' className='border-l border-b p-1 text-center text-sm'
+                    <Column selectionMode="multiple" align={"center"} style={{ height: "3rem" }} bodyStyle={{ width: "3rem" }} headerClassName=' p-1 bg-violet-950 text-sm relative z-10' className='border-r border-b p-1 text-center text-sm'></Column>
+                    <Column field="institution_code" sortable header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-950 text-sm relative z-10' className='border-b p-1 text-center text-sm'></Column>
+                    <Column field="institution_name" sortable header="Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border text-sm text-center '></Column>
+                    <Column field="institution_type" header="Type" sortable align={"left"} headerClassName='text-white border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-sm '></Column>
+                    <Column field="address" header="Address" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-justify text-sm'></Column>
+                    <Column field="city" header="City" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="state" header="State" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="pincode" header="Pincode" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="poc_name" header="POC Name" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="poc_email" header="POC Email" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="poc_number" header="POC Number" align={"center"} bodyStyle={{ height: "5rem" }} headerClassName='border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border p-1 text-center text-sm'></Column>
+                    <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-950 text-sm relative z-10' className='border-l border-b p-1 text-center text-sm'
                         body={(rowData) => (
                             <div className='flex items-center justify-center gap-1'>
                                 <button

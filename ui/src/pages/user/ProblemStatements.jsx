@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Table from '../components/ProblemStatements/Table'
-import Navbar from '../components/LandingPage/Navbar'
 import { userGetRequest } from '../components/exports';
 import { useAuth } from '../../AuthContext';
 import { useNavigate } from 'react-router';
+import Navbar from '../components/LandingPage/Navbar';
 
 
 export default function ProblemStatements() {

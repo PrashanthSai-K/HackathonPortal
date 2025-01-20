@@ -11,9 +11,10 @@ import ProfilePage from './pages/user/ProfilePage.jsx';
 import Finalist from './pages/admin/Finalist.jsx';
 import Institution from './pages/admin/Institution.jsx';
 import UserFinalist from './pages/user/UserFinalist.jsx';
-import Demo from './pages/user/Demo.jsx';
 import NotFount from './pages/components/404/NotFount.jsx';
 import Team from './pages/user/Team.jsx';
+import Notification from './pages/admin/Notification.jsx';
+import Tools from './pages/admin/Tools.jsx';
 
 
 function App() {
@@ -46,6 +47,9 @@ function App() {
         <Route path='/finalist' element={<Finalist />} />
         <Route path='/finalists' element={<UserFinalist />} />
         <Route path='/institute-manage' element={<Institution />} />
+        <Route path='/notify' element={<Notification />} />
+        <Route path='/tools' element={<Tools />} />
+
 
         {/* <Route path='/d' element={<Demo />} /> */}
       </Routes>
