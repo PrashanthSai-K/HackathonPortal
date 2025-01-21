@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../components/LandingPage/Navbar';
-import Table from '../components/Submitted/Table';
+import Table from '../components/Winners/Table';
+export default function Winners() {
 
-export default function Finalist() {
 
     const { user } = useAuth();
 

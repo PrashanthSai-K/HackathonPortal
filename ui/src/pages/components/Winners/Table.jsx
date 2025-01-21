@@ -17,10 +17,12 @@ import { Button } from "../../../components/components/ui/button"
 import { MoreHorizontal, Edit, Trash, Eye } from "lucide-react";
 // import { Button } from "../../../components/components/ui/button"
 import { FileDown } from "lucide-react"
+import { ExportToPdf } from '../../ReportGeneration/Pdf';
+import { ExportToExcel } from '../../ReportGeneration/Excel';
 
 
 export default function Table() {
-    const [finalist, setFinalist] = useState([]);
+    const [winners, setWinners] = useState([]);
     const [globalFilter, setGlobalFilter] = useState();
     const [modalData, setModalData] = useState();
     const [visible, setVisible] = useState(false);
@@ -73,7 +75,7 @@ export default function Table() {
 
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>
-            <p>No Finalist Available</p>
+            <p>No Winners Available</p>
         </div>
     )
 
@@ -83,44 +85,31 @@ export default function Table() {
         </div>
     )
 
-    const fetchFinalist = async () => {
+    const fetchWinner = async () => {
         try {
-            const response = await adminGetRequest("/finalist");
-            setFinalist(response.data.data);
+            const response = await adminGetRequest("/winner");
+            setWinners(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const [finalistCall, isLoading] = useActionState(fetchFinalist, true);
+    const [winnerCall, isLoading] = useActionState(fetchWinner, true);
 
 
     useEffect(() => {
-        finalistCall();
+        winnerCall();
     }, [])
 
-    const selectTeam = async (data) => {
-        try {
-            if (!window.confirm("Do you want to move participant to Winner ?")) {
-                return
-            }
-            const response = await adminPostRequest("/finalist/toWinner", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Selected Sucessfully");
-            fetchFinalist();
-        } catch (error) {
-            console.log(error);
-            toast.error("Some Error");
-        }
-    };
 
     const unselectTeam = async (data) => {
         try {
-            if (!window.confirm("Do you want to remove participant from Participation Round ?")) {
+            if (!window.confirm("Do you want to remove participant from Winner ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoPresentation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
-            fetchFinalist();
+            fetchWinner();
         } catch (error) {
             console.log(error);
             toast.error("Some Error");
@@ -136,20 +125,20 @@ export default function Table() {
                 :
                 <>
                     <div className=' w-full flex items-center justify-between'>
-                        <div className=' text-center text-violet-900 text-xl font-semibold'>FINALIST</div>
+                        <div className=' text-center text-violet-900 text-xl font-semibold'>WINNERS</div>
                         <div className=' flex gap-2'>
-                            <Button className="bg-red-500 hover:bg-red-700 text-white">
+                            <Button onClick={() => ExportToPdf(submitted)} className="bg-red-500 hover:bg-red-700 text-white">
                                 <i className="pi pi-file-pdf text-white" />
                                 PDF
                             </Button>
-                            <Button className="bg-green-500 hover:bg-green-700 text-white">
+                            <Button onClick={() => ExportToExcel(submitted)} className="bg-green-500 hover:bg-green-700 text-white">
                                 <i className="pi pi-file-excel text-white" />
                                 Excel
                             </Button>
                         </div>
                     </div>
                     <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">
-                        <DataTable sortIcon={customSortIcon} value={finalist} emptyMessage={tableLoader} paginator={finalist.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
+                        <DataTable sortIcon={customSortIcon} value={winners} emptyMessage={tableLoader} paginator={winners.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
                             <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm relative z-10' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
                             <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm  relative z-10' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>
                             <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm  relative z-10' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
@@ -171,10 +160,6 @@ export default function Table() {
                                                 <DropdownMenuItem onClick={() => setModal(rowData)}>
                                                     <Eye />
                                                     <span>View</span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => selectTeam(rowData)}>
-                                                    <Edit />
-                                                    <span>Select</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => unselectTeam(rowData)}>
                                                     <Trash />

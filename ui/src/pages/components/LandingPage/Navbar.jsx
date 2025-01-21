@@ -43,7 +43,6 @@ export default function Navbar() {
                 { label: "Contact Us", href: "/#contactus" },
             ],
         },
-        // { label: "Final Participant", href: "/finalist", role: ["admin"] },
         { label: "Problem Statements", href: "/problems-manage", role: ["admin"] },
         { label: "Institute", href: "/institute-manage", role: ["admin"] },
         {

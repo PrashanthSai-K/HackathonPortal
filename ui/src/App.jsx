@@ -16,6 +16,8 @@ import Team from './pages/user/Team.jsx';
 import Notification from './pages/admin/Notification.jsx';
 import Tools from './pages/admin/Tools.jsx';
 import SubmittedList from './pages/admin/SubmittedList.jsx';
+import Winners from './pages/admin/Winners.jsx';
+import Presentation from './pages/admin/Presentation.jsx';
 
 
 function App() {
@@ -46,13 +48,13 @@ function App() {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/team' element={<Team />} />
         <Route path='/finalist' element={<Finalist />} />
+        <Route path='/winners' element={<Winners />} />
         <Route path='/finalists' element={<UserFinalist />} />
         <Route path='/institute-manage' element={<Institution />} />
         <Route path='/notify' element={<Notification />} />
         <Route path='/tools' element={<Tools />} />
         <Route path='/submitted' element={<SubmittedList />} />
-
-
+        <Route path='/presentation' element={<Presentation />} />
 
         {/* <Route path='/d' element={<Demo />} /> */}
       </Routes>
