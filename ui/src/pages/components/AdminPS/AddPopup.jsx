@@ -1,4 +1,3 @@
-import { Dropdown } from 'primereact/dropdown';
 import { Sidebar } from 'primereact/sidebar'
 import React, { useState } from 'react'
 import { adminPostRequest } from '../exports';
@@ -157,10 +156,6 @@ export default function AddPopup({ visible, setVisible, fetchPs }) {
                                     <i className="pi pi-spin pi-spinner" style={{ color: "white", fontSize: '2rem' }}></i>
                                 </div>
                             }
-                            {/* <div className=' flex  items-center justify-center gap-2 px-2 py-1 rounded-lg text-white bg-green-500 cursor-pointer hover:bg-green-600'>
-                                <p className=' text-white'>Upload</p>
-                                <i className='pi pi-upload text-white'></i>
-                            </div> */}
                         </div>
                     </form>
                 </div>

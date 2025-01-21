@@ -6,11 +6,9 @@ import PopupModal from './PopupModal';
 import SHA256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 import { useNavigate } from 'react-router';
-import UploadPopup from './UploadPopup';
 import { useActionState } from '../../../CustomHooks';
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
-// import { ProductService } from './service/ProductService';
 
 export default function Table({ data, user, setAddVisible, setUploadVisible, fetchPs }) {
 

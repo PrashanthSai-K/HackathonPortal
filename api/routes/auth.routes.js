@@ -1,4 +1,4 @@
-const { validateInstituteData, handleValidation } = require("../middleware/validators/instituteValidator");
+const { validateInstituteData } = require("../middleware/validators/instituteValidator");
 const validateLogin = require("../middleware/validators/loginValidator");
 
 module.exports = app => {
@@ -17,9 +17,12 @@ module.exports = app => {
 
     router.post("/register", validateInstituteData, authController.register_institute);
 
-    router.post("/login", validateLogin ,authController.loginUser, authMiddelware.createToken);
+    router.post("/updateLogout", authController.updateLogout);
+
+    router.post("/login", validateLogin , authMiddelware.loginUser, authMiddelware.createToken ,authController.userLogin);
 
     router.get("/getUser", authController.getUser);
     
     app.use("/api", router);
+
 }

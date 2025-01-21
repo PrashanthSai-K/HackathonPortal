@@ -82,68 +82,16 @@ exports.register_institute = async (req, res) => {
   }
 };
 
-exports.loginUser = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-
-    const [adminData, adminMetadata] = await sequelize.query(
-      "SELECT * FROM admin_users WHERE username = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    if (adminData != undefined) {
-      const result = await bcrypt.compare(password, adminData.password);
-      if (!result) {
-        return res.status(401).send({ error: "Invalid username or password" });
-      }
-      adminData.role = "admin";
-      res.locals.payload = { ...adminData };
-      return next();
-    }
-
-    const [userData, userMetadata] = await sequelize.query(
-      "SELECT * FROM users WHERE username = ?",
-      {
-        replacements: [username],
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    if (!userData) {
-      return res.status(401).send({ error: "Invalid username or password" });
-    }
-
-    const result = await bcrypt.compare(password, userData.password);
-
-    if (!result) {
-      return res.status(401).send({ error: "Invalid username or password" });
-    }
-
-    const [instituteDetails, _] = await sequelize.query("SELECT * FROM institution WHERE id = :institution_id", {
-      replacements: {
-        institution_id: userData.institution_id,
-      },
-      type: sequelize.QueryTypes.SELECT,
-
-    })
-
-    userData.role = "user";
-    res.locals.payload = { ...userData, ...instituteDetails };
-    return next();
-
-  } catch (error) {
-    console.error({ "Error in Loginuser": error });
-    return res
-      .status(500)
-      .send({ error: "An error occurred while logging in" });
-  }
+exports.userLogin = async (req, res) => {
+  const token = res.locals.token;  
+  return res.status(201).send({token: token});
 };
+
+
 
 exports.getUser = async (req, res) => {
   const token = req.headers.authorization;
+  
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);
@@ -151,6 +99,33 @@ exports.getUser = async (req, res) => {
     res.status(403).send({ message: "Token is not valid" });
   }
 };
+
+exports.updateLogout = async (req, res) => {
+  const token = req.headers.authorization;
+  console.log(token);
+
+  if (!token) {
+    return res.status(400).send({ message: "Authorization token missing" }); 
+  }
+
+  try {
+    const [data] = await sequelize.query(
+      "INSERT INTO unauth_tokens (token) VALUES (:token)", {
+        replacements: { token },
+      }
+    );
+
+    if (!data) {
+      return res.status(500).send({ message: "Failed to update logout data" });
+    }
+
+    return res.status(201).send({ message: "Logout data updated successfully" });
+  } catch (err) {
+    console.error("Error updating logout information:", err);
+    return res.status(500).send({ message: "Internal server error" });
+  }
+};
+
 
 exports.getCodeSuggestions = async (req, res) => {
   const { query } = req.query;

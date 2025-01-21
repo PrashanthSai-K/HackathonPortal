@@ -1,4 +1,4 @@
-const { checkUser, checkAdmin } = require('../middleware/auth/auth.middleware');
+const { checkUser, checkAdmin, checkTokenExpires } = require('../middleware/auth/auth.middleware');
 const { validateInstituteData, validateInstituteDataAdmin } = require('../middleware/validators/instituteValidator');
 
 module.exports = app => {
@@ -9,7 +9,7 @@ module.exports = app => {
 
     router.post("/addTeamDetails", checkUser , profile.addTeamDetails);
 
-    router.get("/getInstituteDetails", checkUser , profile.getInstituteDetails);
+    router.get("/getInstituteDetails" ,checkUser , profile.getInstituteDetails);
 
     router.get("/getTeamDetails", checkUser ,profile.getTeamDetails );
 
@@ -22,6 +22,8 @@ module.exports = app => {
     router.post("/addInstitute", checkAdmin, validateInstituteDataAdmin, profile.addInstituteDetailsAdmin);
 
     router.post("/institute/delete", checkAdmin, profile.deleteInstitute);
+
+    router.put("/videoLink", checkUser , profile.uploadVideoLink)
 
     app.use("/api/", router);
 }

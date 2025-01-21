@@ -1,5 +1,7 @@
 const sequelize = require("../config/database");
-const { generateEncryptedPassword } = require("../middleware/institute/institute.middleware");
+const {
+  generateEncryptedPassword,
+} = require("../middleware/institute/institute.middleware");
 
 exports.addTeamDetails = async (req, res) => {
   const {
@@ -57,8 +59,8 @@ exports.addTeamDetails = async (req, res) => {
 
 exports.getInstituteDetails = async (req, res) => {
   const username = res.locals.userData.username;
-  try {
 
+  try {
     const [instituteData, instituteMetadata] = await sequelize.query(
       "SELECT * FROM institution WHERE poc_email = :username",
       {
@@ -89,11 +91,12 @@ exports.updateInstituteDetails = async (req, res) => {
     pincode,
   } = req.body;
 
-  const institutionId = res.locals.userData.institutionId
+  const institutionId = res.locals.userData.institutionId;
   try {
-
     if (id != institutionId) {
-      return res.status(401).send({ message: "Trying to modify unauthorized data" })
+      return res
+        .status(401)
+        .send({ message: "Trying to modify unauthorized data" });
     }
 
     const [affectedRows] = await sequelize.query(
@@ -125,29 +128,25 @@ exports.updateInstituteDetails = async (req, res) => {
         .status(201)
         .send({ message: "Institution details updated successfully." });
     } else {
-      return res
-        .send({
-          message: "Data unchanged.",
-        });
+      return res.send({
+        message: "Data unchanged.",
+      });
     }
   } catch (err) {
     console.error("Error updating institution details:", err);
-    return res
-      .status(500)
-      .send({
-        message: "An error occurred while updating institution details.",
-      });
+    return res.status(500).send({
+      message: "An error occurred while updating institution details.",
+    });
   }
-}
+};
 
 exports.getAllInstituteDetails = async (req, res) => {
   try {
     const [instituteData, instituteMetadata] = await sequelize.query(
-      "SELECT * FROM institution",
+      "SELECT * FROM institution"
     );
 
     return res.status(201).send({ data: instituteData });
-
   } catch (err) {
     res.status(403).send({ message: "user name is not valid" });
   }
@@ -177,17 +176,37 @@ exports.getTeamDetails = async (req, res) => {
 exports.updateInstituteDetailsAdmin = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const { id, institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number } = req.body;
+    const {
+      id,
+      institution_code,
+      institution_name,
+      institution_type,
+      address,
+      city,
+      state,
+      pincode,
+      poc_name,
+      poc_email,
+      poc_number,
+    } = req.body;
 
-    const [institute] = await sequelize.query("SELECT * FROM institution WHERE id = :id", { replacements: { id: id } });
+    const [institute] = await sequelize.query(
+      "SELECT * FROM institution WHERE id = :id",
+      { replacements: { id: id } }
+    );
 
     if (institute.length < 0 || id != institute[0].id) {
-      return res.status(401).send({ error: "Trying to change unauthorized data" });
+      return res
+        .status(401)
+        .send({ error: "Trying to change unauthorized data" });
     }
 
     let passReq = false;
 
-    if (institute[0].poc_email != poc_email || institute[0].poc_number != poc_number) {
+    if (
+      institute[0].poc_email != poc_email ||
+      institute[0].poc_number != poc_number
+    ) {
       passReq = true;
     }
 
@@ -216,9 +235,9 @@ exports.updateInstituteDetailsAdmin = async (req, res) => {
           poc_name: poc_name,
           poc_email: poc_email,
           poc_number: poc_number,
-          id: institute[0].id
+          id: institute[0].id,
         },
-        transaction
+        transaction,
       }
     );
 
@@ -228,25 +247,30 @@ exports.updateInstituteDetailsAdmin = async (req, res) => {
       console.log(passReq);
 
       await transaction.commit();
-      return res.status(201).send({ message: "Institution details updated uccessfully!!" });
+      return res
+        .status(201)
+        .send({ message: "Institution details updated uccessfully!!" });
     }
 
     const [password, hashedPassword] = await generateEncryptedPassword();
-    console.log(password , "   ", hashedPassword);
-    
+    console.log(password, "   ", hashedPassword);
 
-    await sequelize.query("UPDATE users SET username = :poc_email, password = :password WHERE institution_id = :institution_id", {
-      replacements: {
-        poc_email: poc_email,
-        institution_id: institute[0].id,
-        password: hashedPassword
-      },
-      transaction
-    })
+    await sequelize.query(
+      "UPDATE users SET username = :poc_email, password = :password WHERE institution_id = :institution_id",
+      {
+        replacements: {
+          poc_email: poc_email,
+          institution_id: institute[0].id,
+          password: hashedPassword,
+        },
+        transaction,
+      }
+    );
 
     await transaction.commit();
-    return res.status(201).send({ message: "Details updated uccessfully!!", password: password });
-
+    return res
+      .status(201)
+      .send({ message: "Details updated uccessfully!!", password: password });
   } catch (error) {
     await transaction.rollback();
     console.log(error);
@@ -266,12 +290,11 @@ exports.updateInstituteDetailsAdmin = async (req, res) => {
     }
     res.status(500).send({ error: "Error during updation" });
   }
-}
+};
 
 exports.addInstituteDetailsAdmin = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-
     const {
       instituteCode: institution_code,
       instituteName: institution_name,
@@ -286,7 +309,6 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
     } = req.body;
 
     console.log(institution_code);
-
 
     await sequelize.query(
       `INSERT INTO institution 
@@ -310,7 +332,6 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
       }
     );
 
-
     const [password, hashedPassword] = await generateEncryptedPassword();
 
     await sequelize.query(
@@ -324,10 +345,10 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
       }
     );
 
-
     await transaction.commit();
-    return res.status(201).send({ message: "Details updated uccessfully!!", password: password });
-
+    return res
+      .status(201)
+      .send({ message: "Details updated uccessfully!!", password: password });
   } catch (error) {
     await transaction.rollback();
     console.log(error);
@@ -347,22 +368,63 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
     }
     res.status(500).send({ error: "Error during updation" });
   }
-}
-
+};
 
 exports.deleteInstitute = async (req, res) => {
   try {
     const id = req.body;
-    await sequelize.query(`DELETE FROM institution WHERE id IN (:id)`,
-      {
-        replacements: {
-          id: id
-        }
-      }
-    )
+    await sequelize.query(`DELETE FROM institution WHERE id IN (:id)`, {
+      replacements: {
+        id: id,
+      },
+    });
     res.status(201).send({ message: "Deleted successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ error: "Error deleting datas" });
   }
-}
+};
+
+exports.uploadVideoLink = async (req, res) => {
+  const { team_id, video_link, institution_id } = req.body;
+  const institutionId = res.locals.userData?.institutionId;
+  
+  if (!institutionId) {
+    return res.status(403).send({ message: "Unauthorized access." });
+  }
+
+  try {
+    if (institution_id != institutionId) {
+      return res
+        .status(401)
+        .send({ message: "Trying to modify unauthorized data" });
+    }
+
+    const [affectedRows] = await sequelize.query(
+      `UPDATE team_details 
+       SET video_link = :video_link 
+       WHERE id = :team_id`,
+      {
+        replacements: {
+          team_id: team_id,
+          video_link: video_link,
+        },
+      }
+    );
+
+    if (affectedRows.affectedRows > 0) {
+      return res
+        .status(201)
+        .send({ message: "Video Link Uploaded successfully." });
+    } else {
+      return res.send({
+        message: "Data unchanged.",
+      });
+    }
+  } catch (err) {
+    console.error("Error Uploading Video Link ", err);
+    return res.status(500).send({
+      message: "An error occurred while uploading Video Link",
+    });
+  }
+};

@@ -8,9 +8,9 @@ const app = express();
 app.use(bodyParser.json({limit : '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-const allowedOrigins = ["https://w2tpzms2-5173.inc1.devtunnels.ms", "http://localhost:5173"];
+const allowedOrigins = ["https://w2tpzms2-5173.inc1.devtunnels.ms", "http://localhost:5173","https://mklcwgkh-5173.inc1.devtunnels.ms"];
 
-app.use(cors({
+app.use(cors({  
   origin: (origin, callback) => {
     if (allowedOrigins.includes(origin)) {
       callback(null, true);

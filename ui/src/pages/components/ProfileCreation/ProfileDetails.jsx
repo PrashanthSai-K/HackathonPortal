@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { userGetRequest } from "../exports";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -197,7 +196,7 @@ export default function ProfileDetails() {
             onClick={() => setVisible(true)}
             className="absolute z-50 top-8 right-5 flex items-center gap-2 border rounded bg-gray-50 cursor-pointer"
           >
-                        <p>Edit</p>
+            <p>Edit</p>
 
             <i className="fas fa-edit text-gray-600 cursor-pointer"></i>
           </div>
@@ -213,7 +212,7 @@ export default function ProfileDetails() {
           visible={visible}
           setVisible={setVisible}
           instituteDetail={instituteDetails}
-          getInstituteDetails = {getInstituteDetails}
+          getInstituteDetails={getInstituteDetails}
         />
       </div>
     </>

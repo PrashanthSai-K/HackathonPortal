@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../css/style-login.css";
 import { deBounce, userGetRequest, userPostRequest } from "../components/exports";
 import { toast } from "react-toastify";
@@ -37,7 +37,7 @@ export default function Registration() {
 
   const handleSubmit = async (e) => {
     try {
-      e.preventDefault();
+      // e.preventDefault();
       console.log("Form Data Submitted:", formData);
       const response = await userPostRequest("/register", formData);
       toast.success(response.data.message);
@@ -52,7 +52,6 @@ export default function Registration() {
   };
 
   const [registration, isLoading] = useActionState(handleSubmit)
-
   const [instituteCode, setInstituteCode] = useState([]);
   const [instituteName, setInstituteName] = useState([]);
 

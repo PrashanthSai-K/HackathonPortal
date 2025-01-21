@@ -1,6 +1,6 @@
 import { Sidebar } from "primereact/sidebar";
 import React, { useEffect, useState } from "react";
-import { adminPostRequest, adminPutRequest, userPutRequest } from "../exports";
+import {adminPutRequest } from "../exports";
 import { useActionState } from "../../../CustomHooks";
 import { toast } from "react-toastify";
 

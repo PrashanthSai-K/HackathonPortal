@@ -20,6 +20,8 @@ import { useLocation, useNavigate } from 'react-router';
 import { HashLink as Link } from "react-router-hash-link";
 import { useAuth } from '../../../AuthContext';
 import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
+import { updateLogout } from "../exports";
+
 
 
 export default function Navbar() {

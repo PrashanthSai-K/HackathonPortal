@@ -12,7 +12,10 @@
     display: flex;
     color: black !important;
   }
-
+.p-sidebar-icons{
+  position: absolute;
+  right: 0;
+}
   .p-dropdown {
     display: flex;
     align-items: center;

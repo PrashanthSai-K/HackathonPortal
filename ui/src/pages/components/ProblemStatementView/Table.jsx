@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { useNavigate } from 'react-router';
 import PopupModal from './PopupModal';
-import { adminPostRequest, userPostRequest } from '../exports';
+import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 import {
     DropdownMenu,
@@ -22,8 +21,6 @@ export default function Table({ data, fetchPs }) {
     const [ps, setPs] = useState([]);
 
     const [globalFilter, setGlobalFilter] = useState("")
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         setPs(data)

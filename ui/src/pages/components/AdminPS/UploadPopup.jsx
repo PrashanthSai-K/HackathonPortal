@@ -1,4 +1,3 @@
-import { Dropdown } from 'primereact/dropdown';
 import { Sidebar } from 'primereact/sidebar'
 import React, { useState } from 'react'
 import { adminPostRequest } from '../exports';

@@ -5,6 +5,8 @@ import { Column } from "primereact/column";
 import { userGetRequest } from "../exports";
 import TeamCreation from "./TeamCreation";
 import TeamView from "./TeamView";
+
+
 export default function TeamDetails() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [visibleLeft, setVisibleLeft] = useState(false);
