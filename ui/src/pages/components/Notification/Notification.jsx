@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "../../../components/components/ui/popover"
 
-export function NotificationButton({ announcements }) {
+export function NotificationButton({ notifications }) {
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -25,24 +25,24 @@ export function NotificationButton({ announcements }) {
         </PopoverTrigger>
         <PopoverContent className="w-80 max-h-96 overflow-scroll pr-2">
           <div className="grid gap-4 ">
-            {announcements.length === 0 ? (
-              <p>No new announcements</p>
+            {notifications.length === 0 ? (
+              <p>No new notifications</p>
             ) : (
-              announcements.map((announcement) => (
+              notifications.map((notification) => (
                 <>
-                  <div key={announcement.id} className="grid gap-1 w-full text-justify border-b pb-2">
-                    <h3 className="font-semibold">{announcement.title}</h3>
-                    <p className="text-sm">{announcement.description}</p>
-                    {announcement.date && (
-                      <p className="text-xs text-gray-500">{announcement.date}</p>
+                  <div key={notification.id} className="grid gap-1 w-full text-justify border-b pb-2">
+                    <h3 className="font-semibold">{notification.title}</h3>
+                    <p className="text-sm">{notification.description}</p>
+                    {notification.date && (
+                      <p className="text-xs text-gray-500">{notification.date}</p>
                     )}
-                    {announcement.type === "result" && (
+                    {notification.type === "result" && (
                       <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Result</span>
                     )}
-                    {announcement.type === "finalist" && (
+                    {notification.type === "finalist" && (
                       <span className="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Finalist</span>
                     )}
-                    {announcement.type === "deadline" && (
+                    {notification.type === "deadline" && (
                       <span className="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Important Date</span>
                     )}
                   </div>

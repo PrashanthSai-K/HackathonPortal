@@ -1,7 +1,44 @@
 import React from "react";
 import tnlogo from "../../../assets/tnlogo.png"
+import { useAuth } from "../../../AuthContext";
+import { useNavigate } from "react-router";
 
-export default function Home() {
+export default function Home({ eventDetails }) {
+
+  const { user, loggedIn } = useAuth();
+
+  const formatDateWithOrdinal = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+
+    // Determine the ordinal suffix
+    const suffix =
+      day % 10 === 1 && day !== 11
+        ? "st"
+        : day % 10 === 2 && day !== 12
+          ? "nd"
+          : day % 10 === 3 && day !== 13
+            ? "rd"
+            : "th";
+
+    return `${day}${suffix} of ${month}`;
+  };
+
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    if (!loggedIn) {
+      navigate("/register");
+    }
+    if (user.role == "admin") {
+      navigate("/");
+    }
+    if (user.role == "user") {
+      navigate("/team");
+    }
+  }
+
   return (
     <>
       <section className="home" id="home">
@@ -45,7 +82,7 @@ export default function Home() {
               color: "#7f58f3"
             }}
           >
-            3 LAKHS
+            {eventDetails.prize_money}
           </span>
         </h4>
 
@@ -71,7 +108,7 @@ export default function Home() {
           </span>
         </h2>
 
-        <a className="login-button join nodeHover" href="/team">
+        <a className="login-button join nodeHover" onClick={handleRegister}>
           Register Now{" "}
         </a>
         <p
@@ -82,7 +119,7 @@ export default function Home() {
             fontSize: "22px",
           }}
         >
-          on the 3rd and 4th of December
+          on the {formatDateWithOrdinal(eventDetails.event_date)}
         </p>
 
         <div id="mouse-scroll">

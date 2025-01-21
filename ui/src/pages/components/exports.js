@@ -23,6 +23,7 @@ export const userGetRequest = async (url) => {
   } catch (error) {
     if (error.response.status === 401) {
       toast.error(error.response.data.message);
+      
       handleLogout();
     }
     throw error;
@@ -48,12 +49,13 @@ export const adminGetRequest = async (url) => {
   }
 };
 
-export const adminPostRequest = async (url, data) => {
+export const adminPostRequest = async (url, data, headers = {}) => {
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(`${backendUrl}${url}`, data, {
       headers: {
         Authorization: `${token}`,
+        ...headers
       },
       withCredentials: true,
     });
@@ -98,7 +100,9 @@ export const userPostRequest = async (url, data) => {
   } catch (error) {
     if (error.response.status === 401) {
       toast.error(error.response.data.message);
-      handleLogout();
+      // handleLogout();
+      console.log(error);
+
     }
     throw error;
   }

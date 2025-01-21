@@ -23,5 +23,7 @@ module.exports = app => {
 
     router.post("/institute/delete", checkAdmin, profile.deleteInstitute);
 
+    router.put("/videoLink", checkUser , profile.uploadVideoLink)
+
     app.use("/api/", router);
 }

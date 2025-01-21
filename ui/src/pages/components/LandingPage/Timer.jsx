@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-export default function Timer() {
+export default function Timer({eventDetails}) {
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -11,25 +11,14 @@ export default function Timer() {
   const [eventStarted, setEventStarted] = useState(false);
 
   useEffect(() => {
+    // if (!eventDetails.eventDate) return;
+
     const second = 1000,
       minute = second * 60,
       hour = minute * 60,
       day = hour * 24;
 
-    let today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy = today.getFullYear();
-    const nextYear = yyyy + 1;
-    const dayMonth = "12/30/";
-    let birthday = `${dayMonth}${yyyy}`;
-
-    today = `${mm}/${dd}/${yyyy}`;
-    if (today > birthday) {
-      birthday = `${dayMonth}${nextYear}`;
-    }
-
-    const countDown = new Date(birthday).getTime();
+      const countDown = new Date(`${eventDetails.event_date}T00:00:00`).getTime();
 
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -49,7 +38,7 @@ export default function Timer() {
     }, 1000);
 
     return () => clearInterval(timer); // Cleanup interval on component unmount
-  }, []);
+  }, [eventDetails.event_date]);
 
   return (
     <>

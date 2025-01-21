@@ -20,9 +20,8 @@ export default function TeamCreation({
     teamMembers: [],
     docLink: "",
   };
-  
+
   const { user } = useAuth();
-  // console.log(user);
   
   const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
@@ -35,7 +34,6 @@ export default function TeamCreation({
       console.log("Failed to get Problem Statement Details", e);
     }
   };
-  // console.log("ps0",ps);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -260,7 +258,7 @@ export default function TeamCreation({
                 options={ps}
                 optionLabel="title"
                 filter
-                filterBy="title,ps_id" 
+                filterBy="title,ps_id"
                 required
                 valueTemplate={selectTemplate}
                 itemTemplate={optionTemplate}

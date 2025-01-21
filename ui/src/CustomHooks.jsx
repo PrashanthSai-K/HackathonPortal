@@ -26,7 +26,6 @@ export function useActionState(fn, isNotForm) {
 export function useInstitutionFetcher(setFormData) {
   const cache = useRef({});
 
-
   const fetchInstitutionName = useCallback(
     deBounce(async (code) => {
       if (!code) return;

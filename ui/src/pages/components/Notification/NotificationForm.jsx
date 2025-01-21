@@ -4,22 +4,35 @@ import { Input } from "../../../components/components/ui/input"
 import { Label } from "../../../components/components/ui/label"
 import { Textarea } from "../../../components/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/components/ui/select"
+import { adminPostRequest } from '../exports'
+import { toast } from 'react-toastify'
+import { useActionState } from '../../../CustomHooks'
 
 
-export default function NotificationForm({notification}) {
+export default function NotificationForm({ notification, fetchFunctionCall }) {
 
     const [title, setTitle] = useState(notification?.title || '');
     const [description, setDescription] = useState(notification?.description || '');
     const [date, setDate] = useState(notification?.date || '');
     const [type, setType] = useState(notification?.type || 'deadline');
 
-    const handleSubmit =()=>{
-
+    const handleSubmit = async () => {
+        try {
+            const response = await adminPostRequest("/notification", { title: title, description: description, date: date, type: type });
+            toast.success("Successfully Notified !!");
+            setTitle(""); setDate(""); setType("deadline"); setTitle("");
+            fetchFunctionCall();
+        } catch (error) {
+            console.log(error);
+            toast.error("Some unexpected error");
+        }
     }
+
+    const [submitFunctionCall, isLoading] = useActionState(handleSubmit);
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="space-y-4 ">
+            <form onSubmit={submitFunctionCall} className="space-y-4 ">
                 <div className="space-y-2  w-full text-start">
                     <Label htmlFor="title">Title</Label>
                     <Input
@@ -50,7 +63,7 @@ export default function NotificationForm({notification}) {
                 </div>
                 <div className="space-y-2  w-full text-start">
                     <Label htmlFor="type">Type</Label>
-                    <Select value={type} >
+                    <Select value={type} onValueChange={(value) => setType(value)}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select notification type" />
                         </SelectTrigger>
@@ -61,9 +74,16 @@ export default function NotificationForm({notification}) {
                         </SelectContent>
                     </Select>
                 </div>
-                <Button type="submit" className=' w-full text-start'>
-                    Submit
-                    {/* {isSubmitting ? 'Saving...' : (notification ? 'Update' : 'Create')} Notification */}
+                <Button type="submit" className=' w-full text-start' disabled={isLoading}>
+                    {
+                        isLoading
+                            ?
+                            <div className=" h-screen w-full flex items-center justify-center">
+                                <i className="pi pi-spin pi-spinner text-4xl"></i>
+                            </div>
+                            :
+                            "Submit"
+                    }
                 </Button>
             </form>
         </>

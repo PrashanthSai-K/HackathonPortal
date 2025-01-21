@@ -14,10 +14,11 @@ export default function Team() {
     const [modalData, setModalData] = useState();
     const [visible, setVisible] = useState(false);
 
+
     const formatKey = (key) => {
         return key
-            .replace(/_/g, " ") 
-            .replace(/\b\w/g, (char) => char.toUpperCase()); 
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (char) => char.toUpperCase());
     };
 
     const setModal = (rowData) => {
@@ -26,7 +27,7 @@ export default function Team() {
             .map(([key, value]) => ({
                 key: formatKey(key),
                 value:
-                    key === "specific_key" ? ( 
+                    key === "specific_key" ? (
                         <a href={value} target="_blank" rel="noopener noreferrer">
                             {value}
                         </a>
@@ -79,18 +80,6 @@ export default function Team() {
                             No teams found. Add a new team to get started!
                         </div>
                     )}
-
-                    {/* <AddTeamModal
-                    isOpen={isAddModalOpen}
-                    onClose={() => setIsAddModalOpen(false)}
-                    onAddTeam={handleAddTeam}
-                /> */}
-
-                    {/* <TeamDetailsModal
-                    isOpen={!!selectedTeam}
-                    onClose={() => setSelectedTeam(null)}
-                    team={selectedTeam}
-                /> */}
                 </div>
             </div>
             <TeamView
@@ -103,6 +92,7 @@ export default function Team() {
                 setVisibleLeft={setVisibleLeft}
                 getTeamDetails={getTeamDetails}
             />
+
         </>
     )
 }

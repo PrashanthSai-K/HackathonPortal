@@ -1,39 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import NotificationItem from './NotificationItem'
+import EditInstitution from '../Institution/EditInstitution'
+import EditNotificatoin from './EditNotificatoin';
+import { adminGetRequest } from '../exports';
+import { useActionState } from '../../../CustomHooks';
 
-export default function ViewNotification() {
+export default function ViewNotification({ notifications, isLoading, fetchFunctionCall }) {
 
-    const notifications = [
-        {
-          id: 1,
-          title: "Finalist Published",
-          description: "Finalist results will be published soon stay tuned for updates",
-          date: "10/01/2025",
-          type: "deadline"
-        },  
-    
-        {
-          id: 2,
-          title: "Evaluation Inprogress",
-          description: "Evaluation is going at full speed get ready for the Big day",
-          date: "11/01/2025",
-          type: "finalist"
-        }, 
-      ]
+    if (isLoading) return (
+        <div className=" h-screen w-full flex items-center justify-center">
+            <i className="pi pi-spin pi-spinner text-4xl"></i>
+        </div>
+    )
 
     return (
         <>
-            <div className="space-y-3">
+            <div className="w-full flex flex-wrap justify-center md:justify-start">
                 {notifications.length === 0 ? (
                     <p>No notifications found.</p>
                 ) : (
-                    notifications.map((notification)=>{
-                        return(
-                            <NotificationItem notification={notification} />
+                    notifications.map((notification) => {
+                        return (
+                            <NotificationItem notification={notification} fetchFunctionCall={fetchFunctionCall} />
                         )
                     })
                 )}
             </div>
+
         </>
     )
 }

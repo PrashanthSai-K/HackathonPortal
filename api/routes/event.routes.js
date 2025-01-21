@@ -8,7 +8,9 @@ module.exports = app => {
 
     router.get("/", events.getEventDetails);
     
-    router.post("/", checkAdmin,events.updateEventDetails);
+    router.post("/", checkAdmin, events.updateEventDetails);
+
+    router.post("/finalemail", checkAdmin, events.sendFinalistEmail);
 
     app.use("/api/events", router);
 }

@@ -8,38 +8,55 @@ import Footer from "../components/LandingPage/Footer";
 import Home from "../components/LandingPage/Home";
 import { NotificationButton } from "../components/Notification/Notification";
 import Navbar from "../components/LandingPage/Navbar";
+import { userGetRequest } from "../components/exports";
+import { useEffect, useState } from "react";
+import { useActionState } from "../../CustomHooks";
 
 function LangingPage() {
 
-  const announcements = [
-    {
-      id: 1,
-      title: "Finalist Published",
-      description: "Finalist results will be published soon stay tuned for updates",
-      date: "10/01/2025",
-      type: "deadline"
-    },
+  const [notifications, setNotifications] = useState([]);
+  const [eventDetails, setEventDetails] = useState({});
 
-    {
-      id: 2,
-      title: "Evaluation Inprogress",
-      description: "Evaluation is going at full speed get ready for the Big day",
-      date: "11/01/2025",
-      type: "finalist"
-    },
-  ]
+  const fetchNotification = async () => {
+    try {
+      const response = await userGetRequest("/notification");
+      setNotifications(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchEventDetails = async () => {
+    try {
+      const response = await userGetRequest("/events");
+      setEventDetails(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const [fetchEventDetailsCall, isLoading] = useActionState(fetchEventDetails, true);
+
+  useEffect(() => {
+    fetchEventDetailsCall();
+    fetchNotification();
+  }, [])
 
   return (
     <>
-      <Navbar />
-      <Home />
-      <EventDetails />
-      <Initiatives />
-      <Timer />
-      <Roadmap />
-      <EventGuidelines />
-      <Footer />
-      <NotificationButton announcements={announcements} />
+      {
+          <>
+            <Navbar />
+            <Home eventDetails={eventDetails} />
+            <EventDetails />
+            <Initiatives />
+            <Timer  eventDetails={eventDetails} />
+            <Roadmap />
+            <EventGuidelines eventDetails={eventDetails} />
+            <Footer />
+            <NotificationButton notifications={notifications} />
+          </>
+      }
     </>
   );
 }

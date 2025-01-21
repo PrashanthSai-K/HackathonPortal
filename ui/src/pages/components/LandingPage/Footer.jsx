@@ -7,7 +7,7 @@ export default function Footer() {
         <footer>
           <div id="footer" className="footer-content">
             <h3>
-              TAN<span className="text-[#7f58f3]">S</span>HACK'22
+              TN I<span className="text-[#7f58f3] font-medium">D</span>EATHON'25
             </h3>
             <p style={{ width: "50vw" }}>
               <b style={{ fontWeight: 600 }}>

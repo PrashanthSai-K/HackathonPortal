@@ -3,14 +3,22 @@ import Events from "../../../assets/event.png";
 import Registration from "../../../assets/registration.png";
 import Benefits from "../../../assets/benefits.png";
 
-export default function EventGuidelines() {
+export default function EventGuidelines({eventDetails}) {
+
+  const eventDate = new Date(eventDetails.event_date);
+
+  // Format event_date to DD/MM/YYYY
+  const formattedDate = `${eventDate.getDate().toString().padStart(2, "0")}/${(eventDate.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${eventDate.getFullYear()}`;
+
   return (
     <>
       <section className="flex flex-col" id="aboutus">
         <div className="mb-6">
           <p className="infooo">ABOUT</p>
           <h1 className="info">
-            TAN<span className="text-[#7f58f3]">S</span>HACK'22
+            TN I<span className="text-[#7f58f3] font-medium">D</span>EATHON'25
           </h1>
         </div>
         <div className="md:flex md:flex-row flex-col">
@@ -54,14 +62,14 @@ export default function EventGuidelines() {
                   className="fa fa-dot-circle-o"
                   style={{ fontSize: "15px" }}
                 ></i>{" "}
-                Venue: Banquet Hall
+                Venue: {eventDetails.event_venue}
               </p>
               <p>
                 <i
                   className="fa fa-dot-circle-o"
                   style={{ fontSize: "15px" }}
                 ></i>{" "}
-                Date: 3rd and 4th December 2022
+                Date: {formattedDate}
               </p>
             </center>
           </div>
