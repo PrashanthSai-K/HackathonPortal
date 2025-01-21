@@ -387,9 +387,8 @@ exports.deleteInstitute = async (req, res) => {
 
 exports.uploadVideoLink = async (req, res) => {
   const { team_id, video_link, institution_id } = req.body;
-  console.log(team_id, video_link, institution_id);
-
   const institutionId = res.locals.userData?.institutionId;
+  
   if (!institutionId) {
     return res.status(403).send({ message: "Unauthorized access." });
   }

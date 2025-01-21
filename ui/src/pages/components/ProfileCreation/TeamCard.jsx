@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, CardContent } from "../../../components/components/ui/card"
 import { Button } from "../../../components/components/ui/button"
-import { Eye, Users, User } from 'lucide-react'
+import { Users, User } from 'lucide-react'
 import { Avatar, AvatarFallback } from "../../../components/components/ui/avatar"
 import VideoLinkPopup from './VideoLinkPopup'
 
@@ -39,7 +39,6 @@ export function TeamCard({ team, onClick }) {
         </div>
         <div className='flex w-full gap-2'>
           <Button onClick={onClick} className="w-full bg-violet-600 hover:bg-violet-700">
-            {/* <Eye style={{color : "white"}} className="mr-2 h-4 w-4 text-white "/> */}
             View
           </Button>
           {team.stage === "PRESENTATION" &&
