@@ -41,9 +41,20 @@ export default function Navbar() {
                 { label: "Contact Us", href: "/#contactus" },
             ],
         },
-        { label: "Final Participant", href: "/finalist", role: ["admin"] },
-        { label: "Institute", href: "/institute-manage", role: ["admin"] },
+        // { label: "Final Participant", href: "/finalist", role: ["admin"] },
         { label: "Problem Statements", href: "/problems-manage", role: ["admin"] },
+        { label: "Institute", href: "/institute-manage", role: ["admin"] },
+        {
+            label: "Rounds",
+            href: "/rounds",
+            role: ["admin"],
+            items: [
+                { label: "Submitted", href: "/submitted" },
+                { label: "Presentation", href: "/presentation" },
+                { label: "Finalist", href: "/finalist" },
+                { label: "Winners", href: "/winners" },
+            ],
+        },
         { label: "Tools", href: "/tools", role: ["admin"] },
         { label: "Notify", href: "/notify", role: ["admin"] },
     ]
@@ -204,10 +215,10 @@ export default function Navbar() {
                         <Button
                             variant="outline"
                             className="ml-4 font-normal"
-                            onClick={loggedIn ? handleLogout : () => {navigate("/login") }}
+                            onClick={loggedIn ? handleLogout : () => { navigate("/login") }}
                         >
                             {/* <Link className='' to={loggedIn ? "/" : "/login"}> */}
-                                {loggedIn ? "Logout" : "Login"}
+                            {loggedIn ? "Logout" : "Login"}
                             {/* </Link> */}
                         </Button>
                     </div>

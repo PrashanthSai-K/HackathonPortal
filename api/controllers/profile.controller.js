@@ -17,7 +17,7 @@ exports.addTeamDetails = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     const [result, metaData] = await sequelize.query(
-      `INSERT INTO team_details (institution_id, team_name, number_of_participants, leader_name,leader_email, problem_statement_id, team_members , doc_link , status) 
+      `INSERT INTO team_details (institution_id, team_name, number_of_participants, leader_name,leader_email, problem_statement_id, team_members , abstract_link , stage) 
        VALUES ( :institution_id, :team_name, :number_of_participants, :leader_name, :leader_email, :problem_statement_id, :team_members , :doc_link , :status)`,
       {
         replacements: {

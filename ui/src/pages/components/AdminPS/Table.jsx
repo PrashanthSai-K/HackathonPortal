@@ -134,13 +134,13 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
                     <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         onClick={() => setAddVisible(true)}
                     >
-                        <span className='text-black hidden md:block' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</span>
+                        <div className='text-black hidden md:block' style={{ color: "rgb(139 92 246 / var(--tw-text-opacity, 1))" }}>ADD</div>
                         <i className='pi pi-plus-circle text-xl text-violet-500'></i>
                     </div>
                     <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
                         onClick={() => setUploadVisible(true)}
                     >
-                        <span className='text-black hidden md:block' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</span>
+                        <div className='text-black hidden md:block' style={{ color: "rgb(46 16 101 / var(--tw-text-opacity, 1))" }}>Import</div>
                         <i className='pi pi-upload text-xl text-violet-950 rotate-180'></i>
                     </div>
                     {deleteLoading ?
