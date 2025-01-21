@@ -10,10 +10,6 @@ module.exports = app => {
 
     router.post("/toParticipation", checkAdmin, finalist.toParticipation);
 
-    router.post("/toWinner", checkAdmin, finalist.toWinner);
-
-    router.post("/backtoParticipation", checkAdmin, finalist.backtoParticipation);
-
     router.post("/backtoPresentation", checkAdmin, finalist.backtoPresentation);
 
     router.post("/backtoSubmitted", checkAdmin, finalist.backtoSubmitted);

@@ -129,7 +129,7 @@ export default function Navbar() {
                                                                 {subItem.label}
                                                             </a>
                                                         ) : (
-                                                            <Link to={subItem.href} className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            <Link to={subItem.href} className="block px-3 py-2 hover:bg-gray-100 w-full dark:hover:bg-gray-600 dark:hover:text-white">
                                                                 {subItem.label}
                                                             </Link>
                                                         )}

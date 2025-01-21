@@ -122,7 +122,7 @@ export default function AccordionData({ data, fetchPs }) {
             if (!window.confirm("Do you want to move participant to final ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/toWinner", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/winner/toWinner", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Selected Sucessfully");
             fetchPs();
         } catch (error) {
@@ -137,7 +137,7 @@ export default function AccordionData({ data, fetchPs }) {
             if (!window.confirm("Do you want to remove participant from Winner ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/winner/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchPs();
         } catch (error) {
