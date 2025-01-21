@@ -15,6 +15,7 @@ import NotFount from './pages/components/404/NotFount.jsx';
 import Team from './pages/user/Team.jsx';
 import Notification from './pages/admin/Notification.jsx';
 import Tools from './pages/admin/Tools.jsx';
+import SubmittedList from './pages/admin/SubmittedList.jsx';
 
 
 function App() {
@@ -49,6 +50,8 @@ function App() {
         <Route path='/institute-manage' element={<Institution />} />
         <Route path='/notify' element={<Notification />} />
         <Route path='/tools' element={<Tools />} />
+        <Route path='/submitted' element={<SubmittedList />} />
+
 
 
         {/* <Route path='/d' element={<Demo />} /> */}

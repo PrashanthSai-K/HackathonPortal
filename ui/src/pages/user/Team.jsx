@@ -13,6 +13,8 @@ export default function Team() {
     const [teamDetails, setTeamDetails] = useState([]);
     const [modalData, setModalData] = useState();
     const [visible, setVisible] = useState(false);
+    console.log(teamDetails);
+
 
 
     const formatKey = (key) => {
@@ -65,12 +67,13 @@ export default function Team() {
                         </Button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-8 justify-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md: justify-center items-center">
                         {teamDetails.map((team) => (
                             <TeamCard
                                 key={team.ps_id}
                                 team={team}
                                 onClick={() => setModal(team)}
+                                getTeamDetails={getTeamDetails}
                             />
                         ))}
                     </div>

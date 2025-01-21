@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "../../../components/components/ui/avatar
 import VideoLinkPopup from './VideoLinkPopup'
 
 
-export function TeamCard({ team, onClick }) {
+export function TeamCard({ team, onClick, getTeamDetails }) {
 
   // console.log(team);
   const [visible, setVisible] = useState(false)
@@ -14,7 +14,7 @@ export function TeamCard({ team, onClick }) {
   const initials = team.team_name.split(' ').map(word => word[0]).join('').toUpperCase()
 
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 w-80 mb-5 md:mb-0">
+    <Card className="overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1 w-80 md:ml-5 mb-5 md:mb-5">
       <div className="bg-gradient-to-r from-violet-800 to-violet-950 p-4">
         <Avatar className="h-20 w-20 border-4 border-white shadow-lg">
           <AvatarFallback className="text-2xl font-bold bg-violet-400 text-white">
@@ -55,6 +55,7 @@ export function TeamCard({ team, onClick }) {
         visible={visible}
         setVisible={setVisible}
         teamDetails={teamDetails}
+        getTeamDetails = {getTeamDetails}
       />
     </Card>
   )

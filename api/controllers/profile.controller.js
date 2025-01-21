@@ -388,7 +388,7 @@ exports.deleteInstitute = async (req, res) => {
 exports.uploadVideoLink = async (req, res) => {
   const { team_id, video_link, institution_id } = req.body;
   const institutionId = res.locals.userData?.institutionId;
-  
+
   if (!institutionId) {
     return res.status(403).send({ message: "Unauthorized access." });
   }
@@ -400,6 +400,26 @@ exports.uploadVideoLink = async (req, res) => {
         .send({ message: "Trying to modify unauthorized data" });
     }
 
+    // Check if the video link already exists
+    const [existingRecord] = await sequelize.query(
+      `SELECT video_link FROM team_details WHERE id = :team_id`,
+      {
+        replacements: {
+          team_id: team_id,
+        },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    console.log(existingRecord);
+    
+
+    if (existingRecord.video_link !== '-') {
+      return res.send({
+        message: "Video link already submitted.",
+      });
+    }
+
+    // Update the video link if not already present
     const [affectedRows] = await sequelize.query(
       `UPDATE team_details 
        SET video_link = :video_link 
@@ -428,3 +448,4 @@ exports.uploadVideoLink = async (req, res) => {
     });
   }
 };
+
