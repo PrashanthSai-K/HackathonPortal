@@ -6,6 +6,7 @@ import Base64 from 'crypto-js/enc-base64';
 import Table from '../components/ProblemStatementView/Table';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../components/LandingPage/Navbar';
+import AccordionData from '../components/ProblemStatementView/Accordion';
 
 export default function ProblemStatementsView() {
 
@@ -78,10 +79,10 @@ export default function ProblemStatementsView() {
             <Navbar />
             {ps ?
                 <section className=" px-3 pt-24 home" id="home">
-                    <div className='font-semibold text-sm lg:text-lg max-w-sm md:max-w-lg lg:max-w-full  text-justify'>
+                    <div className='pl-10 font-semibold text-sm lg:text-lg max-w-sm md:max-w-lg lg:max-w-full text-justify'>
                         {`${data.ps_id} - ${data.title}`}
                     </div>
-                    <Table data={ps} fetchPs={fetchPs} />
+                    <AccordionData data={ps} fetchPs={fetchPs} />
                 </section>
                 :
                 <div className='flex items-center justify-center min-h-96 h-full w-full '>

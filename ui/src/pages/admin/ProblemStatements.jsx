@@ -48,7 +48,6 @@ export default function AdminProblemStatements() {
                 <AddPopup visible={visible} setVisible={setVisible} fetchPs={fetchPs} />
                 <UploadPopup visible={uploadVisible} setVisible={setUploadVisible} fetchPs={fetchPs} />
             </section>
-
         </>
     )
 }

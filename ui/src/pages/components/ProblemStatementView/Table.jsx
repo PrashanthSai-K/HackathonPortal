@@ -5,7 +5,16 @@ import { Column } from 'primereact/column';
 import PopupModal from './PopupModal';
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
-
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "../../../components/components/ui/dropdown-menu"
+import { Button } from "../../../components/components/ui/button"
+import { MoreHorizontal, Edit, Trash, Eye } from "lucide-react"
 
 export default function Table({ data, fetchPs }) {
 
@@ -46,7 +55,7 @@ export default function Table({ data, fetchPs }) {
 
     const setModal = (rowData) => {
         const dataEntries = Object.entries(rowData)
-            .slice(2,15)
+            .slice(2, 15)
             .map(([key, value]) => ({
                 key: formatKey(key),
                 value: key === 'doc_link' // Replace 'specific_key' with the actual key you want to check
@@ -94,14 +103,14 @@ export default function Table({ data, fetchPs }) {
 
     const statusTemplate = (rowData) => (
 
-        rowData.status === "SUBMITTED" ?
+        rowData.stage === "SUBMITTED" ?
             (
                 <div className='bg-orange-500 p-1 h-8 w-24 rounded-lg flex items-center justify-center' >
-                    <p className='text-white text-sm'>{rowData.status}</p>
+                    <p className='text-white text-sm'>{rowData.stage}</p>
                 </div>
             ) : (
                 <div className='bg-green-500 p-1 h-8 w-24 rounded-lg flex items-center justify-center' >
-                    <p className='text-white text-sm'>{rowData.status}</p>
+                    <p className='text-white text-sm'>{rowData.stage}</p>
                 </div>
             )
     )
@@ -128,15 +137,15 @@ export default function Table({ data, fetchPs }) {
 
                         <Column field="" header="Action" align={"center"} bodyStyle={{ width: "7rem" }} headerClassName=' border-b text-end font-medium bg-violet-900 text-sm' className='border-b-2  p-1 text-center text-sm relative z-10'
                             body={(rowData) => (
-
-                                <div className='flex  gap-1'>
-                                    <button
+                                <>
+                                {/* // <div className='flex  gap-1'> */}
+                                        {/* <button
                                         onClick={() => setModal(rowData)}
                                         className="px-2 py-1 bg-violet-500 text-white rounded"
                                     >
                                         View
                                     </button>
-                                    {rowData.status === "SUBMITTED" &&
+                                    {rowData.stage === "SUBMITTED" &&
                                         <button
                                             onClick={() => selectTeam(rowData)}
                                             className="px-2 py-1 bg-violet-950 text-white rounded"
@@ -144,15 +153,41 @@ export default function Table({ data, fetchPs }) {
                                             Select
                                         </button>
                                     }
-                                    {rowData.status === "APPROVED" &&
+                                    {rowData.stage === "APPROVED" &&
                                         <button
                                             onClick={() => unselectTeam(rowData)}
                                             className="px-2 py-1 bg-violet-950 text-white rounded"
                                         >
                                             Unselect
                                         </button>
-                                    }
-                                </div>
+                                    } */}
+
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                                    <span className="sr-only">Open menu</span>
+                                                    <MoreHorizontal className="h-4 w-4" />
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end" className='bg-white w-36 p-1'>
+                                                {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
+                                                <DropdownMenuItem onClick={() => setModal(rowData)}>
+                                                    <Eye />
+                                                    <span>View</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => selectTeam(rowData)}>
+                                                    <Edit />
+                                                    <span>Select</span>
+                                                </DropdownMenuItem>
+                                                {/* <DropdownMenuSeparator /> */}
+                                                <DropdownMenuItem onClick={() => unselectTeam(rowData)}>
+                                                    <Trash  />
+                                                    <span>Unselect</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                {/* // </div> */}
+                                </>
                             )}
                         ></Column>
                     </DataTable>

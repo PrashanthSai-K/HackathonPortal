@@ -1,22 +1,12 @@
 const sequelize = require("../config/database");
 
 
-exports.selectTeam = async(req, res) => {
+exports.toPresentation = async(req, res) => {    
     const transaction = await sequelize.transaction();
     try{
         const { ps_id, team_id } = req.body;
 
-        const result1 = await sequelize.query("INSERT INTO final_participants (team_id, ps_id) VALUES (:team_id, :ps_id)",
-            {
-                replacements : {
-                    team_id : team_id,
-                    ps_id: ps_id
-                },
-                transaction,
-            }
-        )
-
-        const result2 = await sequelize.query("UPDATE team_details SET status = 'APPROVED' WHERE id = :team_id", 
+        const result = await sequelize.query("UPDATE team_details SET stage = 'PRESENTATION' WHERE id = :team_id", 
             {
                 replacements : {
                     team_id : team_id
@@ -34,22 +24,59 @@ exports.selectTeam = async(req, res) => {
     }
 }
 
-exports.unselectTeam = async(req, res) => {
+exports.toParticipation = async(req, res) => {
     const transaction = await sequelize.transaction();
     try{
         const { ps_id, team_id } = req.body;
 
-        const result1 = await sequelize.query("DELETE FROM final_participants WHERE team_id = :team_id AND ps_id = :ps_id",
+        const result = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 
             {
                 replacements : {
-                    team_id : team_id,
-                    ps_id: ps_id
+                    team_id : team_id
                 },
-                transaction,
+                transaction
             }
         )
 
-        const result2 = await sequelize.query("UPDATE team_details SET status = 'SUBMITTED' WHERE id = :team_id", 
+        await transaction.commit()
+        res.status(201).send({"message": "Selected Successfully"});
+    }catch (error){
+        console.log(error);
+        await transaction.rollback();
+        res.status(500).send({"error": "Some Internal error"});
+    }
+}
+
+exports.toWinner = async(req, res) => {
+    const transaction = await sequelize.transaction();
+    try{
+        const { ps_id, team_id } = req.body;
+
+        const result = await sequelize.query("UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id", 
+            {
+                replacements : {
+                    team_id : team_id
+                },
+                transaction
+            }
+        )
+
+        await transaction.commit()
+        res.status(201).send({"message": "Selected Successfully"});
+    }catch (error){
+        console.log(error);
+        await transaction.rollback();
+        res.status(500).send({"error": "Some Internal error"});
+    }
+}
+
+exports.backtoParticipation = async(req, res) => {
+    const transaction = await sequelize.transaction();
+    try{
+        const { ps_id, team_id } = req.body;
+
+
+        const result = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 
             {
                 replacements : {
                     team_id : team_id
@@ -67,6 +94,52 @@ exports.unselectTeam = async(req, res) => {
     }
 }
 
+exports.backtoPresentation = async(req, res) => {
+    const transaction = await sequelize.transaction();
+    try{
+        const { ps_id, team_id } = req.body;
+
+
+        const result = await sequelize.query("UPDATE team_details SET stage = 'PRESENTATION' WHERE id = :team_id", 
+            {
+                replacements : {
+                    team_id : team_id
+                },
+                transaction
+            }
+        )
+
+        await transaction.commit()
+        res.status(201).send({"message": "Removed Successfully"});
+    }catch (error){
+        console.log(error);
+        await transaction.rollback();
+        res.status(500).send({"error": "Some Internal error"});
+    }
+}
+
+exports.backtoSubmitted = async(req, res) => {
+    const transaction = await sequelize.transaction();
+    try{
+        const { ps_id, team_id } = req.body;
+
+        const result = await sequelize.query("UPDATE team_details SET stage = 'SUBMITTED' WHERE id = :team_id", 
+            {
+                replacements : {
+                    team_id : team_id
+                },
+                transaction
+            }
+        )
+
+        await transaction.commit()
+        res.status(201).send({"message": "Removed Successfully"});
+    }catch (error){
+        console.log(error);
+        await transaction.rollback();
+        res.status(500).send({"error": "Some Internal error"});
+    }
+}
 
 exports.getFinalist = async(req, res) => {
     try {
