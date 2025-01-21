@@ -15,6 +15,7 @@ import NotFount from './pages/components/404/NotFount.jsx';
 import Team from './pages/user/Team.jsx';
 import Notification from './pages/admin/Notification.jsx';
 import Tools from './pages/admin/Tools.jsx';
+import Winners from './pages/admin/Winners.jsx';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/team' element={<Team />} />
         <Route path='/finalist' element={<Finalist />} />
+        <Route path='/winners' element={<Winners />} />
         <Route path='/finalists' element={<UserFinalist />} />
         <Route path='/institute-manage' element={<Institution />} />
         <Route path='/notify' element={<Notification />} />
