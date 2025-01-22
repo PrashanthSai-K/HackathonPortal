@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { userPostRequest } from "../exports";
 import { useActionState } from "../../../CustomHooks";
 import { useAuth } from "../../../AuthContext";
@@ -40,7 +40,7 @@ export default function Login() {
       <div className="bg-[#f2f4fe] h-screen flex justify-center">
         <center className="flex flex-col items-center justify-center">
           <section className="login_forms">
-            <div className="wrapper_login">
+            <div className="wrapper_login pt-5">
               <h3>
                 <b className="text-[#465f82] font-bold">Welcome Back</b>
               </h3>
@@ -69,6 +69,10 @@ export default function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  <div className="text-end">
+                    <Link to={"/forgot-password"} className="cursor-pointer md:pt-1 text-xs text-[#267fff] font-medium">Forget Password ?</Link>
+                  </div>
+
                 </div>
                 <div className="form-group">
                   <button

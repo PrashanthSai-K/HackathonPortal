@@ -1,5 +1,5 @@
 const { validateInstituteData } = require("../middleware/validators/instituteValidator");
-const validateLogin = require("../middleware/validators/loginValidator");
+const { validateLogin } = require("../middleware/validators/loginValidator");
 
 module.exports = app => {
     const authController = require("../controllers/auth.controller");
@@ -19,7 +19,7 @@ module.exports = app => {
 
     router.post("/updateLogout", authController.updateLogout);
 
-    router.post("/login", validateLogin , authMiddelware.loginUser, authMiddelware.createToken ,authController.userLogin);
+    router.post("/login" , validateLogin , authMiddelware.loginUser, authMiddelware.createToken ,authController.userLogin);
 
     router.get("/getUser", authController.getUser);
     

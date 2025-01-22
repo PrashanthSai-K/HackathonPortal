@@ -69,6 +69,7 @@
 
   .form-group input {
     height: 6vh;
+    width: 100%;
     border: 2px solid rgba(129, 144, 184, 0.2);
     border-radius: 4px;
     font-size: 0.8em;
@@ -79,9 +80,11 @@
     height: 5.7vh;
   }
   .form-group {
-    width: 65%;
+    width: 75%;
     padding-bottom: 2vh;
+    /* background-color: black; */
   }
+
   .form-group_signup {
     width: 70%;
     padding-bottom: 2vh;
@@ -96,7 +99,7 @@
     width: 90vw;
     height: fit-content;
     border-radius: 8px;
-    /* padding: 3vw; */
+    /* padding: 5vw; */
     color: #465f82;
     background-color: #fdfcfd;
   }

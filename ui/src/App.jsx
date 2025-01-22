@@ -18,6 +18,8 @@ import Tools from './pages/admin/Tools.jsx';
 import SubmittedList from './pages/admin/SubmittedList.jsx';
 import Winners from './pages/admin/Winners.jsx';
 import Presentation from './pages/admin/Presentation.jsx';
+import ForgotPassword from './pages/components/ForgotPassword/ForgotPassword.jsx';
+import ResetPassword from './pages/components/ForgotPassword/resetPassword.jsx';
 
 
 function App() {
@@ -55,6 +57,9 @@ function App() {
         <Route path='/tools' element={<Tools />} />
         <Route path='/submitted' element={<SubmittedList />} />
         <Route path='/presentation' element={<Presentation />} />
+        <Route path='/presentation' element={<Presentation />} />
+        <Route path='/forgot-password' element={<ForgotPassword />} />
+        <Route path='/reset-password' element={<ResetPassword />} />
 
         {/* <Route path='/d' element={<Demo />} /> */}
       </Routes>

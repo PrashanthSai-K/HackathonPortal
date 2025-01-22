@@ -34,6 +34,8 @@ require("./routes/notification.routes.js")(app);
 require("./routes/submitted.routes.js")(app);
 require("./routes/winner.routes.js")(app);
 require("./routes/presentation.routes.js")(app);
+require("./routes/forgotPassword.routes.js")(app);
+
 
 
 app.listen(4500, () => {

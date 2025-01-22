@@ -32,5 +32,5 @@ export function ExportToPdf(requiredData) {
       });
     }
 
-    doc.save("Master Table.pdf"); // Download the PDF with a specified filename
+    doc.save(`${requiredData[0].stage}.pdf`); // Download the PDF with a specified filename
   }
