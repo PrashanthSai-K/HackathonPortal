@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../../AuthContext';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/components/ui/tabs"
 import EventDetails from '../components/Tools/EventDetails';
 import Email from '../components/Tools/Email';
@@ -6,6 +8,20 @@ import Navbar from '../components/LandingPage/Navbar';
 
 
 export default function Tools() {
+
+    const { loggedIn, user } = useAuth();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate("/");
+        }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
+        }
+    }, [])
+
     return (
         <>
             <Navbar />

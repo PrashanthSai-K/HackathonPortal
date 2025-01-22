@@ -5,15 +5,20 @@ import Navbar from '../components/LandingPage/Navbar';
 import Table from '../components/Submitted/Table';
 
 export default function SubmittedList() {
-    const { user } = useAuth();
+
+    const { loggedIn, user } = useAuth();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.role != 'admin') {
+        if (!loggedIn) {
             navigate("/")
         }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
+        }
     }, [])
+
     return (
         <>
             <Navbar />

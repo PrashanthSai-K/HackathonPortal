@@ -3,19 +3,21 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../components/LandingPage/Navbar';
 import Table from '../components/Winners/Table';
+
 export default function Winners() {
 
-
-    const { user } = useAuth();
+    const { loggedIn, user } = useAuth();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.role != 'admin') {
+        if (!loggedIn) {
             navigate("/")
         }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
+        }
     }, [])
-
 
     return (
         <>

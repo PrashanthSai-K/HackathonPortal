@@ -101,20 +101,35 @@ export default function Table() {
         winnerCall();
     }, [])
 
-
-    const unselectTeam = async (data) => {
+    const selectTeam = async (data) => {
         try {
-            if (!window.confirm("Do you want to remove participant from Winner ?")) {
+            if (!window.confirm("Do you want to move participant to Presentation ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Unselected Sucessfully");
+            const response = await adminPostRequest("/presentation/toPresentation", { ps_id: data.ps_id, team_id: data.team_id });
+            toast.success("Selected Sucessfully");
             fetchSubmittedList();
         } catch (error) {
             console.log(error);
             toast.error("Some Error");
         }
     };
+
+    const exportCheckPdf = (data) => {
+        if (submitted.length > 0) {
+            ExportToPdf(data);
+        } else {
+            window.alert("Oops!! No data found to export.");
+        }
+    }
+
+    const exportCheckExcel = (data) => {
+        if (submitted.length > 0) {
+            ExportToExcel(data);
+        } else {
+            window.alert("Oops!! No data found to export.");
+        }
+    }
 
     return (
         <>
@@ -124,17 +139,25 @@ export default function Table() {
                 </div>
                 :
                 <>
-                    <div className=' w-full flex items-center justify-between'>
-                        <div className=' text-center text-violet-900 text-xl font-semibold'>SUBMITTED</div>
+                    <div className=' w-full flex items-center justify-between flex-col md:flex-row'>
+                        <div className='text-center text-violet-900 text-xl font-semibold'>SUBMITTED</div>
                         <div className=' flex gap-2'>
-                            <Button onClick={() => ExportToPdf(submitted)} className="bg-red-500 hover:bg-red-700 text-white">
-                                <i className="pi pi-file-pdf text-white" />
-                                PDF
-                            </Button>
-                            <Button onClick={() => ExportToExcel(submitted)} className="bg-green-500 hover:bg-green-700 text-white">
-                                <i className="pi pi-file-excel text-white" />
-                                Excel
-                            </Button>
+                            <div className=' border h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
+                                <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
+                                <i className='pi pi-search text-gray-300'></i>
+                            </div>
+                            <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                                onClick={() => exportCheckPdf(submitted)}
+                            >
+                                <div className='text-black hidden md:block' style={{ color: "#ef4444" }}>PDF</div>
+                                <i className='pi pi-file-pdf text-xl text-red-500 '></i>
+                            </div>
+                            <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                                onClick={() => exportCheckExcel(submitted)}
+                            >
+                                <div className='text-black hidden md:block' style={{ color: "#22c55e" }}>Excel</div>
+                                <i className='pi pi-file-pdf text-xl text-green-500 '></i>
+                            </div>
                         </div>
                     </div>
                     <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">
@@ -161,9 +184,9 @@ export default function Table() {
                                                     <Eye />
                                                     <span>View</span>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onClick={() => unselectTeam(rowData)}>
+                                                <DropdownMenuItem onClick={() => selectTeam(rowData)}>
                                                     <Trash />
-                                                    <span>Unselect</span>
+                                                    <span>Select</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

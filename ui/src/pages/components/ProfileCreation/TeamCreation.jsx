@@ -22,7 +22,7 @@ export default function TeamCreation({
   };
 
   const { user } = useAuth();
-  
+
   const [teamDetails, setTeamDetails] = useState(emptyData);
   const [ps, setPs] = useState([]);
 
@@ -69,6 +69,9 @@ export default function TeamCreation({
       }
     } catch (error) {
       console.log("Error adding team details", error);
+      toast.error(
+        error.response.data.error || error.response.data.errors[0].message
+      );
     }
   };
 

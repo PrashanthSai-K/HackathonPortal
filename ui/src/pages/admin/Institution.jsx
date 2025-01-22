@@ -10,13 +10,16 @@ import Navbar from '../components/LandingPage/Navbar';
 
 export default function Institution() {
 
-    const { user } = useAuth();
+    const { loggedIn, user } = useAuth();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.role != 'admin') {
-            navigate("/profile")
+        if (!loggedIn) {
+            navigate("/")
+        }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
         }
     }, [])
 
@@ -26,7 +29,7 @@ export default function Institution() {
         try {
             const response = await adminGetRequest("/institute");
             console.log(response.data.data);
-            
+
             setInstitution(response.data.data);
         } catch (error) {
             console.log(error);
@@ -53,7 +56,7 @@ export default function Institution() {
                     </div>
                     :
                     <section className="home w-full flex flex-col items-center" id="home">
-                        <Table data={institution}  fetchInstitutionCall={fetchInstitutionCall} setAddVisible={setAddVisible}/>
+                        <Table data={institution} fetchInstitutionCall={fetchInstitutionCall} setAddVisible={setAddVisible} />
                         <AddInstitution visible={addVisible} setVisible={setAddVisible} fetchInstitutionCall={fetchInstitutionCall} setPassword={setPassword} setPasswordVisible={setPasswordVisible} />
                         <PasswordPopup visible={passwordVisible} setVisible={setPasswordVisible} password={password} />
                     </section>

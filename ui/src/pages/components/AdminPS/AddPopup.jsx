@@ -39,9 +39,9 @@ export default function AddPopup({ visible, setVisible, fetchPs }) {
     
     return (
         <>
-            <Sidebar position='right' visible={visible} className='w-11/12 md:w-1/3 ' onHide={() => setVisible(false)}>
+            <Sidebar position='right' visible={visible} className='w-11/12 md:w-1/3 text-lg font-semibold text-gray-700 pt-2 ' header={"PS Creation"} onHide={() => setVisible(false)}>
                 <div className=' flex items-center justify-between'>
-                    <h2 className="text-xl font-semibold text-gray-700">PS Creation</h2>
+                    <h2 className="text-xl font-semibold text-gray-700"></h2>
                 </div>
                 <div className="flex flex-col items-center gap-4">
                     <form onSubmit={handleSubmit} className="w-full px-6">

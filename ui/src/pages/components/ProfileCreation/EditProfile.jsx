@@ -28,7 +28,9 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
       }
     } catch (error) {
       console.error("Error updating institute details:", error);
-      toast.error("An unexpected error occurred.");
+      toast.error(
+        error.response.data.error || error.response.data.errors[0].message
+      );
     }
   };
 
@@ -44,7 +46,7 @@ export default function EditProfile({ visible, setVisible, instituteDetail, getI
         visible={visible}
         position="right"
         className="w-11/12 md:w-1/3"
-        onHide={() => setVisible(false)}    
+        onHide={() => setVisible(false)}
       >
         <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
           Edit Institute Details

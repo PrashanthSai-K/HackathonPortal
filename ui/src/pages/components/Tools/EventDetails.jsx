@@ -29,7 +29,7 @@ export default function EventDetails() {
 
     const handleSubmit = async () => {
         try {
-            if(!(window.confirm("Do you want to update these details ?"))){
+            if (!(window.confirm("Do you want to update these details ?"))) {
                 return;
             }
             const response = await adminPostRequest("/events", eventDetails);
@@ -82,10 +82,12 @@ export default function EventDetails() {
                     <CardContent className='flex'>
                         {
                             isFetchLoading ?
-                                <i
-                                    style={{ color: "white", fontSize: "1rem" }}
-                                    className="gap-2 px-3 py-1 pi pi-spin pi-spinner"
-                                ></i>
+                                <div className='min-h-56 flex w-full h-full items-center justify-center'>
+                                    <i
+                                        style={{ color: "black", fontSize: "1.5rem" }}
+                                        className="gap-2 px-3 py-1 pi pi-spin pi-spinner"
+                                    ></i>
+                                </div>
                                 :
                                 <div className="flex flex-wrap">
                                     <div className="space-y-2 py-2 w-11/12 md:w-5/12 flex flex-col items-start ">

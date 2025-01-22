@@ -4,8 +4,23 @@ import ViewNotification from '../components/Notification/ViewNotification'
 import Navbar from '../components/LandingPage/Navbar'
 import { adminGetRequest } from '../components/exports'
 import { useActionState } from '../../CustomHooks'
+import { useAuth } from '../../AuthContext'
+import { useNavigate } from 'react-router'
 
 export default function Notification() {
+
+    const { loggedIn, user } = useAuth();
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!loggedIn) {
+            navigate("/")
+        }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
+        }
+    }, [])
 
     const [notifications, setNotifications] = useState([]);
 
@@ -35,8 +50,8 @@ export default function Notification() {
                         <h2 className="text-2xl font-semibold mb-4 text-start">Create Notification</h2>
                         <NotificationForm fetchFunctionCall={fetchFunctionCall} />
                     </div>
-                    <div className=' w-full md:w-7/12'>
-                        <h2 className="text-2xl font-semibold mb-4 text-end px-4 md:px-0">Existing Notifications</h2>
+                    <div className=' w-full md:w-7/12 '>
+                        <h2 className="text-2xl font-semibold mb-4 text-center px-4 md:px-0">Existing Notifications</h2>
                         <div className='w-full md:max-h-96 md:overflow-scroll '>
                             <ViewNotification notifications={notifications} isLoading={isLoading} fetchFunctionCall={fetchFunctionCall} />
                         </div>

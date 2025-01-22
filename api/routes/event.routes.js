@@ -12,5 +12,9 @@ module.exports = app => {
 
     router.post("/finalemail", checkAdmin, events.sendFinalistEmail);
 
+    router.post("/resultemail", checkAdmin, events.sendResultsEmail);
+
+    router.post("/testemail", checkAdmin, events.sendTestEmail);
+
     app.use("/api/events", router);
 }

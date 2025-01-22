@@ -102,10 +102,12 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
 
     const deleteProblems = async () => {
         try {
-
             const id = selectedRows.map((row) => row && row.ps_id)
             if (id.length <= 0) {
                 alert("None selected !! Select rows to delete")
+                return;
+            }
+            if (!(window.confirm("Do you want to delete the selected problems ?"))) {
                 return;
             }
             const response = await adminPostRequest("/ps/delete", id);
