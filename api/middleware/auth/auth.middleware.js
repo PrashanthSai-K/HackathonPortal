@@ -128,7 +128,6 @@ exports.checkUser = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
     const userData = jwt.verify(token, key);
-    console.log("userdata",userData);
     
     if (userData.role != "user") {
       return res.status(403).send({ message: "Not Authorized" });
@@ -136,7 +135,6 @@ exports.checkUser = async (req, res, next) => {
     res.locals.userData = userData;
     const inValidToken = await checkUnauthorizedToken(token);    
     if (inValidToken) {
-      console.log("unauth");
       return res.status(401).send({ message: "unauthorized access" });
     }
     next();

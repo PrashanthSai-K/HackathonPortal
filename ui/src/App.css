@@ -8,6 +8,10 @@
     align-items: center;
 }
 
+/* .p-sidebar-close{
+
+} */
+
 .p-dropdown .p-dropdown-label {
     display: flex;
     color: black !important;

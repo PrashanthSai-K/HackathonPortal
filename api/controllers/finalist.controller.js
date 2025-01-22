@@ -1,29 +1,5 @@
 const sequelize = require("../config/database");
 
-
-exports.toPresentation = async(req, res) => {    
-    const transaction = await sequelize.transaction();
-    try{
-        const { ps_id, team_id } = req.body;
-
-        const result = await sequelize.query("UPDATE team_details SET stage = 'PRESENTATION' WHERE id = :team_id", 
-            {
-                replacements : {
-                    team_id : team_id
-                },
-                transaction
-            }
-        )
-
-        await transaction.commit()
-        res.status(201).send({"message": "Selected Successfully"});
-    }catch (error){
-        console.log(error);
-        await transaction.rollback();
-        res.status(500).send({"error": "Some Internal error"});
-    }
-}
-
 exports.toParticipation = async(req, res) => {
     const transaction = await sequelize.transaction();
     try{
@@ -46,10 +22,6 @@ exports.toParticipation = async(req, res) => {
         res.status(500).send({"error": "Some Internal error"});
     }
 }
-
-
-
-
 
 exports.backtoPresentation = async(req, res) => {
     const transaction = await sequelize.transaction();

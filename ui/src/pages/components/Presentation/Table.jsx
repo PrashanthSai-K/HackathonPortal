@@ -17,12 +17,12 @@ import { Button } from "../../../components/components/ui/button"
 import { MoreHorizontal, Edit, Trash, Eye } from "lucide-react";
 // import { Button } from "../../../components/components/ui/button"
 import { FileDown } from "lucide-react"
-import { ExportToPdf } from '../../ReportGeneration/Pdf';
 import { ExportToExcel } from '../../ReportGeneration/Excel';
+import { ExportToPdf } from '../../ReportGeneration/Pdf';
 
 
 export default function Table() {
-    const [winners, setWinners] = useState([]);
+    const [presentation, setPresentation] = useState([]);
     const [globalFilter, setGlobalFilter] = useState();
     const [modalData, setModalData] = useState();
     const [visible, setVisible] = useState(false);
@@ -75,7 +75,7 @@ export default function Table() {
 
     const tableLoader = () => (
         <div className='flex items-center justify-center min-h-96 h-full w-full '>
-            <p>No Winners Available</p>
+            <p>No presentation Available</p>
         </div>
     )
 
@@ -85,49 +85,62 @@ export default function Table() {
         </div>
     )
 
-    const fetchWinner = async () => {
+    const fetchPresentationList = async () => {
         try {
-            const response = await adminGetRequest("/winner");
-            setWinners(response.data.data);
+            const response = await adminGetRequest("/presentation");
+            setPresentation(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const [winnerCall, isLoading] = useActionState(fetchWinner, true);
+    const [winnerCall, isLoading] = useActionState(fetchPresentationList, true);
 
 
     useEffect(() => {
         winnerCall();
     }, [])
 
-
-    const unselectTeam = async (data) => {
+    const selectTeam = async (data) => {
         try {
-            if (!window.confirm("Do you want to remove participant from Winner ?")) {
+            if (!window.confirm("Do you want to move participant to Participation Round ?")) {
                 return
             }
-            const response = await adminPostRequest("/winner/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Unselected Sucessfully");
-            fetchWinner();
+            const response = await adminPostRequest("/finalist/toParticipation", { ps_id: data.ps_id, team_id: data.team_id });
+            toast.success("Selected Sucessfully");
+            fetchPresentationList();
         } catch (error) {
             console.log(error);
             toast.error("Some Error");
         }
     };
 
-    const exportCheckPdf =(data)=>{
-        if(winners.length > 0){
+    const unselectTeam = async (data) => {
+        try {
+            if (!window.confirm("Do you want to remove participant from Presentation Round ?")) {
+                return
+            }
+            const response = await adminPostRequest("/finalist/backtoSubmitted", { ps_id: data.ps_id, team_id: data.team_id });
+            toast.success("Unselected Sucessfully");
+            fetchPresentationList();
+        } catch (error) {
+            console.log(error);
+            toast.error("Some Error");
+        }
+    };
+
+    const exportCheckPdf = (data) => {
+        if (presentation.length > 0) {
             ExportToPdf(data);
-        }else{
+        } else {
             window.alert("Oops!! No data found to export.");
         }
     }
 
-    const exportCheckExcel =(data)=>{
-        if(winners.length > 0){
+    const exportCheckExcel = (data) => {
+        if (presentation.length > 0) {
             ExportToExcel(data);
-        }else{
+        } else {
             window.alert("Oops!! No data found to export.");
         }
     }
@@ -141,20 +154,20 @@ export default function Table() {
                 :
                 <>
                     <div className=' w-full flex items-center justify-between flex-col md:flex-row'>
-                        <div className='text-center text-violet-900 text-xl font-semibold'>WINNERS</div>
+                        <div className='text-center text-violet-900 text-xl font-semibold'>PRESENTATION</div>
                         <div className=' flex gap-2'>
                             <div className=' border h-8 w-80 rounded-lg bg-gray-50 md:flex items-center overflow-hidden'>
                                 <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                                 <i className='pi pi-search text-gray-300'></i>
                             </div>
                             <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={() => exportCheckPdf(winners)}
+                                onClick={() => exportCheckPdf(presentation)}
                             >
                                 <div className='text-black hidden md:block' style={{ color: "#ef4444" }}>PDF</div>
                                 <i className='pi pi-file-pdf text-xl text-red-500 '></i>
                             </div>
                             <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={() => exportCheckExcel(winners)}
+                                onClick={() => exportCheckExcel(presentation)}
                             >
                                 <div className='text-black hidden md:block' style={{ color: "#22c55e" }}>Excel</div>
                                 <i className='pi pi-file-pdf text-xl text-green-500 '></i>
@@ -162,7 +175,7 @@ export default function Table() {
                         </div>
                     </div>
                     <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">
-                        <DataTable sortIcon={customSortIcon} value={winners} emptyMessage={tableLoader} paginator={winners.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
+                        <DataTable sortIcon={customSortIcon} value={presentation} emptyMessage={tableLoader} paginator={presentation.length > 5} rows={5} rowsPerPageOptions={[5, 10, 25, 50]} globalFilter={globalFilter} paginatorClassName='text-black' stripedRows className='border rounded-lg overflow-hidden w-11/12 min-h-96 max-w-screen-lg'>
                             <Column field="ps_id" header="Code" align={"left"} style={{ height: "3rem" }} bodyStyle={{ width: "6rem" }} headerClassName='border-b p-1 bg-violet-900 text-sm relative z-10' className='border-b-2 border-r-2 p-1 text-center text-sm'></Column>
                             <Column field="title" sortable header="Title" align={"left"} bodyStyle={{ height: "3rem", width: "18rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm  relative z-10' className='border-b-2 p-1 border-r-2 text-sm text-justify '></Column>
                             <Column field="team_name" sortable header="Team Name" align={"left"} bodyStyle={{ height: "3rem", width: "8rem" }} headerClassName='border-b text-end font-medium bg-violet-900 text-sm  relative z-10' className='p-1 border-b-2 border-r-2 text-sm text-center '></Column>
@@ -184,6 +197,10 @@ export default function Table() {
                                                 <DropdownMenuItem onClick={() => setModal(rowData)}>
                                                     <Eye />
                                                     <span>View</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem onClick={() => selectTeam(rowData)}>
+                                                    <Edit className="" />
+                                                    <span>Select</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem onClick={() => unselectTeam(rowData)}>
                                                     <Trash />

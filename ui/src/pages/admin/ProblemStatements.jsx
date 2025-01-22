@@ -12,10 +12,6 @@ export default function AdminProblemStatements() {
 
     const [ps, setPs] = useState([]);
 
-    const { user } = useAuth();
-
-    const navigate = useNavigate();
-
     const fetchPs = async () => {
         try {
             const response = await userGetRequest("/ps");
@@ -25,9 +21,16 @@ export default function AdminProblemStatements() {
         }
     }
 
+    const { loggedIn, user } = useAuth();
+
+    const navigate = useNavigate();
+
     useEffect(() => {
-        if(user.role != 'admin'){
-            navigate("/problems")
+        if (!loggedIn) {
+            navigate("/")
+        }
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
         }
         fetchPs();
     }, [])

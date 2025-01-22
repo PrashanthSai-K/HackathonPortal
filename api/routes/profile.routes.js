@@ -1,5 +1,6 @@
 const { checkUser, checkAdmin, checkTokenExpires } = require('../middleware/auth/auth.middleware');
-const { validateInstituteData, validateInstituteDataAdmin } = require('../middleware/validators/instituteValidator');
+const { validateInstituteData, validateInstituteDataAdmin, validateInstituteUpdateData } = require('../middleware/validators/instituteValidator');
+const validateTeamData = require('../middleware/validators/teamValidator');
 
 module.exports = app => {
 
@@ -7,7 +8,7 @@ module.exports = app => {
 
     var router = require('express').Router();
 
-    router.post("/addTeamDetails", checkUser , profile.addTeamDetails);
+    router.post("/addTeamDetails", checkUser, validateTeamData, profile.addTeamDetails);
 
     router.get("/getInstituteDetails" ,checkUser , profile.getInstituteDetails);
 
@@ -15,7 +16,7 @@ module.exports = app => {
 
     router.get("/institute", checkAdmin , profile.getAllInstituteDetails);
 
-    router.put("/updateInstituteDetails", checkUser ,profile.updateInstituteDetails );
+    router.put("/updateInstituteDetails", checkUser, validateInstituteUpdateData, profile.updateInstituteDetails );
 
     router.put("/institute", checkAdmin, profile.updateInstituteDetailsAdmin);
 

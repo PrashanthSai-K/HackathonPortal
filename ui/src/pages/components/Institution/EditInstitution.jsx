@@ -54,13 +54,11 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
       <Sidebar
         visible={visible}
         position="right"
-        className="w-10/12 md:w-1/3"
+        className="w-10/12 md:w-1/3 text-lg pt-2"
+        header={"Edit Institute Details"}
         onHide={() => setVisible(false)}
       >
-        <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">
-          Edit Institute Details
-        </h2>
-        <form onSubmit={updateInstituteDetails} className="w-full px-6">
+        <form onSubmit={updateInstituteDetails} className="w-full px-6 mt-5">
           {/* Institute Code */}
           <div className="mb-4">
             <label

@@ -4,7 +4,7 @@ import { userPutRequest } from "../exports";
 import { toast } from "react-toastify";
 import { useActionState } from "../../../CustomHooks";
 
-export default function VideoLinkPopup({ visible, setVisible, teamDetails }) {
+export default function VideoLinkPopup({ visible, setVisible, teamDetails,getTeamDetails }) {
   const [videoLink, setVideoLink] = useState("");
 
   const handleSubmit = async () => {
@@ -17,6 +17,7 @@ export default function VideoLinkPopup({ visible, setVisible, teamDetails }) {
       if (response.status === 201) {
         toast.success(response.data.message || "Video Link Uploaded successfully.");
         setVideoLink("")
+        getTeamDetails();
         setVisible(false)
       } else {
         toast.error(response.data.message || "Failed to Upload Video Link.");

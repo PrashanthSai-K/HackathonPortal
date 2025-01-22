@@ -4,6 +4,7 @@ const {
 } = require("../middleware/institute/institute.middleware");
 
 exports.addTeamDetails = async (req, res) => {
+
   const {
     institutionId,
     teamName,
@@ -14,10 +15,20 @@ exports.addTeamDetails = async (req, res) => {
     teamMembers,
     docLink,
   } = req.body;
+
+  if (res.locals.userData.institutionId != institutionId) {
+    return res.status(403).send({ error: "Trying to insert unauthorized data" });
+  }
   const status = "SUBMITTED";
 
   const transaction = await sequelize.transaction();
+
   try {
+
+    const [ps] = await sequelize.query("SELECT * FROM problem_statements WHERE ps_id = :ps_id", { replacements: { ps_id: psId } });
+    if (ps.length <= 0) {
+      return res.status(406).send({ error: "Problem statement Id not found" });
+    }
     const [result, metaData] = await sequelize.query(
       `INSERT INTO team_details (institution_id, team_name, number_of_participants, leader_name,leader_email, problem_statement_id, team_members , abstract_link , stage) 
        VALUES ( :institution_id, :team_name, :number_of_participants, :leader_name, :leader_email, :problem_statement_id, :team_members , :doc_link , :status)`,
@@ -51,7 +62,18 @@ exports.addTeamDetails = async (req, res) => {
     res.status(201).send({ message: "Team details added successfully." });
   } catch (error) {
     await transaction.rollback();
-
+    if (error.original) {
+      if (error.original.code === "ER_DUP_ENTRY") {
+        const duplicateField =
+          error.original.sqlMessage.match(/for key '(.*?)'/)[1];
+        if (duplicateField.includes("team_name")) {
+          return res.status(409).json({ error: "Team name already exists" });
+        }
+        if (duplicateField.includes("leader_email")) {
+          return res.status(409).json({ error: "Email already registered" });
+        }
+      }
+    }
     console.error("Error in addTeamDetails:", error);
     res.status(500).send({ error: "Some internal error occurred." });
   }
@@ -132,8 +154,18 @@ exports.updateInstituteDetails = async (req, res) => {
         message: "Data unchanged.",
       });
     }
-  } catch (err) {
-    console.error("Error updating institution details:", err);
+  } catch (error) {
+    console.error("Error updating institution details:", error);
+    if (error.original) {
+      // Check for duplicate entry errors
+      if (error.original.code === "ER_DUP_ENTRY") {
+        const duplicateField =
+          error.original.sqlMessage.match(/for key '(.*?)'/)[1];
+        if (duplicateField.includes("institution_code")) {
+          return res.status(409).json({ error: "Institution already exists" });
+        }
+      }
+    }
     return res.status(500).send({
       message: "An error occurred while updating institution details.",
     });
@@ -154,7 +186,6 @@ exports.getAllInstituteDetails = async (req, res) => {
 
 exports.getTeamDetails = async (req, res) => {
   const institutionId = res.locals.userData.institutionId;
-  // console.log(institutionId);
 
   try {
     const [teamDetails, instituteMetadata] = await sequelize.query(
@@ -388,7 +419,7 @@ exports.deleteInstitute = async (req, res) => {
 exports.uploadVideoLink = async (req, res) => {
   const { team_id, video_link, institution_id } = req.body;
   const institutionId = res.locals.userData?.institutionId;
-  
+
   if (!institutionId) {
     return res.status(403).send({ message: "Unauthorized access." });
   }
@@ -400,6 +431,26 @@ exports.uploadVideoLink = async (req, res) => {
         .send({ message: "Trying to modify unauthorized data" });
     }
 
+    // Check if the video link already exists
+    const [existingRecord] = await sequelize.query(
+      `SELECT video_link FROM team_details WHERE id = :team_id`,
+      {
+        replacements: {
+          team_id: team_id,
+        },
+        type: sequelize.QueryTypes.SELECT,
+      }
+    );
+    console.log(existingRecord);
+
+
+    if (existingRecord.video_link !== '-') {
+      return res.send({
+        message: "Video link already submitted.",
+      });
+    }
+
+    // Update the video link if not already present
     const [affectedRows] = await sequelize.query(
       `UPDATE team_details 
        SET video_link = :video_link 
@@ -428,3 +479,4 @@ exports.uploadVideoLink = async (req, res) => {
     });
   }
 };
+

@@ -31,7 +31,10 @@ require("./routes/finalist.routes.js")(app);
 require("./routes/profile.routes.js")(app);
 require("./routes/event.routes.js")(app);
 require("./routes/notification.routes.js")(app);
+require("./routes/submitted.routes.js")(app);
 require("./routes/winner.routes.js")(app);
+require("./routes/presentation.routes.js")(app);
+
 
 app.listen(4500, () => {
   console.log("listening on 4500");

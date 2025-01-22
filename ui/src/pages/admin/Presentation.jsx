@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../AuthContext';
 import Navbar from '../components/LandingPage/Navbar';
-import Table from '../components/Finalist/Table';
+import Table from '../components/Presentation/Table';
 
-export default function Finalist() {
+export default function Presentation() {
 
     const { loggedIn, user } = useAuth();
 
@@ -18,7 +18,6 @@ export default function Finalist() {
             navigate("/");
         }
     }, [])
-
 
     return (
         <>

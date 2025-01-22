@@ -16,7 +16,7 @@ export default function PopupModal({ visible, setVisible, modalData }) {
                             field="value"
                             align={"left"}
                             body={(rowData) => (
-                                rowData.key == "Doc Link" ? (
+                                rowData.key == "Abstract Link" ||  rowData.key == "Video Link" ? (
                                     <a href={rowData.value} className='text-blue-700 underline' target="_blank" rel="noopener noreferrer">
                                         {rowData.value}
                                     </a>

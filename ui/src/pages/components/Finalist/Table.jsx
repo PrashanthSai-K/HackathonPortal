@@ -17,6 +17,8 @@ import { Button } from "../../../components/components/ui/button"
 import { MoreHorizontal, Edit, Trash, Eye } from "lucide-react";
 // import { Button } from "../../../components/components/ui/button"
 import { FileDown } from "lucide-react"
+import { ExportToPdf } from '../../ReportGeneration/Pdf';
+import { ExportToExcel } from '../../ReportGeneration/Excel';
 
 
 export default function Table() {
@@ -127,6 +129,22 @@ export default function Table() {
         }
     };
 
+    const exportCheckPdf = (data) => {
+        if (finalist.length > 0) {
+            ExportToPdf(data);
+        } else {
+            window.alert("Oops!! No data found to export.");
+        }
+    }
+
+    const exportCheckExcel = (data) => {
+        if (finalist.length > 0) {
+            ExportToExcel(data);
+        } else {
+            window.alert("Oops!! No data found to export.");
+        }
+    }
+
     return (
         <>
             {isLoading ?
@@ -142,18 +160,18 @@ export default function Table() {
                                 <input type="text" placeholder='Search' onChange={(e) => setGlobalFilter(e.target.value)} className='border-t pl-1 border-b border-e-0 h-8 w-72 focus:outline-none focus:border-0 bg-gray-50 ' />
                                 <i className='pi pi-search text-gray-300'></i>
                             </div>
-                                <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                                    // onClick={() => setUploadVisible(true)}
-                                >
-                                    <div className='text-black hidden md:block' style={{ color: "#ef4444" }}>PDF</div>
-                                    <i className='pi pi-file-pdf text-xl text-red-500 '></i>
-                                </div>
-                                <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                                    // onClick={() => setUploadVisible(true)}
-                                >
-                                    <div className='text-black hidden md:block' style={{ color: "#22c55e" }}>Excel</div>
-                                    <i className='pi pi-file-pdf text-xl text-green-500 '></i>
-                                </div>
+                            <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                                onClick={() => exportCheckPdf(finalist)}
+                            >
+                                <div className='text-black hidden md:block' style={{ color: "#ef4444" }}>PDF</div>
+                                <i className='pi pi-file-pdf text-xl text-red-500 '></i>
+                            </div>
+                            <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
+                                onClick={() => exportCheckExcel(finalist)}
+                            >
+                                <div className='text-black hidden md:block' style={{ color: "#22c55e" }}>Excel</div>
+                                <i className='pi pi-file-pdf text-xl text-green-500 '></i>
+                            </div>
                         </div>
                     </div>
                     <div className="card w-full pt-3 flex items-center justify-center px-4 md:px-8 ">

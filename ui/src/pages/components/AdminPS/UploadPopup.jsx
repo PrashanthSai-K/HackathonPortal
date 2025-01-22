@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { adminPostRequest } from '../exports';
 import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
+import template from "../../../assets/ps-imp.xlsx"
+import { useActionState } from '../../../CustomHooks';
 
 
 export default function UploadPopup({ visible, setVisible, fetchPs }) {
@@ -39,14 +41,15 @@ export default function UploadPopup({ visible, setVisible, fetchPs }) {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        // e.preventDefault();
         if (!file) {
             alert("Select proper file.")
         }
         try {
             const response = await adminPostRequest("/ps/upload", fileData);
             toast.success("Uploaded successfully!!");
+            handleClear();
             setVisible(false);
             fetchPs();
         } catch (error) {
@@ -67,13 +70,15 @@ export default function UploadPopup({ visible, setVisible, fetchPs }) {
         else return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
     };
 
+    const [uploadCall, isLoading] = useActionState(handleSubmit, true);
+
     return (
         <>
             <Sidebar position='top' visible={visible} className={`w-11/12 md:w-6/12 ${file ? "h-3/5 md:h-4/6" : "h-3/6"} p-3 rounded-lg mt-5`} onHide={() => { setVisible(false) }}>
                 <div className=' flex flex-col items-center justify-between'>
                     <h2 className="text-xl font-semibold text-gray-700 mb-2">Upload Problems</h2>
 
-                    <div className="w-[400px] relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
+                    <div className="w-[400px] relative border-2 border-gray-300 border-dashed rounded-lg p-6 " id="dropzone">
                         <input
                             type="file"
                             className="absolute inset-0 w-full h-full opacity-0 z-50"
@@ -96,8 +101,8 @@ export default function UploadPopup({ visible, setVisible, fetchPs }) {
                             </h3>
                             <p className="mt-1 text-xs text-gray-500">Excel files (.xls, .xlsx) up to 10MB</p>
                         </div>
-
                     </div>
+                    <p className="mt-2 text-xs text-gray-500">Click here for <a href={template} download className='text-decoration-none text-indigo-500 cursor-pointer '>sample template</a></p>
 
                     {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
 
@@ -107,10 +112,18 @@ export default function UploadPopup({ visible, setVisible, fetchPs }) {
                                 <p className="text-sm text-gray-700">File selected: {file.name} ({formatFileSize(file.size)})</p>
                             </div>
                             <button
-                                onClick={handleSubmit}
+                                onClick={uploadCall}
+                                disabled={isLoading}
                                 className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
                             >
-                                Submit
+                                {!isLoading ? (
+                                    "Submit"
+                                ) : (
+                                    <i
+                                        style={{ color: "white", fontSize: "1rem" }}
+                                        className="gap-2 px-3 py-1 pi pi-spin pi-spinner"
+                                    ></i>
+                                )}
                             </button>
                         </div>
                     )}

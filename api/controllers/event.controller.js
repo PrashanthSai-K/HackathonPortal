@@ -35,7 +35,7 @@ exports.updateEventDetails = async (req, res) => {
 }
 
 exports.sendFinalistEmail = async (req, res) => {
-    const { finalistEmail } = req.body;
+    const { mailContent, mailSubject } = req.body;
     try {
         const [finalist] = await sequelize.query("SELECT * FROM final_participants_details");
 
@@ -45,11 +45,39 @@ exports.sendFinalistEmail = async (req, res) => {
             recipients.push(f.leader_email);
             recipients.push(f.poc_email);
         })
-        console.log(recipients);
-        await sendEmailToParticipants(recipients, finalistEmail);
-        return res.status(201).send({ message: "Mail sent successfully!!!" })
+        await sendEmailToParticipants(recipients, mailSubject, mailContent);
+        return res.status(201).send({ message: "Finalist Mail sent successfully!!!" })
     } catch (error) {
         return res.status(500).send({ error: "Some internal error" });
+    }
+}
 
+exports.sendResultsEmail = async (req, res) => {
+    const { mailContent, mailSubject } = req.body;
+    try {
+        const [winners] = await sequelize.query("SELECT * FROM winner_details");
+
+        let recipients = [];
+
+        winners.map((w) => {
+            recipients.push(w.leader_email);
+            recipients.push(w.poc_email);
+        })
+        await sendEmailToParticipants(recipients, mailSubject, mailContent);
+        return res.status(201).send({ message: "Results Mail sent successfully!!!" })
+    } catch (error) {
+        return res.status(500).send({ error: "Some internal error" });
+    }
+}
+
+exports.sendTestEmail = async (req, res) => {
+    const { mailContent, mailSubject, mail  } = req.body;    
+    try {
+        let recipients = [];
+        recipients.push(mail);
+        await sendEmailToParticipants(recipients, mailSubject, mailContent);
+        return res.status(201).send({ message: "Test Mail sent successfully!!!" })
+    } catch (error) {
+        return res.status(500).send({ error: "Some internal error" });
     }
 }

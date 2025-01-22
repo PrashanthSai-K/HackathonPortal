@@ -12,7 +12,7 @@ export default function ProblemStatementsView() {
 
     const { id } = useParams();
 
-    const { user, getUser } = useAuth();
+    const { user, getUser, loggedIn } = useAuth();
 
     const [ps, setPs] = useState();
     const [data, setData] = useState();
@@ -65,10 +65,13 @@ export default function ProblemStatementsView() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user.role != "admin") {
+        if (!loggedIn) {
             navigate("/")
         }
-    }, [user])
+        if(loggedIn && user.role != "admin"){
+            navigate("/");
+        }
+    }, [])
 
     useEffect(() => {
         fetchPs();
