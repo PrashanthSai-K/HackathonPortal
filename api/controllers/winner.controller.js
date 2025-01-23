@@ -10,25 +10,33 @@ exports.getWinners =async(req, res)=>{
 }
 
 exports.toWinner = async(req, res) => {
-    const transaction = await sequelize.transaction();
     try{
         const { ps_id, team_id } = req.body;
 
-        const result = await sequelize.query("UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id", 
+        if (!team_id || team_id == undefined || team_id == null) {
+            return res.status(406).send({ error: "Team Id must not be empty" });
+        }
+
+        if (typeof (team_id) != 'number') {
+            return res.status(406).send({ error: "Team Id must not be a number" });
+        };
+
+        const [result] = await sequelize.query("UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id", 
             {
                 replacements : {
                     team_id : team_id
                 },
-                transaction
             }
         )
 
-        await transaction.commit()
-        res.status(201).send({"message": "Selected Successfully"});
+        if (result.affectedRows == 0) {
+            return res.status(406).send({ error: "Record not found" });
+        };
+
+        return res.status(201).send({"message": "Selected as a Winner Successfully"});
     }catch (error){
         console.log(error);
-        await transaction.rollback();
-        res.status(500).send({"error": "Some Internal error"});
+        return res.status(500).send({"error": "Some Internal error"});
     }
 }
 

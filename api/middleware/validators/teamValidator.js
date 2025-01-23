@@ -62,4 +62,37 @@ const validateTeamData = [
   },
 ];
 
-module.exports = validateTeamData;
+const validateVideoUploadData = [
+  body('institution_id')
+    .notEmpty()
+    .withMessage('Institution ID is required.')
+    .isNumeric()
+    .withMessage('Institution ID must be a number.'),
+
+  body('team_id')
+    .notEmpty()
+    .withMessage('Team ID is required.')
+    .isNumeric()
+    .withMessage('Team ID must be numeric.'),
+
+  body('video_link')
+    .isURL()
+    .withMessage('Video Link must be a valid URL.'),
+
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        status: 'error',
+        errors: errors.array().map(err => ({
+          field: err.param,
+          message: err.msg,
+        })),
+      });
+    }
+    next();
+  },
+];
+
+
+module.exports = {validateTeamData, validateVideoUploadData};

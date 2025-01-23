@@ -1,4 +1,5 @@
 const { checkAdmin } = require("../middleware/auth/auth.middleware");
+const validateEventData = require("../middleware/validators/eventValidator");
 
 module.exports = app => {
 
@@ -8,7 +9,7 @@ module.exports = app => {
 
     router.get("/", events.getEventDetails);
     
-    router.post("/", checkAdmin, events.updateEventDetails);
+    router.post("/", checkAdmin, validateEventData, events.updateEventDetails);
 
     router.post("/finalemail", checkAdmin, events.sendFinalistEmail);
 

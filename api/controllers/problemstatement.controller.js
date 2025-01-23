@@ -113,7 +113,7 @@ exports.createProblemBulk = async (req, res) => {
 
 exports.deletePs = async(req, res)=> {
     try {
-        const id = req.body;
+        const {id} = req.body;
         await sequelize.query(`DELETE FROM problem_statements WHERE ps_id IN (:id)`,
             {
                 replacements : {

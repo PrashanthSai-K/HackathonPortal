@@ -38,14 +38,14 @@ export default function UserFinalist() {
     }
   }, [])
 
-  // useEffect(() => {
-  //   if (eventDetails) {
+  useEffect(() => {
+    if (eventDetails) {
 
-  //     if (eventDate > today) {
-  //       navigate("/");
-  //     }
-  //   }
-  // }, [eventDetails, navigate]);
+      if (eventDate > today) {
+        navigate("/");
+      }
+    }
+  }, [eventDetails, navigate]);
 
   return (
     <>

@@ -6,15 +6,13 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    router.post("/toParticipation", checkAdmin, finalist.toParticipation);
-
-    router.post("/backtoPresentation", checkAdmin, finalist.backtoPresentation);
-
-    router.post("/backtoSubmitted", checkAdmin, finalist.backtoSubmitted);
+    router.get("/", checkAdmin, finalist.getAdminFinalist);
 
     router.get("/getFinalist", checkUser, finalist.getFinalist);
 
-    router.get("/", checkAdmin, finalist.getFinalist);
+    router.post("/toParticipation", checkAdmin, finalist.toParticipation);
+
+    router.post("/backtoParticipation", checkAdmin, finalist.backtoParticipation);
 
     app.use("/api/finalist", router);
 }

@@ -137,7 +137,7 @@ export default function AccordionData({ data, fetchPs }) {
             if (!window.confirm("Do you want to remove participant from Winner ?")) {
                 return
             }
-            const response = await adminPostRequest("/winner/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchPs();
         } catch (error) {
@@ -151,7 +151,7 @@ export default function AccordionData({ data, fetchPs }) {
             if (!window.confirm("Do you want to remove participant from Participation Round ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoPresentation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/presentation/backtoPresentation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchPs();
         } catch (error) {
@@ -165,12 +165,12 @@ export default function AccordionData({ data, fetchPs }) {
             if (!window.confirm("Do you want to remove participant from Presentation Round ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoSubmitted", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/backtoSubmitted", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchPs();
         } catch (error) {
             console.log(error);
-            toast.error("Some Error");
+            toast.error(error.response.data.error || "Some error");
         }
     }
 

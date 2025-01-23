@@ -12,7 +12,6 @@ exports.getEventDetails = async (req, res) => {
 }
 
 exports.updateEventDetails = async (req, res) => {
-    console.log(req.body);
     try {
         const { eventDate, eventVenue, finalRoundDate, resultsDate, prizeMoney } = req.body;
         await sequelize.query("UPDATE event_details SET event_date = :eventDate, event_venue = :eventVenue, final_round_date = :finalRoundDate, prize_money = :prizeMoney WHERE id = 1",

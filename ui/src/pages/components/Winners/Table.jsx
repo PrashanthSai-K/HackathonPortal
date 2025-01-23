@@ -107,7 +107,7 @@ export default function Table() {
             if (!window.confirm("Do you want to remove participant from Winner ?")) {
                 return
             }
-            const response = await adminPostRequest("/winner/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchWinner();
         } catch (error) {

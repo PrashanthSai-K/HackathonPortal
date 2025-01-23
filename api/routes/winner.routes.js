@@ -10,8 +10,6 @@ module.exports = app => {
 
     router.post("/toWinner", checkAdmin, winner.toWinner);
 
-    router.post("/backtoParticipation", checkAdmin, winner.backtoParticipation);
-
     app.use("/api/winner", router);
 
 }

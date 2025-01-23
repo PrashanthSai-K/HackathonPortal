@@ -180,7 +180,7 @@ exports.getAllInstituteDetails = async (req, res) => {
 
     return res.status(201).send({ data: instituteData });
   } catch (err) {
-    res.status(403).send({ message: "user name is not valid" });
+    res.status(403).send({ error: "Some internal error" });
   }
 };
 
@@ -339,9 +339,7 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
       pocPhone: poc_number,
     } = req.body;
 
-    console.log(institution_code);
-
-    await sequelize.query(
+    const [result] = await sequelize.query(
       `INSERT INTO institution 
          (institution_code, institution_name, institution_type, address, city, state, pincode, poc_name, poc_email, poc_number) 
        VALUES 
@@ -366,11 +364,12 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
     const [password, hashedPassword] = await generateEncryptedPassword();
 
     await sequelize.query(
-      "INSERT INTO users (username, password) VALUES (:poc_email, :password)",
+      "INSERT INTO users (username, password, institution_id) VALUES (:poc_email, :password, :id)",
       {
         replacements: {
           poc_email: poc_email,
           password: hashedPassword,
+          id: result
         },
         transaction,
       }
@@ -379,7 +378,7 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
     await transaction.commit();
     return res
       .status(201)
-      .send({ message: "Details updated uccessfully!!", password: password });
+      .send({ message: "Institution Created successfully!!", password: password });
   } catch (error) {
     await transaction.rollback();
     console.log(error);
@@ -402,22 +401,42 @@ exports.addInstituteDetailsAdmin = async (req, res) => {
 };
 
 exports.deleteInstitute = async (req, res) => {
+  const transaction = await sequelize.transaction();
+
   try {
-    const id = req.body;
+    const { id } = req.body;
+    if (!id || id == undefined || id == null) {
+      return res.status(406).send({ error: "Id not defined properly" });
+    }
+    if(typeof(id) == "string"){
+      return res.status(406).send({ error: "Id must be a number" });
+    }
     await sequelize.query(`DELETE FROM institution WHERE id IN (:id)`, {
       replacements: {
         id: id,
       },
+      transaction
     });
-    res.status(201).send({ message: "Deleted successfully" });
+
+    await sequelize.query(`DELETE FROM users WHERE institution_id IN (:id)`, {
+      replacements: {
+        id: id,
+      },
+      transaction
+    });
+
+    await transaction.commit();
+    return res.status(201).send({ message: "Deleted successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ error: "Error deleting datas" });
+    await transaction.rollback();
+    return res.status(500).send({ error: "Error deleting datas" });
   }
 };
 
 exports.uploadVideoLink = async (req, res) => {
   const { team_id, video_link, institution_id } = req.body;
+
   const institutionId = res.locals.userData?.institutionId;
 
   if (!institutionId) {
@@ -433,7 +452,7 @@ exports.uploadVideoLink = async (req, res) => {
 
     // Check if the video link already exists
     const [existingRecord] = await sequelize.query(
-      `SELECT video_link FROM team_details WHERE id = :team_id`,
+      `SELECT * FROM team_details WHERE id = :team_id`,
       {
         replacements: {
           team_id: team_id,
@@ -441,16 +460,18 @@ exports.uploadVideoLink = async (req, res) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log(existingRecord);
 
+    if (!existingRecord || existingRecord.institution_id != institution_id) {
+      return res.status(403).send({
+        message: "Not authorized to submit link",
+      });
+    }
 
     if (existingRecord.video_link !== '-') {
       return res.send({
         message: "Video link already submitted.",
       });
     }
-
-    // Update the video link if not already present
     const [affectedRows] = await sequelize.query(
       `UPDATE team_details 
        SET video_link = :video_link 
