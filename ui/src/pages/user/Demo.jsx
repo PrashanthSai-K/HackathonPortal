@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "../../components/components/ui/button"
 import { Input } from "../../components/components/ui/input"
 import { Label } from "../../components/components/ui/label"
@@ -83,6 +83,10 @@ export default function Demo() {
     })
 
 
+    useEffect(() => {
+        navigate("/");
+    }, [])
+
     return (
         <div className='w-full flex items-center justify-center p-10 px-40'>
             <form onSubmit={handleSubmit} className="space-y-8 p-10 border rounded-lg">
@@ -101,7 +105,6 @@ export default function Demo() {
                             onChange={handleChange}
                             placeholder="Enter institute name"
                         />
-                        {/* {errors.instituteName && <p className="text-red-500 text-sm">{errors.instituteName}</p>} */}
                     </div>
 
                     <div className="space-y-2 min-w-80">

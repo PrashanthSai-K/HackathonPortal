@@ -18,7 +18,7 @@ exports.toWinner = async(req, res) => {
         }
 
         if (typeof (team_id) != 'number') {
-            return res.status(406).send({ error: "Team Id must not be a number" });
+            return res.status(406).send({ error: "Team Id must be a number" });
         };
 
         const [result] = await sequelize.query("UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id", 
@@ -40,25 +40,25 @@ exports.toWinner = async(req, res) => {
     }
 }
 
-exports.backtoParticipation = async(req, res) => {
-    const transaction = await sequelize.transaction();
-    try{
-        const { ps_id, team_id } = req.body;
+// exports.backtoParticipation = async(req, res) => {
+//     const transaction = await sequelize.transaction();
+//     try{
+//         const { ps_id, team_id } = req.body;
 
-        const result = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 
-            {
-                replacements : {
-                    team_id : team_id
-                },
-                transaction
-            }
-        )
+//         const result = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 
+//             {
+//                 replacements : {
+//                     team_id : team_id
+//                 },
+//                 transaction
+//             }
+//         )
 
-        await transaction.commit()
-        res.status(201).send({"message": "Removed Successfully"});
-    }catch (error){
-        console.log(error);
-        await transaction.rollback();
-        res.status(500).send({"error": "Some Internal error"});
-    }
-}
+//         await transaction.commit()
+//         res.status(201).send({"message": "Removed Successfully"});
+//     }catch (error){
+//         console.log(error);
+//         await transaction.rollback();
+//         res.status(500).send({"error": "Some Internal error"});
+//     }
+// }

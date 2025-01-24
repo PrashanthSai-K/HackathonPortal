@@ -14,7 +14,7 @@ exports.updateNotification = async (req, res) => {
     try {
         const { id, title, description, type, date } = req.body;
 
-        await sequelize.query("UPDATE notification SET title = :title, description = :description, type = :type, date = :date WHERE id = :id",
+        const [result] = await sequelize.query("UPDATE notification SET title = :title, description = :description, type = :type, date = :date WHERE id = :id",
             {
                 replacements: {
                     title: title,
@@ -25,6 +25,10 @@ exports.updateNotification = async (req, res) => {
                 }
             }
         )
+
+        if(result.affectedRows == 0){
+            return res.status(406).send({ error: "Record not found" });
+        }
 
         return res.status(201).send({ message: "Update successful" });
     } catch (error) {
@@ -58,13 +62,26 @@ exports.createNotification = async (req, res) => {
 exports.deleteNotification = async (req, res) => {
     try {
         const { id } = req.body;
-        await sequelize.query("DELETE FROM notification WHERE id = :id",
+
+        if(!id || id == undefined || id == null){
+            return res.status(406).send({error: "id must not be empty"});
+        }
+
+        if (typeof (id) != 'number') {
+            return res.status(406).send({ error: "id must be a number" });
+        };
+
+        const [result] = await sequelize.query("DELETE FROM notification WHERE id = :id",
             {
                 replacements: {
                     id: id
                 }
             }
         )
+
+        if(result.affectedRows == 0 ){
+            return res.status(406).send({ error: "Record not found" });
+        }
 
         return res.status(201).send({ message: "Successfully deleted" });
     } catch (error) {

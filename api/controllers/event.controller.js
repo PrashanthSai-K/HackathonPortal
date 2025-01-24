@@ -35,6 +35,15 @@ exports.updateEventDetails = async (req, res) => {
 
 exports.sendFinalistEmail = async (req, res) => {
     const { mailContent, mailSubject } = req.body;
+
+    if ( !mailSubject || mailSubject == undefined || mailSubject == null){
+        return res.status(406).send({ error: "Mail subject cannot be empty" });
+    }
+
+    if ( !mailContent || mailContent == undefined || mailContent == null){
+        return res.status(406).send({ error: "Mail content cannot be empty" });
+    }
+
     try {
         const [finalist] = await sequelize.query("SELECT * FROM final_participants_details");
 
@@ -54,6 +63,15 @@ exports.sendFinalistEmail = async (req, res) => {
 exports.sendResultsEmail = async (req, res) => {
     const { mailContent, mailSubject } = req.body;
     try {
+
+        if ( !mailSubject || mailSubject == undefined || mailSubject == null){
+            return res.status(406).send({ error: "Mail subject cannot be empty" });
+        }
+    
+        if ( !mailContent || mailContent == undefined || mailContent == null){
+            return res.status(406).send({ error: "Mail content cannot be empty" });
+        }
+
         const [winners] = await sequelize.query("SELECT * FROM winner_details");
 
         let recipients = [];
@@ -72,6 +90,18 @@ exports.sendResultsEmail = async (req, res) => {
 exports.sendTestEmail = async (req, res) => {
     const { mailContent, mailSubject, mail  } = req.body;    
     try {
+        if ( !mailSubject || mailSubject == undefined || mailSubject == null){
+            return res.status(406).send({ error: "Mail subject cannot be empty" });
+        }
+    
+        if ( !mailContent || mailContent == undefined || mailContent == null){
+            return res.status(406).send({ error: "Mail content cannot be empty" });
+        }
+
+        if ( !mail || mail == undefined || mail == null){
+            return res.status(406).send({ error: "Mail address cannot be empty" });
+        }
+
         let recipients = [];
         recipients.push(mail);
         await sendEmailToParticipants(recipients, mailSubject, mailContent);

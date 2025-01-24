@@ -19,7 +19,7 @@ exports.toPresentation = async (req, res) => {
         }
 
         if (typeof (team_id) != 'number') {
-            return res.status(406).send({ error: "Team Id must not be a number" });
+            return res.status(406).send({ error: "Team Id must be a number" });
         };
 
         const [result] = await sequelize.query("UPDATE team_details SET stage = 'PRESENTATION' WHERE id = :team_id",
@@ -51,7 +51,7 @@ exports.backtoPresentation = async (req, res) => {
         }
 
         if (typeof (team_id) != 'number') {
-            return res.status(406).send({ error: "Team Id must not be a number" });
+            return res.status(406).send({ error: "Team Id must be a number" });
         };
 
         const [result] = await sequelize.query("UPDATE team_details SET stage = 'PRESENTATION' WHERE id = :team_id",
