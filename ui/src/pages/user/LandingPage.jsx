@@ -33,9 +33,7 @@ function LangingPage() {
     } catch (error) {
       console.log(error);
     }
-  }
-  console.log({event : eventDetails});
-  
+  }  
 
   const [fetchEventDetailsCall, isLoading] = useActionState(fetchEventDetails, true);
 

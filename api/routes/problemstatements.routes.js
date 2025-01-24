@@ -13,7 +13,7 @@ module.exports = app => {
 
     router.post("/", checkAdmin, validateCreateProblem, problem_statements.createProblem);
 
-    router.post("/upload", validateBulkUpload, problem_statements.createProblemBulk);
+    router.post("/upload", checkAdmin, validateBulkUpload, problem_statements.createProblemBulk);
 
     router.post("/delete", checkAdmin, problem_statements.deletePs);
 

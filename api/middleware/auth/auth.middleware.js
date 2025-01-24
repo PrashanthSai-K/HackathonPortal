@@ -63,9 +63,7 @@ exports.loginUser = async (req, res, next) => {
         type: sequelize.QueryTypes.SELECT,
       }
     );
-    console.log("user",userData);
     
-
     if (!userData) {
       return res.status(401).send({ error: "Invalid username or password" });
     }

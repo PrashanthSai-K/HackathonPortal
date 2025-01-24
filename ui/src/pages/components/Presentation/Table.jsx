@@ -120,12 +120,12 @@ export default function Table() {
             if (!window.confirm("Do you want to remove participant from Presentation Round ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoSubmitted", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/backtoSubmitted", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchPresentationList();
         } catch (error) {
             console.log(error);
-            toast.error("Some Error");
+            toast.error(error.response.data.error || "Some error");
         }
     };
 

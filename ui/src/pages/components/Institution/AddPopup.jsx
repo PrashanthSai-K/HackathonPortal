@@ -83,6 +83,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="instituteCode"
                             type="text"
                             name="instituteCode"
+                            placeholder="Enter Institute code"
                             value={formData.instituteCode}
                             onChange={handleChange}
                             required
@@ -103,6 +104,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="instituteName"
                             type="text"
                             name="instituteName"
+                            placeholder="Enter Institute name"
                             value={formData.instituteName}
                             onChange={handleChange}
                             required
@@ -123,6 +125,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="instituteAddress"
                             type="text"
                             name="instituteAddress"
+                            placeholder="Enter Institute address"
                             value={formData.instituteAddress}
                             onChange={handleChange}
                             required
@@ -142,6 +145,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="instituteCity"
                             type="text"
                             name="instituteCity"
+                            placeholder="Enter Institute city"
                             value={formData.instituteCity}
                             onChange={handleChange}
                             required
@@ -162,6 +166,7 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="instituteState"
                             type="text"
                             name="instituteState"
+                            placeholder="Enter Institute state"
                             value={formData.instituteState}
                             onChange={handleChange}
                             required
@@ -180,9 +185,9 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             id="institutePincode"
                             type="number"
                             name="institutePincode"
+                            placeholder="Enter Institute pincode"
                             value={formData.institutePincode}
                             onChange={handleChange}
-                            // pattern="\d{6}"
                             required
                             className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
                         />
@@ -219,12 +224,13 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             htmlFor="institution_type"
                             className="block text-sm font-medium text-gray-600"
                         >
-                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                            <i className="fas fa-user text-gray-500 mr-2"></i>POC Name
                         </label>
                         <input
                             id="pocName"
                             type="text"
                             name="pocName"
+                            placeholder="Enter Contact Person name"
                             value={formData.pocName}
                             onChange={handleChange}
                             // pattern="\d{6}"
@@ -238,12 +244,13 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             htmlFor="institution_type"
                             className="block text-sm font-medium text-gray-600"
                         >
-                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                            <i className="fas fa-envelope text-gray-500 mr-2"></i>POC Email
                         </label>
                         <input
                             id="pocEmail"
                             type="text"
                             name="pocEmail"
+                            placeholder="Enter Contact Person email"
                             value={formData.pocEmail}
                             onChange={handleChange}
                             // pattern="\d{6}"
@@ -257,12 +264,13 @@ export default function AddInstitution({ visible, setVisible, fetchInstitutionCa
                             htmlFor="institution_type"
                             className="block text-sm font-medium text-gray-600"
                         >
-                            <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+                            <i className="fas fa-phone text-gray-500 mr-2"></i>POC Contact
                         </label>
                         <input
                             id="pocPhone"
                             type="text"
                             name="pocPhone"
+                            placeholder="Enter Contact Person phone"
                             value={formData.pocPhone}
                             onChange={handleChange}
                             required

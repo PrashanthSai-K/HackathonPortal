@@ -1,7 +1,7 @@
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 import React, { useEffect, useState } from 'react'
-import { adminGetRequest, adminPostRequest } from '../exports';
+import { adminGetRequest, adminPostRequest, userGetRequest } from '../exports';
 import { toast } from 'react-toastify';
 import PopupModal from './PopupModal';
 import { useActionState } from '../../../CustomHooks';
@@ -16,7 +16,6 @@ import {
 import { Button } from "../../../components/components/ui/button"
 import { MoreHorizontal, Edit, Trash, Eye } from "lucide-react";
 // import { Button } from "../../../components/components/ui/button"
-import { FileDown } from "lucide-react"
 import { ExportToPdf } from '../../ReportGeneration/Pdf';
 import { ExportToExcel } from '../../ReportGeneration/Excel';
 
@@ -87,7 +86,7 @@ export default function Table() {
 
     const fetchWinner = async () => {
         try {
-            const response = await adminGetRequest("/winner");
+            const response = await userGetRequest("/winner/userWinner");
             setWinners(response.data.data);
         } catch (error) {
             console.log(error);
@@ -96,38 +95,26 @@ export default function Table() {
 
     const [winnerCall, isLoading] = useActionState(fetchWinner, true);
 
-
     useEffect(() => {
         winnerCall();
     }, [])
 
+    console.log("winn" , winners);
+    
 
-    const unselectTeam = async (data) => {
-        try {
-            if (!window.confirm("Do you want to remove participant from Winner ?")) {
-                return
-            }
-            const response = await adminPostRequest("/finalist/backtoParticipation", { ps_id: data.ps_id, team_id: data.team_id });
-            toast.success("Unselected Sucessfully");
-            fetchWinner();
-        } catch (error) {
-            console.log(error);
-            toast.error("Some Error");
-        }
-    };
 
-    const exportCheckPdf =(data)=>{
-        if(winners.length > 0){
+    const exportCheckPdf = (data) => {
+        if (winners.length > 0) {
             ExportToPdf(data);
-        }else{
+        } else {
             window.alert("Oops!! No data found to export.");
         }
     }
 
-    const exportCheckExcel =(data)=>{
-        if(winners.length > 0){
+    const exportCheckExcel = (data) => {
+        if (winners.length > 0) {
             ExportToExcel(data);
-        }else{
+        } else {
             window.alert("Oops!! No data found to export.");
         }
     }
@@ -148,13 +135,13 @@ export default function Table() {
                                 <i className='pi pi-search text-gray-300'></i>
                             </div>
                             <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={() => exportCheckPdf(winners)}
+                                onClick={() => exportCheckPdf(winners)}
                             >
                                 <div className='text-black hidden md:block' style={{ color: "#ef4444" }}>PDF</div>
                                 <i className='pi pi-file-pdf text-xl text-red-500 '></i>
                             </div>
                             <div className='flex items-center justify-center gap-1 cursor-pointer border p-1.5 rounded-lg bg-gray-50 text-sm'
-                            onClick={() => exportCheckExcel(winners)}
+                                onClick={() => exportCheckExcel(winners)}
                             >
                                 <div className='text-black hidden md:block' style={{ color: "#22c55e" }}>Excel</div>
                                 <i className='pi pi-file-pdf text-xl text-green-500 '></i>

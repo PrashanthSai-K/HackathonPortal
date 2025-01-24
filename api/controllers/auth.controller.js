@@ -83,15 +83,15 @@ exports.register_institute = async (req, res) => {
 };
 
 exports.userLogin = async (req, res) => {
-  const token = res.locals.token;  
-  return res.status(201).send({token: token});
+  const token = res.locals.token;
+  return res.status(201).send({ token: token });
 };
 
 
 
 exports.getUser = async (req, res) => {
   const token = req.headers.authorization;
-  
+
   try {
     const userData = jwt.verify(token, key);
     res.send(userData);
@@ -105,14 +105,14 @@ exports.updateLogout = async (req, res) => {
   console.log(token);
 
   if (!token) {
-    return res.status(400).send({ message: "Authorization token missing" }); 
+    return res.status(400).send({ message: "Authorization token missing" });
   }
 
   try {
     const [data] = await sequelize.query(
       "INSERT INTO unauth_tokens (token) VALUES (:token)", {
-        replacements: { token },
-      }
+      replacements: { token },
+    }
     );
 
     if (!data) {
@@ -161,7 +161,7 @@ exports.getNameSuggestions = async (req, res) => {
 
 exports.getInstituteData = async (req, res) => {
   try {
-    const  {id}  = req.params;
+    const { id } = req.params;
 
     const [result, _] = await sequelize.query("SELECT * FROM institution_predefined where InstitutionCode = :id",
       {
@@ -170,13 +170,62 @@ exports.getInstituteData = async (req, res) => {
         }
       }
     );
-console.log(result[0]);
+    console.log(result[0]);
 
     return res.status(200).send({ data: result[0] });
 
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).send({ error: "Some error" });
+  }
+}
+
+exports.newAdminUser = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+
+    if (!username || !password) {
+      return res.status(406).send({ error: "Enter proper username and password" });
+    }
+
+    if (username.length < 5) {
+      return res.status(406).send({ error: "Username length must be minimun 5" });
+    }
+
+    if (username.length > 12) {
+      return res.status(406).send({ error: "Username length must be maximun 12" });
+    }
+
+    if (password.length < 8) {
+      return res.status(406).send({ error: "Password length must be minimun 8" });
+    }
+
+    if (password.length > 12) {
+      return res.status(406).send({ error: "Password length must be maximun 12" });
+    }
+
+    const hashedPass = await bcrypt.hash(password, 10);
+
+    const [users] = await sequelize.query(`SELECT * FROM admin_users WHERE username = "${username}"`);
+
+    if (users.length > 0) {
+      return res.status(406).send({ error: "Username already taken" });
+    }
+
+    const [result] = await sequelize.query("INSERT INTO admin_users (username, password) VALUES (:username, :password)",
+      {
+        replacements: {
+          username: username,
+          password: hashedPass
+        }
+      }
+    )
+    return res.status(201).send({ message: "Admin User created successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ error: "Some internal error" });
+
   }
 }

@@ -16,14 +16,14 @@ services:
       context: ./api
       dockerfile: Dockerfile
     environment:
-      JWT_KEY : palndiresloamransjkfecotleinghdtpalndiresloamransjkfecotleinghdt       
-      EMAIL_PASSWORD : jsht cisu ghga kiin
-      EMAIL : hariharan33587@gmail.com
-      DB_NAME : hackathon
-      DB_PORT : 3306
-      DB_USER : root
-      DB_HOST : db
-      DB_PASSWORD : password
+      JWT_KEY : ""
+      EMAIL_PASSWORD : ""
+      EMAIL : ""
+      DB_NAME : ""
+      DB_PORT : ""
+      DB_USER : ""
+      DB_HOST : ""
+      DB_PASSWORD : ""
     volumes:
       - ./api:/app
     depends_on:

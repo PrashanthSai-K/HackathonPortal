@@ -20,17 +20,32 @@ import { useLocation, useNavigate } from 'react-router';
 import { HashLink as Link } from "react-router-hash-link";
 import { useAuth } from '../../../AuthContext';
 import Guidelines from "../../../assets/HACKATHON_GUIDELINES[1].pdf";
-import { updateLogout, userGetRequest } from "../exports";
+import { userGetRequest } from "../exports";
 
 
-
-export default function Navbar({eventDetails}) {
+export default function Navbar() {
 
     const [mounted, setMounted] = useState(false);
+    const [eventDetails, setEventDetails] = useState({});
+
+    const fetchEventDetails = async () => {
+        try {
+            const response = await userGetRequest("/events");
+            setEventDetails(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        fetchEventDetails();
+    }, [])
+
 
     const navItems = [
         { label: "Home", href: "/#home", role: ["all", "user"] },
         { label: "Problem Statement", href: "/problems", role: ["all", "user"] },
+        { label: "Winners", href: "/user-winner", role: ["all", "user"] },
         { label: "Final Participants", href: "/finalists", role: ["user"] },
         { label: "Profile", href: "/profile", role: ["user"] },
         {
@@ -76,17 +91,25 @@ export default function Navbar({eventDetails}) {
         }
     };
 
+    console.log(eventDetails);
+
     const filteredNavItems = navItems.filter(item => {
+        const today = new Date();
         if (item.label === "Final Participants" && eventDetails?.final_round_date) {
-            const today = new Date();
             const finalRoundDate = new Date(eventDetails.final_round_date);
-            
-            // Show the "Final Participants" item only if the date has passed
+
             if (today < finalRoundDate) {
                 return false;
             }
         }
-        
+
+        if (item.label === "Winners" && eventDetails?.results_date) {
+            const resultsDate = new Date(eventDetails.results_date);
+            if (today < resultsDate) {
+                return false;
+            }
+        }
+
         if (!user) {
             // Show only items with role 'all' when no user is logged in
             return item.role.includes("all");

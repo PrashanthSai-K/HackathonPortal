@@ -208,7 +208,7 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
               htmlFor="institution_type"
               className="block text-sm font-medium text-gray-600"
             >
-              <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+              <i className="fas fa-user text-gray-500 mr-2"></i>POC Name
             </label>
             <input
               id="poc_name"
@@ -227,7 +227,7 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
               htmlFor="institution_type"
               className="block text-sm font-medium text-gray-600"
             >
-              <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+              <i className="fas fa-envelope text-gray-500 mr-2"></i>POC Email
             </label>
             <input
               id="poc_email"
@@ -246,7 +246,7 @@ export default function EditInstitution({ visible, setVisible, instituteDetail, 
               htmlFor="institution_type"
               className="block text-sm font-medium text-gray-600"
             >
-              <i className="fas fa-list text-gray-500 mr-2"></i>POC Name
+              <i className="fas fa-phone text-gray-500 mr-2"></i>POC Contact
             </label>
             <input
               id="poc_number"

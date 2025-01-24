@@ -65,7 +65,7 @@ export default function Table({ data, user, setAddVisible, fetchInstitutionCall,
             if (!(window.confirm("Do you want to delete the selected instituions ?"))) {
                 return;
             }
-            const response = await adminPostRequest("/institute/delete", id);
+            const response = await adminPostRequest("/institute/delete", {id:id});
             toast.success("Deleted successfully !!");
             fetchInstitutionCall();
         } catch (error) {

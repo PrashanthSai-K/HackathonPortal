@@ -1,4 +1,4 @@
-const { checkAdmin } = require("../middleware/auth/auth.middleware");
+const { checkAdmin, checkUser } = require("../middleware/auth/auth.middleware");
 
 module.exports = app => {
 
@@ -8,10 +8,10 @@ module.exports = app => {
 
     router.get("/", checkAdmin, winner.getWinners);
 
+    router.get("/userWinner", winner.getWinner);
+
     router.post("/toWinner", checkAdmin, winner.toWinner);
 
-    router.post("/backtoParticipation", checkAdmin, winner.backtoParticipation);
-
     app.use("/api/winner", router);
-
+    
 }

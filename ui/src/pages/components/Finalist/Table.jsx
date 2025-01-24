@@ -120,7 +120,7 @@ export default function Table() {
             if (!window.confirm("Do you want to remove participant from Participation Round ?")) {
                 return
             }
-            const response = await adminPostRequest("/finalist/backtoPresentation", { ps_id: data.ps_id, team_id: data.team_id });
+            const response = await adminPostRequest("/presentation/backtoPresentation", { ps_id: data.ps_id, team_id: data.team_id });
             toast.success("Unselected Sucessfully");
             fetchFinalist();
         } catch (error) {

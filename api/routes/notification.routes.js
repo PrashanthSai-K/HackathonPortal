@@ -1,3 +1,5 @@
+const { checkAdmin } = require("../middleware/auth/auth.middleware");
+
 module.exports = app => {
 
     const notification = require("../controllers/notification.controller");
@@ -6,11 +8,11 @@ module.exports = app => {
 
     router.get("/", notification.getNotification);
 
-    router.post("/", notification.createNotification);
+    router.post("/", checkAdmin,  notification.createNotification);
 
-    router.put("/", notification.updateNotification);
+    router.put("/", checkAdmin, notification.updateNotification);
 
-    router.post("/delete", notification.deleteNotification);
+    router.post("/delete", checkAdmin, notification.deleteNotification);
 
     app.use("/api/notification", router);
 }

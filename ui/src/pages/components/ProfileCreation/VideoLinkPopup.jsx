@@ -4,11 +4,11 @@ import { userPutRequest } from "../exports";
 import { toast } from "react-toastify";
 import { useActionState } from "../../../CustomHooks";
 
-export default function VideoLinkPopup({ visible, setVisible, teamDetails,getTeamDetails }) {
+export default function VideoLinkPopup({ visible, setVisible, teamDetails, getTeamDetails }) {
   const [videoLink, setVideoLink] = useState("");
 
   const handleSubmit = async () => {
-    if(videoLink.trim() == ""){
+    if (videoLink.trim() == "") {
       alert("Please Upload the Link")
       return;
     }
@@ -26,7 +26,9 @@ export default function VideoLinkPopup({ visible, setVisible, teamDetails,getTea
       }
     } catch (error) {
       console.error("Error Uploading Video Link :", error);
-      toast.error("An unexpected error occurred.");
+      toast.error(
+        error.response.data.error || error.response.data.errors[0].message
+      );
     }
   };
 
@@ -64,7 +66,7 @@ export default function VideoLinkPopup({ visible, setVisible, teamDetails,getTea
         <button
           onClick={uploadVideoLink}
           className="mt-4 p-2 w-full text-white rounded bg-blue-500"
-        disabled={isLoading}
+          disabled={isLoading}
         >
           {!isLoading ? (
             "Submit"

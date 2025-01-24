@@ -9,6 +9,8 @@ module.exports = app => {
 
     router.post("/toPresentation", checkAdmin, presentation.toPresentation);
 
+    router.post("/backtoPresentation", checkAdmin, presentation.backtoPresentation);
+
     app.use("/api/presentation", router);
     
 }

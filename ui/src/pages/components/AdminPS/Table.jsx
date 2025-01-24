@@ -110,7 +110,7 @@ export default function Table({ data, user, setAddVisible, setUploadVisible, fet
             if (!(window.confirm("Do you want to delete the selected problems ?"))) {
                 return;
             }
-            const response = await adminPostRequest("/ps/delete", id);
+            const response = await adminPostRequest("/ps/delete", {id:id});
             toast.success("Deleted successfully !!");
             fetchPs();
         } catch (error) {

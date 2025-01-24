@@ -20,6 +20,7 @@ import Winners from './pages/admin/Winners.jsx';
 import Presentation from './pages/admin/Presentation.jsx';
 import ForgotPassword from './pages/components/ForgotPassword/ForgotPassword.jsx';
 import ResetPassword from './pages/components/ForgotPassword/resetPassword.jsx';
+import UserWinners from './pages/user/UserWinners.jsx';
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
         <Route path='/presentation' element={<Presentation />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/reset-password' element={<ResetPassword />} />
+        <Route path='/user-winner' element={<UserWinners />} />
 
         {/* <Route path='/d' element={<Demo />} /> */}
       </Routes>

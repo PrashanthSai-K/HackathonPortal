@@ -22,6 +22,8 @@ module.exports = app => {
     router.post("/login" , validateLogin , authMiddelware.loginUser, authMiddelware.createToken ,authController.userLogin);
 
     router.get("/getUser", authController.getUser);
+
+    router.post("/newUser/admin", authMiddelware.checkAdmin, authController.newAdminUser);
     
     app.use("/api", router);
 

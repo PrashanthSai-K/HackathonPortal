@@ -1,56 +1,90 @@
-const sequelize = require("../config/database")
+const sequelize = require("../config/database");
 
-exports.getWinners =async(req, res)=>{
-    try {
-        const [result] = await sequelize.query("SELECT * FROM winner_details");
-        return res.status(200).send({data: result});
-    } catch (error) {
-        return res.status(500).send({error: "Some internal error"});
+exports.getWinners = async (req, res) => {
+  try {
+    const [result] = await sequelize.query("SELECT * FROM winner_details");
+    return res.status(200).send({ data: result });
+  } catch (error) {
+    return res.status(500).send({ error: "Some internal error" });
+  }
+};
+
+exports.getWinner = async (req, res) => {
+  try {
+    const [resultsDate] = await sequelize.query(
+      "SELECT results_date FROM event_details LIMIT 1"
+    );
+
+    const today = new Date();
+    let resultDate = new Date(resultsDate[0].results_date);
+    if (resultDate > today) {
+      return res.status(403).send({ error: "Winners yet to be announced" });
     }
-}
 
-exports.toWinner = async(req, res) => {
-    const transaction = await sequelize.transaction();
-    try{
-        const { ps_id, team_id } = req.body;
+    const [result, metadata] = await sequelize.query(
+      "SELECT * FROM winner_details ORDER BY ps_id"
+    );
+    return res.status(200).send({ data: result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ error: "Some internal error" });
+  }
+};
 
-        const result = await sequelize.query("UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id", 
-            {
-                replacements : {
-                    team_id : team_id
-                },
-                transaction
-            }
-        )
+exports.toWinner = async (req, res) => {
+  try {
+    const { ps_id, team_id } = req.body;
 
-        await transaction.commit()
-        res.status(201).send({"message": "Selected Successfully"});
-    }catch (error){
-        console.log(error);
-        await transaction.rollback();
-        res.status(500).send({"error": "Some Internal error"});
+    if (!team_id || team_id == undefined || team_id == null) {
+      return res.status(406).send({ error: "Team Id must not be empty" });
     }
-}
 
-exports.backtoParticipation = async(req, res) => {
-    const transaction = await sequelize.transaction();
-    try{
-        const { ps_id, team_id } = req.body;
-
-        const result = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 
-            {
-                replacements : {
-                    team_id : team_id
-                },
-                transaction
-            }
-        )
-
-        await transaction.commit()
-        res.status(201).send({"message": "Removed Successfully"});
-    }catch (error){
-        console.log(error);
-        await transaction.rollback();
-        res.status(500).send({"error": "Some Internal error"});
+    if (typeof team_id != "number") {
+      return res.status(406).send({ error: "Team Id must not be a number" });
     }
-}
+
+    const [result] = await sequelize.query(
+      "UPDATE team_details SET stage = 'WINNER' WHERE id = :team_id",
+      {
+        replacements: {
+          team_id: team_id,
+        },
+      }
+    );
+
+    if (result.affectedRows == 0) {
+      return res.status(406).send({ error: "Record not found" });
+    }
+
+    return res
+      .status(201)
+      .send({ message: "Selected as a Winner Successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ error: "Some Internal error" });
+  }
+};
+
+exports.backtoParticipation = async (req, res) => {
+  const transaction = await sequelize.transaction();
+  try {
+    const { ps_id, team_id } = req.body;
+
+    const result = await sequelize.query(
+      "UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id",
+      {
+        replacements: {
+          team_id: team_id,
+        },
+        transaction,
+      }
+    );
+
+    await transaction.commit();
+    res.status(201).send({ message: "Removed Successfully" });
+  } catch (error) {
+    console.log(error);
+    await transaction.rollback();
+    res.status(500).send({ error: "Some Internal error" });
+  }
+};
