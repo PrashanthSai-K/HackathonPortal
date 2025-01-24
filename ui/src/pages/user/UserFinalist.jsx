@@ -13,8 +13,6 @@ export default function UserFinalist() {
 
   const navigate = useNavigate();
 
-  const date = new Date().getDate();
-
   const fetchEventDetails = async () => {
     try {
       const response = await userGetRequest("/events");
@@ -30,6 +28,12 @@ export default function UserFinalist() {
   let eventDate = new Date(eventDetails.final_round_date);
 
   useEffect(() => {
+    if (!loggedIn) {
+      navigate("/");
+    }
+    if (user?.role != "user") {
+      navigate("/")
+    }
     if (loggedIn) {
       fetchEventDetailsCall();
       eventDate = new Date(eventDetails.final_round_date);
@@ -38,14 +42,6 @@ export default function UserFinalist() {
     }
   }, [])
 
-  useEffect(() => {
-    if (eventDetails) {
-
-      if (eventDate > today) {
-        navigate("/");
-      }
-    }
-  }, [eventDetails, navigate]);
 
   return (
     <>

@@ -19,7 +19,7 @@ exports.backtoSubmitted = async (req, res) => {
         }
 
         if(typeof(team_id) != 'number'){
-            return res.status(406).send({error: "Team Id must not be a number"});
+            return res.status(406).send({error: "Team Id must be a number"});
         };
 
         const [result, meta] = await sequelize.query("UPDATE team_details SET stage = 'SUBMITTED' WHERE id = :team_id",

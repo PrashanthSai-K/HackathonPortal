@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileDetails from "../components/ProfileCreation/ProfileDetails";
 import Navbar from "../components/LandingPage/Navbar";
+import { useAuth } from "../../AuthContext";
+import { useNavigate } from "react-router";
 
 export default function ProfilePage() {
-  
+
+  const { loggedIn, user } = useAuth();
+  const navigate = useNavigate();
+
+  const checkUser = () => {
+    if (!loggedIn) {
+      navigate("/");
+    }
+    if (user?.role != "user") {
+      navigate("/")
+    }
+  }
+
+  useEffect(() => {
+    checkUser();
+  }, [])
+
   return (
     <>
       <Navbar />

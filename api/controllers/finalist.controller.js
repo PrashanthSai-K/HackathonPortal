@@ -9,7 +9,7 @@ exports.toParticipation = async (req, res) => {
         }
 
         if (typeof (team_id) != 'number') {
-            return res.status(406).send({ error: "Team Id must not be a number" });
+            return res.status(406).send({ error: "Team Id must be a number" });
         };
 
         const [result] = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id",
@@ -38,7 +38,7 @@ exports.getFinalist = async (req, res) => {
         const today = new Date();
         let eventDate = new Date(event[0].final_round_date);
         if (eventDate > today) {
-            return res.status(403).send({ error: "Finalists yet to be announced" });
+            return res.status(403).send({ error: "Finalists yet to be announced " });
         }
 
         const [result, metadata] = await sequelize.query("SELECT * FROM final_participants_details ORDER BY ps_id");
@@ -69,7 +69,7 @@ exports.backtoParticipation = async(req, res) => {
         }
 
         if (typeof (team_id) != 'number') {
-            return res.status(406).send({ error: "Team Id must not be a number" });
+            return res.status(406).send({ error: "Team Id must be a number" });
         };
 
         const [result] = await sequelize.query("UPDATE team_details SET stage = 'PARTICIPATION' WHERE id = :team_id", 

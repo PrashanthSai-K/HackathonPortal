@@ -6,6 +6,8 @@ import { userGetRequest } from '../components/exports';
 import TeamView from '../components/ProfileCreation/TeamView';
 import TeamCreation from '../components/ProfileCreation/TeamCreation';
 import Navbar from '../components/LandingPage/Navbar';
+import { useNavigate } from 'react-router';
+import { useAuth } from '../../AuthContext';
 
 export default function Team() {
 
@@ -13,9 +15,18 @@ export default function Team() {
     const [teamDetails, setTeamDetails] = useState([]);
     const [modalData, setModalData] = useState();
     const [visible, setVisible] = useState(false);
-    console.log(teamDetails);
 
+    const { loggedIn, user } = useAuth();
+    const navigate = useNavigate();
 
+    const checkUser = () => {
+        if (!loggedIn) {
+            navigate("/");
+        }
+        if (user?.role != "user") {
+            navigate("/")
+        }
+    }
 
     const formatKey = (key) => {
         return key
@@ -51,6 +62,7 @@ export default function Team() {
     };
 
     useEffect(() => {
+        checkUser();
         getTeamDetails();
     }, [])
 

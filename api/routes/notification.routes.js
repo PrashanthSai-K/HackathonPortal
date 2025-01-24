@@ -1,4 +1,5 @@
 const { checkAdmin } = require("../middleware/auth/auth.middleware");
+const {validateNotification, validateNotificationUpdate} = require("../middleware/validators/notificationValidator");
 
 module.exports = app => {
 
@@ -8,9 +9,9 @@ module.exports = app => {
 
     router.get("/", notification.getNotification);
 
-    router.post("/", checkAdmin,  notification.createNotification);
+    router.post("/", checkAdmin,  validateNotification, notification.createNotification);
 
-    router.put("/", checkAdmin, notification.updateNotification);
+    router.put("/", checkAdmin, validateNotificationUpdate, notification.updateNotification);
 
     router.post("/delete", checkAdmin, notification.deleteNotification);
 
