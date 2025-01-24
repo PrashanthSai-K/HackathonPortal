@@ -2,7 +2,7 @@ const sequelize = require("../config/database");
 const dotenv = require("dotenv").config();
 const key = process.env.JWT_KEY;
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.register_institute = async (req, res) => {
   const transaction = await sequelize.transaction();

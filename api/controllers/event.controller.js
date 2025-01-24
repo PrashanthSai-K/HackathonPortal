@@ -1,5 +1,5 @@
 const sequelize = require("../config/database");
-const sendEmailToParticipants = require("../config/mail");
+const {sendEmailToParticipants} = require("../config/mail");
 
 exports.getEventDetails = async (req, res) => {
     try {

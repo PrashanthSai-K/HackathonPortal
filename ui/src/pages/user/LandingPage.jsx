@@ -34,6 +34,8 @@ function LangingPage() {
       console.log(error);
     }
   }
+  console.log({event : eventDetails});
+  
 
   const [fetchEventDetailsCall, isLoading] = useActionState(fetchEventDetails, true);
 
@@ -46,7 +48,7 @@ function LangingPage() {
     <>
       {
           <>
-            <Navbar />
+            <Navbar eventDetails={eventDetails} />
             <Home eventDetails={eventDetails} />
             <EventDetails />
             <Initiatives />

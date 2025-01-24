@@ -1,7 +1,7 @@
 const sequelize = require("../config/database");
-const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendResetEmail } = require("../config/mail");
 const key = process.env.JWT_KEY;
 
 exports.sendResetPassword = async (req, res) => {
@@ -19,33 +19,18 @@ exports.sendResetPassword = async (req, res) => {
     );
 
     if (!user.length)
-      return res.status(404).json(  { message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
 
     // Generate a reset token
-    const resetToken = jwt.sign(
-      { userId: user[0].id },
-      key,
-      { expiresIn: "5m" }
-    );
-
-    // Send reset link via email
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.EMAIL_PASSWORD,
-      },
+    const resetToken = jwt.sign({ userId: user[0].id }, key, {
+      expiresIn: "5m",
     });
 
     const resetLink = `http://localhost:5173/reset-password?resetToken=${resetToken}`;
-    await transporter.sendMail({
-      to: email,
-      subject: "Password Reset",
-      html: `<p>Click <a href="${resetLink}">here</a> to reset your password. This link is valid for 5 Minutes.</p>`,
-    });
 
-    res
-      .status(200)
+    await sendResetEmail(resetLink, email);
+    return res
+      .status(201)
       .json({ message: "Password reset link has been sent to your email." });
   } catch (error) {
     console.error(error);

@@ -1,0 +1,72 @@
+version: '2.26'
+services:
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    depends_on:
+      - ui
+    networks:
+      - closed_network
+
+  api:
+    build: 
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      JWT_KEY : palndiresloamransjkfecotleinghdtpalndiresloamransjkfecotleinghdt       
+      EMAIL_PASSWORD : jsht cisu ghga kiin
+      EMAIL : hariharan33587@gmail.com
+      DB_NAME : hackathon
+      DB_PORT : 3306
+      DB_USER : root
+      DB_HOST : db
+      DB_PASSWORD : password
+    volumes:
+      - ./api:/app
+    depends_on:
+      - db
+    networks:
+      - closed_network
+
+  ui:
+    build: 
+      context: ./ui
+      dockerfile: Dockerfile
+    volumes:
+      - ./ui:/app
+    depends_on:
+      - api
+    networks:
+      - closed_network
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: hackathon
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3305:3306"
+    volumes:
+      - mysqldb:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - closed_network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "8081:80"
+    networks:
+      - closed_network
+
+networks:
+  closed_network:
+
+volumes:
+  mysqldb:

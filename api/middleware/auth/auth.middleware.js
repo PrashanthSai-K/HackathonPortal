@@ -2,7 +2,7 @@ const dotenv = require("dotenv").config();
 const key = process.env.JWT_KEY;
 const jwt = require("jsonwebtoken");
 const sequelize = require("../../config/database");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { TokenExpiredError } = jwt; 
 
 exports.createToken = async (req, res, next) => {

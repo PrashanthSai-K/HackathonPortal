@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Function to generate a random password
 function generateRandomPassword(length = 8) {

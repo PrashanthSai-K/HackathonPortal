@@ -11,7 +11,7 @@ export default function ForgotPassword() {
   const handleForgotPassword = async () => {
     try {
       const response = await userPostRequest("/login/forgotPassword", { email });
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success("Reset link sent to your email!");
       }
     } catch (error) {
