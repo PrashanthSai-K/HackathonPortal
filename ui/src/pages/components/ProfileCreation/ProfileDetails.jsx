@@ -4,6 +4,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useAuth } from "../../../AuthContext";
 import { useNavigate } from "react-router";
 import EditProfile from "./EditProfile";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ProfileDetails() {
   const emptyData = {
@@ -18,7 +19,6 @@ export default function ProfileDetails() {
     poc_email: "",
     poc_number: "",
   };
-  const [instituteDetails, setInstituteDetails] = useState(emptyData);
   const [visible, setVisible] = useState(false);
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
@@ -26,16 +26,27 @@ export default function ProfileDetails() {
   const getInstituteDetails = async () => {
     try {
       const response = await userGetRequest("/getInstituteDetails");
-      setInstituteDetails(response.data);
+      console.log("callled");
+      return response.data;
     } catch (e) {
       console.log("Failed to get institute details", e);
+      throw new Error(e);
     }
   };
 
+  const { data: instituteDetails, isLoading, refetch } = useQuery({
+    queryKey: ['instituteDetails'],
+    queryFn: getInstituteDetails,
+    staleTime: 90000,
+  });
+
   useEffect(() => {
-    if (loggedIn) getInstituteDetails();
-    else navigate("/login");
-  }, []);
+    if (!loggedIn) {
+      navigate("/login");
+    }
+  }, [loggedIn, navigate]);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
@@ -60,7 +71,7 @@ export default function ProfileDetails() {
                   <input
                     id="institution_code"
                     type="text"
-                    value={instituteDetails.institution_code}
+                    value={instituteDetails.institution_code || emptyData.institution_code}
                     readOnly
                     className="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md text-gray-800"
                   />
@@ -212,7 +223,7 @@ export default function ProfileDetails() {
           visible={visible}
           setVisible={setVisible}
           instituteDetail={instituteDetails}
-          getInstituteDetails={getInstituteDetails}
+          getInstituteDetails={refetch}
         />
       </div>
     </>

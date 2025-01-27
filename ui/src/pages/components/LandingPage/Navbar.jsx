@@ -91,7 +91,7 @@ export default function Navbar() {
         }
     };
 
-    console.log(eventDetails);
+    // console.log(eventDetails);
 
     const filteredNavItems = navItems.filter(item => {
         const today = new Date();

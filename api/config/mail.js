@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv").config();
-const mailPass = process.env.MAIL_PASS;
 
 const generateEmailTemplate = (content) => `
 <!DOCTYPE html>

@@ -9,7 +9,7 @@ import { useAuth } from "../../AuthContext";
 export default function UserFinalist() {
 
   const [eventDetails, setEventDetails] = useState({});
-  const { loggedIn } = useAuth();
+  const { loggedIn ,user} = useAuth();
 
   const navigate = useNavigate();
 

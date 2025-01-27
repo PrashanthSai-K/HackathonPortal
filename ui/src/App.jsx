@@ -22,7 +22,6 @@ import ForgotPassword from './pages/components/ForgotPassword/ForgotPassword.jsx
 import ResetPassword from './pages/components/ForgotPassword/resetPassword.jsx';
 import UserWinners from './pages/user/UserWinners.jsx';
 
-
 function App() {
 
   return (
